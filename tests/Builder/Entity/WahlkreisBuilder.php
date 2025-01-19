@@ -1,10 +1,15 @@
 <?php
 
+/*
+ * This file is part of the Weltsozialamt website.
+ * (c) dknx01/wsa_public
+ */
+
 namespace App\Tests\Builder\Entity;
 
 use App\Entity\Wahlkreis;
 
-class Wahlkreisbuilder
+class WahlkreisBuilder
 {
     private const array WAHLKREISE = [
         ['number' => 1, 'name' => 'Flensburg – Schleswig', 'state' => 'Schleswig-Holstein'],
@@ -307,13 +312,13 @@ class Wahlkreisbuilder
         ['number' => 298, 'name' => 'St. Wendel', 'state' => 'Saarland'],
         ['number' => 299, 'name' => 'Homburg', 'state' => 'Saarland'],
     ];
+
     public static function build(
         ?int $number = null,
         ?string $name = null,
-    ): Wahlkreis
-    {
-        if ($number === null && $name === null) {
-            $wahlkreisData = array_rand(self::WAHLKREISE);
+    ): Wahlkreis {
+        if (null === $number && null === $name) {
+            $wahlkreisData = self::WAHLKREISE[array_rand(self::WAHLKREISE)];
         } else {
             $wahlkreisData = [];
             $wahlkreisData['number'] = $number ?? random_int(100, 200);

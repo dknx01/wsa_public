@@ -1,0 +1,66 @@
+<div class="admin-item-logo">
+    <h1>Admin</h1>
+</div>
+<div class="admin-item-menu">
+    <nav role="navigation" class="primary-navigation">
+        <ul>
+            <li><a href="#">UU-Zahlen&dtrif;</a>
+                <ul class="dropdown">
+                    <li><a href="{{ path('app_admin_statisticadmin_index') }}">Eintragen</a></li>
+                    <li><a href="{{ path('app_admin_statisticadmin_overview') }}">Verwalten</a></li>
+                </ul>
+            </li>
+            <li><a href="#">UU-Dokumente&dtrif;</a>
+                <ul class="dropdown">
+                    <li><a href="{{ path('app_admin_documentadmin_landesliste') }}">Landesliste hinzufügen</a></li>
+                    <li><a href="{{ path('app_admin_documentadmin_direktkandidat') }}">Direktkandidat hinzufügen</a></li>
+                    <li><a href="{{ path('admin_document_overview') }}">Verwalten</a></li>
+                </ul>
+            </li>
+            <li><a href="#">User&dtrif;</a>
+                <ul class="dropdown">
+                    <li><a href="{{ path('app_register') }}">Registrieren</a></li>
+                    <li><a href="{{ path('users_overview') }}">Verwalten</a></li>
+                </ul>
+            </li>
+            {% if app.user %}
+            <li><a href="{{ path('app_logout') }}">Logout</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+{# <nav class="navbar navbar-expand-lg"> #}
+{# <div class="container-fluid"> #}
+{# <div id="navbarSupportedContent"> #}
+{# <ul class="navbar-nav me-auto mb-2 mb-lg-0"> #}
+{# <li class="nav-item"> #}
+{# <a class="nav-link" href="{{ path('app_admin_statisticadmin_index') }}">UUs eintragen</a> #}
+{# </li> #}
+{# <li class="nav-item"> #}
+{# <a class="nav-link" href="{{ path('app_admin_statisticadmin_overview') }}">UUs verwalten</a> #}
+{# </li> #}
+{# <li class="nav-item"> #}
+{# <a class="nav-link" href="{{ path('app_admin_documentadmin_landesliste') }}">UU-Dokument Landesliste hinzufügen</a> #}
+{# </li> #}
+{# <li class="nav-item"> #}
+{# <a class="nav-link" href="{{ path('app_admin_documentadmin_direktkandidat') }}">UU-Dokument Direktkandidat hinzufügen</a> #}
+{# </li> #}
+{# <li class="nav-item"> #}
+{# <a class="nav-link" href="{{ path('admin_document_overview') }}">UU-Dokument verwalten</a> #}
+{# </li> #}
+{# <li class="nav-item"> #}
+{# <a class="nav-link" href="{{ path('app_register') }}">User registrieren</a> #}
+{# </li> #}
+{# <li class="nav-item"> #}
+{# <a class="nav-link" href="{{ path('users_overview') }}">User verwalten</a> #}
+{# </li> #}
+{# {% if app.user %} #}
+{# <li class="nav-item"> #}
+{# <a class="nav-link" href="{{ path('app_logout') }}">Logout</a> #}
+{# {% endif %} #}
+{# </ul> #}
+{# </div> #}
+{# </div> #}
+{# </nav> #}
+</div>
+<div class="admin-item-help">
+</div>

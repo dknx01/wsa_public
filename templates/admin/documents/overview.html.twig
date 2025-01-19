@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block title %}UU-Dokumente{% endblock %}
+
+{% block body %}
+    <main class="wrapper">
+        <div class="shadow-blur shadow-blur--rainbow shadow-blur--before">
+            <div class="Wsa-Header admin-grid">
+                {{ include('admin/menu.html.twig') }}
+            </div>
+            <div class="Wsa-Tableau">
+                <div class="" style="padding: 0.75rem 1.25rem; border-radius: 1rem; border: 1px solid #000;">
+                    <table class="table table-striped" id="user_overview"  style="position: sticky;top: 0" >
+                        <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Bundesland</th>
+                            <th scope="col">Listen-Typ</th>
+                            <th scope="col">WK-Name</th>
+                            <th scope="col">Dokumentenname</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for key, document in documents %}
+                            <tr>
+                                <td><a href="{{ path('admin_document_edit', {id: document.id}) }}">{{ document.state }}</a></td>
+                                <td><a href="{{ path('admin_document_edit', {id: document.id}) }}">{{ document.type }}</a></td>
+                                <td><a href="{{ path('admin_document_edit', {id: document.id}) }}">{{ document.wkName }}</a></td>
+                                <td><a href="{{ path('admin_document_edit', {id: document.id}) }}">{{ document.fileName }}</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

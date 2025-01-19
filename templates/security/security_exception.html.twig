@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Registrierung{% endblock %}
+
+{% block body %}
+    <div class="jumbotron">
+
+        {{ include('layout/flash_messages.html.twig') }}
+        {% if app.user is null %}
+            <div class="alert alert-warning" role="alert">
+                <a href="{{ path('app_login') }}">Nicht eingeloggt</a>
+            </div>
+        {% else %}
+            {% if not app.user.active %}
+                <div class="alert alert-warning" role="alert">
+                    Dieser Benutzer ist nicht aktiviert.
+                </div>
+            {% endif %}
+            {% if app.user.active %}
+                <div class="alert alert-warning" role="alert">
+                    Es gab einen Fehler
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

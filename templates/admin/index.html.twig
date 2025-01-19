@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <style>
+        .shadow-blur::after {
+            --gradient: var({{ '--wsa-gradient-dark' }}) !important;
+        }
+    </style>
+    {% block content %}
+        <main class="wrapper">
+            <div class="shadow-blur shadow-blur--rainbow shadow-blur--before">
+                <div class="Wsa-Header admin-grid">
+                    {{ include('admin/menu.html.twig') }}
+                </div>
+                <div class="Wsa-Tableau"></div>
+            </div>
+        </main>
+    {% endblock %}
+{% endblock %}

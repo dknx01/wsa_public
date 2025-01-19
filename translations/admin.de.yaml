@@ -1,0 +1,13 @@
+statistic:
+    name: Name
+    bundesland: Bundesland
+    type: Typ
+    approved: Bestätigte
+    unapproved: Unbestätigte
+    updatedAt: Aktualisierungsdatum
+    comment: Kommentar
+    wahlkreis: Wahlkreis
+    invalid:
+        name: 'Der Name ist ungültig'
+form:
+    save: Speichern

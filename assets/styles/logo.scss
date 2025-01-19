@@ -1,0 +1,51 @@
+// -----------------------------------------------------------------
+// Logo
+// -----------------------------------------------------------------
+
+.Wsa-Logo {
+   --bottom: 0;
+   max-width: 320px;
+   transition: all 150ms ease-in-out;
+   transform: scale(1);
+   align-items: center;
+   display: flex;
+   flex-direction: column;
+   transform-style: preserve-3d;
+   gap: 0.25rem;
+//opacity: .75;
+//   background-color: $n-100;
+}
+.Wsa-Logo:hover {
+    opacity: .95;
+}
+
+.Wsa-Logo-Live {
+//width: 58%;
+    height: auto;
+    position: relative;
+    path {
+        transform: rotateY(0deg);
+        transform-origin: center;
+        transition: transform 900ms ease-in-out;
+        transform-style: preserve-3d;
+        transform-box: fill-box;
+    }
+}
+.Wsa-Logo:hover .Wsa-Logo-Live path {
+    transform: rotateY(720deg);
+    transition-delay: calc(var(--delay, 200ms) * var(--idx, 0));
+}
+
+.Wsa-Logo-Memory {
+    color: var(--color-text);
+    width: 95%;
+    transform: scale(.9);
+    height: auto;
+    transition: color 250ms linear, transform 900ms ease-in-out;
+    mix-blend-mode: luminosity;
+}
+.Wsa-Logo:hover .Wsa-Logo-Memory {
+    transform: scale(.95);
+    transition-delay: 400ms;
+}
+
