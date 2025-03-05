@@ -12,19 +12,15 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20250116170348 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Combine support numbers with wahlkreis table';
     }
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE support_numbers DROP FOREIGN KEY FK_CAABC2055D83CC1');
         $this->addSql('DROP INDEX IDX_CAABC2055D83CC1 ON support_numbers');
         $this->addSql('ALTER TABLE support_numbers CHANGE state_id wahlkreis_id BINARY(16) DEFAULT NULL COMMENT \'(DC2Type:ulid)\'');
@@ -34,7 +30,6 @@ final class Version20250116170348 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE support_numbers DROP FOREIGN KEY FK_CAABC20518DD34B2');
         $this->addSql('DROP INDEX IDX_CAABC20518DD34B2 ON support_numbers');
         $this->addSql('ALTER TABLE support_numbers CHANGE wahlkreis_id state_id BINARY(16) DEFAULT NULL COMMENT \'(DC2Type:ulid)\'');

@@ -16,7 +16,7 @@ final class Version20241120095441 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Deactivate user as default';
+        return 'Add admin user';
     }
 
     public function up(Schema $schema): void
