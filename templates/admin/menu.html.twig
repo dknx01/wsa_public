@@ -1,0 +1,46 @@
+<div class="admin-item-logo">
+    <h6>Admin{% if title is defined %} - {{ title }}{% endif %}</h6>
+</div>
+<div class="admin-item-menu">
+    <nav role="navigation" class="primary-navigation">
+        <ul>
+            <li><a href="#">UU-Zahlen&dtrif;</a>
+                <ul class="dropdown">
+                    <li><a href="{{ path('admin_new_statistic_index_new') }}">Eintragen</a></li>
+                    <li><a href="{{ path('statistic_new_overview') }}">Verwalten</a></li>
+                </ul>
+            </li>
+            <li><a href="#">UU-Dokumente&dtrif;</a>
+                <ul class="dropdown">
+                    <li><a href="{{ path('app_admin_documentadmin_landesliste') }}">Landesliste hinzufügen</a></li>
+                    <li><a href="{{ path('app_admin_documentadmin_direktkandidat') }}">Direktkandidat hinzufügen</a></li>
+                    <li><a href="{{ path('admin_document_overview') }}">Verwalten</a></li>
+                </ul>
+            </li>
+            {% if is_granted('ROLE_ADMIN') %}
+            <li><a href="#">User&dtrif;</a>
+                <ul class="dropdown">
+                    <li><a href="{{ path('app_register') }}">Registrieren</a></li>
+                    <li><a href="{{ path('users_overview') }}">Verwalten</a></li>
+                </ul>
+            </li>
+            {% endif %}
+            {% if app.user %}
+                <li><a href="#"><box-icon type='solid' name='user-circle' animation="tada-hover"></box-icon>&dtrif;</a>
+                <ul class="dropdown">
+                    <li><a href="{{ path('user_password', {id: app.user.id}) }}">Passwort ändern</a></li>
+                    <li><a href="{{ path('app_logout') }}">Logout</a></li>
+                </ul>
+                </li>
+                <li><a href="#"><i data-lucide="wrench"></i></box-icon>&dtrif;</a>
+                <ul class="dropdown">
+                    <li><a href="{{ path('wahlkreis_new') }}">Wahlkreis hinzufügen</a></li>
+                    <li><a href="{{ path('data_admin') }}">Backend</a></li>
+                </ul>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+<div class="admin-item-help">
+</div>

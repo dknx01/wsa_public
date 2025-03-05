@@ -1,0 +1,13 @@
+under_construction:
+    title: Wird gebaut
+    first_paragraph: Dieser Bereich ist noch nicht fertig und wird noch gebaut
+404:
+    title: Seite nicht gefunden
+    first_paragraph: Ähm ja, die angeforderte Seit ist nicht zu finden.
+    second_paragraph: Wir haben das ganze Internet und darüber hinaus alles durchsucht, aber nichts gefunden.
+    third_paragraph: Wir bestellen da aber was beim billigsten Anbieter. Bitte demnächst noch einmal versuchen
+error:
+    head: Irgendwas ging schief
+    first_paragraph: Keine Ahnung, wer es aber, aber wir werden die verantwortliche Person umgehend kontaktieren.
+    second_paragraph: Bis dahin bitte nicht verzweifeln, auch wenn die Lage besäufniserregend ist.
+    third_paragraph: Ihre Amtsleitung

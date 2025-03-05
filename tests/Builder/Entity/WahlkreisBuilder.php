@@ -1,10 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Weltsozialamt website.
+ * (c) dknx01/wsa_public
+ */
+
 namespace App\Tests\Builder\Entity;
 
+use App\Btw\Wahlkreise;
+use App\Dto\WahlkreisType;
 use App\Entity\Wahlkreis;
+use Symfony\Component\Uid\Ulid;
 
-class Wahlkreisbuilder
+class WahlkreisBuilder
 {
     private const array WAHLKREISE = [
         ['number' => 1, 'name' => 'Flensburg – Schleswig', 'state' => 'Schleswig-Holstein'],
@@ -307,13 +315,14 @@ class Wahlkreisbuilder
         ['number' => 298, 'name' => 'St. Wendel', 'state' => 'Saarland'],
         ['number' => 299, 'name' => 'Homburg', 'state' => 'Saarland'],
     ];
+
     public static function build(
         ?int $number = null,
         ?string $name = null,
-    ): Wahlkreis
-    {
-        if ($number === null && $name === null) {
-            $wahlkreisData = array_rand(self::WAHLKREISE);
+        ?Ulid $id = new Ulid(),
+    ): Wahlkreis {
+        if (null === $number && null === $name) {
+            $wahlkreisData = self::WAHLKREISE[array_rand(self::WAHLKREISE)];
         } else {
             $wahlkreisData = [];
             $wahlkreisData['number'] = $number ?? random_int(100, 200);
@@ -322,6 +331,10 @@ class Wahlkreisbuilder
         $wahlkreis = new Wahlkreis();
         $wahlkreis->setNumber($wahlkreisData['number']);
         $wahlkreis->setName($wahlkreisData['name']);
+        $wahlkreis->setId($id);
+        $wahlkreis->setState(array_rand(Wahlkreise::UU_NUMBERS));
+        $wahlkreis->setType(WahlkreisType::BTW);
+        $wahlkreis->setYear(2025);
 
         return $wahlkreis;
     }

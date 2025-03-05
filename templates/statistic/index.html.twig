@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <style>
+        .shadow-blur::after {
+            --gradient: var({{ '--wsa-gradient-dark' }}) !important;
+        }
+    </style>
+    {% block content %}
+        <main class="wrapper">
+            <div class="shadow-blur shadow-blur--rainbow shadow-blur--before"  data-controller="statistic" data-statistic-url-value="{{ path('app_statistic_statedata', {state: '---'}, false) }}">
+                <div class="Wsa-Header header-grid">
+                    <div class="header-item-logo ">
+                        {{ include('wsa/stern.html.twig') }}
+                    </div>
+                    <div class="header-item-title">
+                        <span>Finde heraus, wie viele Unterstützungsunterschriften deine Landesliste oder DirektkandidatIn noch braucht.</span><br>
+                    </div>
+                    <div class="header-item-search">
+                        <div>
+                            <input type="text" id="resultSearch" class="form-control" placeholder="Filtere die Liste" data-action="input->statistic#search">
+                        </div>
+                    </div>
+                    <div class="header-item-help">
+                        <nav class="navbar">
+                            <div class="container-fluid">
+                                <div class="" id="navbarSupportedContent">
+                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path('home') }}">Wählbarkeitsinformation</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+                <div class="Wsa-Tableau">
+                    <div class="main-area">
+                        {{ include('snippets/loader.html.twig') }}
+                        {% if states is empty %}
+                            Keine Daten vorhanden
+                        {% else %}
+                            <div class="states">
+                                <button class="menu-button">
+                                    <img src="{{ asset('images/menu.svg') }}" data-action="click->statistic#menu" id="mobileMenu">
+                                </button>
+                                <div class="mobileStates">
+                                    {% for key, state in states %}
+                                        <button class="title-state menu-state" data-action="click->statistic#load" data-statistic-state-param="{{ state }}">{{ key }}</button>
+                                    {% endfor %}
+                                </div>
+                                <div id="states">
+                                    {% for key, state in states %}
+                                        <button class="title-state" data-action="click->statistic#load" data-statistic-state-param="{{ state }}">{{ key }}</button>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="content Wsa-CardSlot statistic-grid" id="statistic-grid">
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    {% endblock %}
+{% endblock %}

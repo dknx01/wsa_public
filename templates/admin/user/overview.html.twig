@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+{% block title %}Benutzer{% endblock %}
+
+{% block body %}
+{{ include('admin/menu.html.twig', {title: 'Benurterübersicht'}) }}
+
+<div class="jumbotron">
+    {{ include('layout/flash_messages.html.twig') }}
+    <table class="table table-striped" id="user_overview"  style="position: sticky;top: 0" >
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">E-Mail</th>
+            <th scope="col">Aktiv</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for key, user in users %}
+            <tr>
+                <th scope="row">{{ key }}</th>
+                <td><a href="{{ path('user_edit', {id: user.id}) }}">{{ user.email }}</a></td>
+                <td>{{ _self.simple_status(user.active) }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% macro simple_status(value) %}
+    <span class="badge text-black">{{ value }}</i></span>
+{% endmacro %}

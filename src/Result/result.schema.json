@@ -1,0 +1,127 @@
+{
+  "type": "object",
+  "properties": {
+    "Baden-Württemberg": {
+      "type": "object",
+      "$ref": "#/$defs/state"
+    },
+    "Bayern": {
+      "type": "object",
+      "$ref": "#/$defs/state"
+    },
+    "Berlin": {
+      "type": "object",
+      "$ref": "#/$defs/state"
+    },
+    "Brandenburg": {
+      "type": "object",
+      "$ref": "#/$defs/state"
+    },
+    "Bremen": {
+      "type": "object",
+      "$ref": "#/$defs/state"
+    },
+    "Hamburg": {
+      "type": "object",
+      "$ref": "#/$defs/state"
+    },
+    "Hessen": {
+      "type": "object",
+      "$ref": "#/$defs/state"
+    },
+    "Mecklenburg-Vorpommern": {
+      "type": "object",
+      "$ref": "#/$defs/state"
+    },
+    "Niedersachsen": {
+      "type": "object",
+      "$ref": "#/$defs/state"
+    },
+    "Nordrhein-Westfalen": {
+      "type": "object",
+      "$ref": "#/$defs/state"
+    },
+    "Rheinland-Pfalz": {
+      "type": "object",
+      "$ref": "#/$defs/state"
+    },
+    "Saarland": {
+      "type": "object",
+      "$ref": "#/$defs/state"
+    },
+    "Sachsen": {
+      "type": "object",
+      "$ref": "#/$defs/state"
+    },
+    "Sachsen-Anhalt": {
+      "type": "object",
+      "$ref": "#/$defs/state"
+    },
+    "Schleswig-Holstein": {
+      "type": "object",
+      "$ref": "#/$defs/state"
+    },
+    "Thüringen": {
+      "type": "object",
+      "$ref": "#/$defs/state"
+    }
+  },
+  "$defs": {
+    "state": {
+      "properties": {
+        "LL": {
+          "type": "string",
+          "pattern": "^(?:(?:NICHT\\ geschafft)|(?:ZUGELASSEN\\ \\(\\d+\\ UUs\\)))$"
+        },
+        "WKs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/wk"
+          }
+        },
+        "Kommunal": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/wk"
+          }
+        },
+        "required": [
+          "LL",
+          "WKs",
+          "Kommunal"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "wk": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "zugelassen": {
+          "enum": [
+            null,
+            -1,
+            0,
+            1
+          ]
+        },
+        "uus": {
+          "enum": [
+            null,
+            -1,
+            0,
+            1
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "uus",
+        "zugelassen"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,57 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+imports:
+    - {resource: 'matomo.yaml'}
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    matomo_fallback: ''
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    App\Twig\Extension\UserAgentExtension:
+        arguments:
+            $filePath: '%kernel.project_dir%/data/useragents.txt'
+    App\Controller\WsaController:
+        arguments:
+            $documentPath: '%kernel.project_dir%/var/docs'
+    App\Migrations\Factory\MigrationFactoryDecorator:
+        decorates: 'doctrine.migrations.migrations_factory'
+        arguments: ['@.inner', '@doctrine.orm.default_configuration']
+    wsa.cache.numbers:
+        parent: 'cache.adapter.doctrine_dbal'
+        arguments:
+            $options:
+                'db_table': 'support_numbers_cache'
+        tags:
+            - {name: 'cache.pool', namespace: 'numbers'}
+#    MatomoTracker:
+#        class: MatomoTracker
+#        arguments:
+#            $idSite: '%env(resolve:MATOMO_SITE_ID:example))%'
+#            $apiUrl: '%env(resolve:MATOMO_TRACKER_URL:matomo.php))%'
+#        calls:
+#            - setTokenAuth: ['%env(MATOMO_API_TOKEN:example))%']
+#    App\Service\Tracking\MatomoConfig:
+#        arguments:
+#            $env: '%kernel.environment%'
+#            $enabled: '%matomo_enabled%'
+#            $cookieDomain: '%matomo_cookie_domain%'
+#            $noScriptImage: '%matomo_noscript_img%'
+#            $trackerUrl: '%matomo_tracker_url%'
+#            $siteId: '%env(resolve:MATOMO_SITE_ID:example))%'
+#            $serverSide: '%matomo_server_side%'

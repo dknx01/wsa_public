@@ -1,0 +1,6 @@
+email: E-Mail
+password: Passwort
+answer: 'Antwort auf die Frage der Berechnung'
+answer.help: 'Was ist die Antwort auf die Frage der Berechnung'
+captcha: Captcha-Wert
+captcha.help: 'Bitte den Wert aus dem Captcha eingeben'

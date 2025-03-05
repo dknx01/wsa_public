@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+{% block title %}UU Zahlen History{% endblock %}
+{% block stylesheets %}
+    <style>
+    </style>
+{% endblock %}
+{% block body %}
+    <main class="wrapper">
+        <div class="shadow-blur shadow-blur--rainbow shadow-blur--before">
+            <div class="Wsa-Header admin-grid">
+                {{ include('admin/menu.html.twig') }}
+            </div>
+            <div class="Wsa-Tableau ">
+                {{ include('layout/notifications.html.twig') }}
+                <div class="new-statistic-overview">
+                    <a class="wsa-link" href="{{ path('adminLogUu') }}"><i data-lucide="arrow-big-left"></i>Zurück zur Übersicht</a>
+                    <h1>History</h1>
+                    <div class="container text-center">
+                        <div class="row">
+                            <div class="col">
+                                <div class="table-responsive"><table class="table table-sm table-striped"><thead><tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Bestätigt</th>
+                                            <th scope="col">Unbestätigt</th>
+                                            <th scope="col">Bundesland</th>
+                                            <th scope="col">Typ</th>
+                                            <th scope="col">Erstellt am</th>
+                                            <th scope="col">Erstellt von</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>{{ entry.name }}</td>
+                                            <td>{{ entry.approved }}</td>
+                                            <td>{{ entry.unapproved }}</td>
+                                            <td>{{ entry.bundesland }}</td>
+                                            <td>{{ entry.type }}</td>
+                                            <td>{{ entry.createdAt|date('Y-m-d H:i') }}</td>
+                                            <td>{{ entry.createdBy.userIdentifier }}</td>
+                                        </tr>
+                                        </tbody>
+                                        </table>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="badge text-bg-secondary">Kommentar</span>{{ entry.comment }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col text-start" id="content">
+                                <div class="history-card">
+                                    {% if entry.history is empty %}
+                                        Keine Einträge
+                                    {% endif %}
+                                    {% for data in entry.history %}
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item"><span class="badge text-bg-warning">{{ data.changedAt|date('Y-m-d H:i') }}</span></li>
+                                                    <li class="list-group-item"><span class="badge text-bg-secondary">Feld</span> {{ data.field }}</li>
+                                                    <li class="list-group-item"><span class="badge text-bg-secondary">Alt</span> {{ data.old }} </li>
+                                                    <li class="list-group-item"><span class="badge text-bg-secondary">Neu</span> {{ data.new }} </li>
+                                                    <li class="list-group-item"><span class="badge text-bg-secondary">Von</span> {{ data.changedBy.userIdentifier }} </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+{% endblock %}
+
+{% macro history(data) %}
+{% endmacro %}

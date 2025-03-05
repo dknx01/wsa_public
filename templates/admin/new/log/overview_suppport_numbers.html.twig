@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+{% block title %}UU Zahlen Überblick{% endblock %}
+{% block stylesheets %}
+    <style>
+
+    </style>
+{% endblock %}
+{% block body %}
+    <main class="wrapper">
+        <div class="shadow-blur shadow-blur--rainbow shadow-blur--before">
+            <div class="Wsa-Header admin-grid">
+                {{ include('admin/menu.html.twig') }}
+            </div>
+            <div class="Wsa-Tableau ">
+                {{ include('layout/notifications.html.twig') }}
+                <div class="new-statistic-overview">
+                    <div class="container text-center">
+                        <div class="row">
+                            <div class="col text-start" id="content">
+                                <div class="table-responsive"><table class="table table-sm table-striped"><thead><tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Bestätigt</th>
+                                            <th scope="col">Unbestätigt</th>
+                                            <th scope="col">Bundesland</th>
+                                            <th scope="col">Typ</th>
+                                            <th scope="col">Erstellt am (geändert am)</th>
+                                            <th scope="col">Erstellt von</th>
+                                            <th scope="col">Kommentar</th>
+                                            <th scope="col">History</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for entry in numbers %}
+                                            <tr>
+                                                <td>{{ entry.name }}</td>
+                                                <td>{{ entry.approved }}</td>
+                                                <td>{{ entry.unapproved }}</td>
+                                                <td>{{ entry.bundesland }}</td>
+                                                <td>{{ entry.type }}</td>
+                                                <td>{% if entry.updatedAt is not null %}{{ entry.updatedAt|date('Y-m-d H:i') }}{% else %}{{ entry.createdAt|date('Y-m-d H:i') }}{% endif %}</td>
+                                                <td>{{ entry.createdBy.userIdentifier }}</td>
+                                                <td>{{ entry.comment }}</td>
+                                                <td>
+                                                    <div class="history">
+                                                        <a class="wsa-link" href="{{ path('adminLogUuDetail', {id: entry.id}) }}"><span title="History"><i data-lucide="file-clock"></i></span></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+{% endblock %}
+
+{% macro history(data) %}
+{% endmacro %}

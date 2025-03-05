@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock %}</title>
+        {% block stylesheets %}
+        {% endblock %}
+        {% block javascripts %}
+            {% block importmap %}
+                {{ importmap('app') }}
+            {% endblock %}
+        {% endblock %}
+    </head>
+    <body class="container-grey">
+
+    <div class="container container-grey min-vh-100">
+        <div class="row title-text">
+            <div class="col-sm">
+            </div>
+            <div class="col-sm text-left">
+                <a href="{{ path('home') }}">{{ include('wsa/Logo.html.twig') }}</a>
+            </div>
+            <div class="col-sm text-right">
+            </div>
+        </div>
+        <div id="wsa wsa-board" class="Wsa-Board" data-wsa-theme="dark">
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+        <footer class="py-4 mt-auto footer">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col">
+                    </div>
+                    <div class="col">
+                        <a href="{{ path('impressum') }}">Impressum</a>
+                    </div>
+                    <div class="col">
+                        {{ include('wsa/Partei.html.twig') }}
+                    </div>
+                    <div class="col-2">
+                        <i data-lucide="copyright" style="width: 12px; height: 12px"></i><a href="https://github.com/dknx01/wsa_public" target="_blank" class="small text-black">dknx01/wsa_public</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        </div>
+    </div>
+    </body>
+</html>

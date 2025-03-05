@@ -1,0 +1,135 @@
+// customize some Bootstrap variables
+@import "./colors";
+@import "./loader";
+@import "./navigation";
+@import "./variables";
+// @import "../vendor/bootstrap/dist/css/bootstrap.min.css";
+//@import "./base.css";
+// the ~ allows you to reference things in node_modules
+// Import Bootstrap
+// font-awesome
+//@import "../vendor/@fortawesome/fontawesome-free/css/fontawesome.min.css";
+$theme-colors: map-remove($theme-colors, 'primary');
+$theme-colors: (
+        "primary": darken(#428bca, 20%),
+        "danger": $wsa-red,
+        "partei-red": $wsa-red,
+);
+
+.required:after{
+  content:"*";
+  font-weight:bold;
+  color: red;
+  margin-left: 5px;
+}
+
+.btn-red {
+  background: $red;
+}
+.container-grey {
+  background: $gray-300;
+}
+.hint-background {
+  background-color: $gray-500 !important;
+}
+
+
+.btn-partei {
+  background-color: $wsa-red !important;
+  color: white !important;
+}
+.card-spacing {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.low-signatures {
+  background-color: $low-signatures !important;
+}
+.medium-signatures {
+  background-color: $medium-signatures !important;
+}
+.high-signatures {
+  background-color: $high-signatures !important;
+}
+.text-red {
+  color: $wsa-red;
+}
+.text-no-results-progressbar {
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
+.background-light-grey {
+  background-color: $gray-300;
+}
+
+.menu-space-top {
+  height: 10px;
+}
+
+.badge-link > a {
+  color: white;
+}
+.badge-link > a:hover {
+  color: $wsa-red;
+}
+.menu-section-header {
+  font-weight: bold;
+  text-align: center !important;
+  background-color: $gray-300;
+}
+
+.jumbotron {
+  margin-top: 1.5rem !important;;
+  padding: 3rem !important;;
+  --bs-text-opacity: 1;
+  color: rgba(var(--bs-white-rgb), var(--bs-text-opacity)) !important;
+  border-radius: var(--bs-border-radius) !important;
+  background: var(--bs-body-bg);
+  border: 1px solid $gray-500;
+  box-shadow: 0 0 0 0 $gray-700;
+}
+.jumbotron-sm-border {
+  --bs-text-opacity: 1;
+  color: rgba(var(--bs-white-rgb), var(--bs-text-opacity)) !important;;
+    border-radius: var(--bs-border-radius) !important;;
+  background: var(--bs-body-bg);
+  border: 1px solid $gray-500;
+  box-shadow: 0 0 0 0 $gray-700;
+}
+
+.form-input-group {
+  border: 1px solid $gray-500;
+  padding: 3px;
+  border-radius: 5px;
+  background-color: $gray-200;
+}
+.form-input-group > div > legend{
+  font-weight: 500;
+}
+
+@media (min-width: 992px){
+    #mobileMenu {
+      display: none;
+  }
+}
+
+.footer {
+  padding: .75rem 1.25rem;
+  //border-radius: 1rem;
+  //border: 1px solid $black;
+}
+
+.menu-state {
+  width: -webkit-fill-available;
+}
+
+.wsa-link {
+  color: $wsa-red;
+  text-decoration: none;
+}
+.wsa-link:hover{
+  color: $wsa-red;
+  text-decoration: underline;
+  font-weight: bold;
+}

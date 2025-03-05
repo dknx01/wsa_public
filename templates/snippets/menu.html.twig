@@ -1,0 +1,8 @@
+<button class="menu-button">
+    <img src="{{ asset('images/menu.svg') }}" data-action="click->document#menu" id="mobileMenu">
+</button>
+<div class="mobileStates">
+        {% for key, state in states %}
+            <button class="title-state" data-action="click->document#load" data-document-state-param="{{ state }}">{{ key }}</button>
+        {% endfor %}
+</div>

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% block content %}
+        <main class="wrapper">
+            <div class="shadow-blur shadow-blur--rainbow shadow-blur--before" data-controller="document" data-document-url-value="{{ path('documentStateList', {state: '---'}, false) }}" data-document-search-value="{{ path('documentsSearch', {search: '---'}, false) }}">
+                {{ include('wsa/Board.html.twig') }}
+            </div>
+        </main>
+    {% endblock %}
+{% endblock %}

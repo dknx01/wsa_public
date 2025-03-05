@@ -1,0 +1,22 @@
+.text-center {
+    text-align: center !important;
+}
+.text-bold {
+     font-weight: bold;
+ }
+.mt-4 {
+    margin-top: 1.5rem !important;
+}
+.p-5 {
+    padding: 3rem !important;
+}
+
+.text-black {
+    color: black!important;
+}
+.pointer {
+    cursor: pointer;
+}
+.title-text {
+    padding-top: 10px;
+}

@@ -1,0 +1,24 @@
+@import "admin_new";
+@import "tooltip";
+.admin-grid {
+  display: grid;
+  //grid-template-columns: 10vw auto;
+  grid-template-columns: 10vw auto 10vw;
+  //grid-template-rows: 10vw auto 10vw;
+  column-gap: 2vw;
+  grid-template-areas:
+    "logo menu help"
+    ". . .";
+}
+.admin-item-logo {
+  grid-area: logo;
+  padding-right: 10px;
+  //grid-row: 1 / 3;
+}
+.admin-item-menu {
+  grid-area: menu;
+}
+.admin-item-help {
+  grid-area: help;
+}
+

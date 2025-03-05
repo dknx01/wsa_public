@@ -1,0 +1,68 @@
+# Cache, session files and logs (Symfony3)
+var/cache/*
+var/logs/*
+var/sessions/*
+!var/cache/.gitkeep
+!var/logs/.gitkeep
+!var/sessions/.gitkeep
+!var/.gitkeep
+
+# Logs (Symfony)
+var/log/*
+!var/log/.gitkeep
+
+
+/bin/*
+!bin/console
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/var/
+###< symfony/framework-bundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> vincentlanglet/twig-cs-fixer ###
+/.twig-cs-fixer.cache
+###< vincentlanglet/twig-cs-fixer ###
+
+.idea/
+**/*.Identifier
+**/*com.dropbox.ignored
+
+.env.prod
+
+vendor/
+assets/vendor
+public/assets
+reports/
+
+###> friendsofphp/php-cs-fixer ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###
+
+docker/data/mysql2/
+
+public/bundles/easyadmin/
+
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###
+
+
+wsa.config.php
+assets/custom
+
+results.json

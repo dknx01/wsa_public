@@ -1,0 +1,49 @@
+statistic:
+    name: Name
+    bundesland: Bundesland
+    type: Typ
+    approved: Bestätigte
+    unapproved: Unbestätigte
+    updatedAt: Aktualisierungsdatum
+    comment: Kommentar
+    wahlkreis: Wahlkreis
+    invalid:
+        name: 'Der Name ist ungültig'
+form:
+    save: Speichern
+password:
+    old: 'Altes Password'
+    password: Passwort
+    repeat: 'Passwort wiederholen'
+    save: Speichern
+document:
+    name: Name
+    name.help: 'Name des Formulars'
+    state: Bundesland
+    state.help: 'Für welches Bundesland ist es die landesliste?'
+    file: UU-Datei
+    save: Speichern
+    hint: 'Beschreibung'
+    hint.help: 'Hinweise für die Benutzer z.B. wo die UU hingeschickt werden soll'
+    dd:
+        hint: 'In welchem Bundesland liegt der Wahlkreis?'
+        area: Wahlkreis
+        area.hint: 'Für welchen Wahlkreis ist es die Kandidatur?'
+    type: 'Art des Dokuments'
+    landeslListe: 'Landesliste'
+    direktkandiaten: 'Direktkandidaten'
+    document_name: 'Name des Dokumentes'
+wahlkreis:
+    number: Wahlkreisnummer
+    number.help: 'Wahlkreisnummer, soweit bekannt'
+    name: Name
+    name.help: 'Name des Wahlkreises'
+    state: Bundesland
+    state.help: 'Bundesland des Wahlkreises'
+    type: 'Art'
+    type.help: 'Art des Wahlkreises z.B. für die Bundestagswahl oder Landtagswahl'
+    year: Jahr
+    year.help: 'Jahr für welches der Wahlkreis gültig ist'
+    save: Speichern
+    threshold:  'Nötige UUs'
+    threshold.help: 'Anzahl der benötigten UUs für den Wahlkreis'

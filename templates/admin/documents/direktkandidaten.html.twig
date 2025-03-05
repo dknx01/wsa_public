@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <style>
+        .shadow-blur::after {
+            --gradient: var({{ '--wsa-gradient-dark' }}) !important;
+        }
+    </style>
+    {% block content %}
+{# {{ include('snippets/loader.html.twig') }} #}
+        <main class="wrapper">
+            <div class="shadow-blur shadow-blur--rainbow shadow-blur--before">
+                <div class="Wsa-Header admin-grid">
+                    {{ include('admin/menu.html.twig') }}
+                </div>
+                <div class="Wsa-Tableau"  data-controller="adminDocuments">
+                    <div class="" style="padding: 0.75rem 1.25rem; border-radius: 1rem; border: 1px solid #000;">
+                            <h1>Direktkandidaten</h1>
+                        {{ include('layout/notifications.html.twig') }}
+                        {{ form(form) }}
+                        </div>
+                    </div>
+                    </div>
+        </main>
+    {% endblock %}
+{% endblock %}

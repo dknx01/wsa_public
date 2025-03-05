@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block title %}Statistiken{% endblock %}
+
+{% block body %}
+    <main class="wrapper">
+        <div class="shadow-blur shadow-blur--rainbow shadow-blur--before">
+            <div class="Wsa-Header admin-grid">
+                {{ include('admin/menu.html.twig', {title: 'UU-Zahlen Überblick'}) }}
+            </div>
+            <div class="Wsa-Tableau">
+                <div class="" style="padding: 0.75rem 1.25rem; border-radius: 1rem; border: 1px solid #000;">
+                    <table class="table table-striped" id="user_overview"  style="position: sticky;top: 0" >
+                        <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Bundesland</th>
+                            <th scope="col">Typ</th>
+                            <th scope="col">Bestätigte</th>
+                            <th scope="col">Unbestätigte</th>
+                            <th scope="col">Zuletzt geändert</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for overview in statistics %}
+                            <tr>
+                                <td>{% if overview.hasAccess %}<a href="{{ path('app_admin_statisticadmin_edit', {id: overview.statistic.id}) }}" >{% endif %}{{ overview.statistic.name }}</a></td>
+                                <td>{{ overview.statistic.bundesland }}</td>
+                                <td>{{ overview.statistic.type }}</td>
+                                <td>{{ overview.statistic.approved }}</td>
+                                <td>{{ overview.statistic.unapproved }}</td>
+                                <td>{{ overview.statistic.updatedAt|date('d.m.Y H:i:s') }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

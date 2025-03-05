@@ -1,0 +1,31 @@
+<div data-controller="adminStatistic" data-adminStatistic-url-value="{{ path('app_admin_statisticadmin_save', {}, false) }}">
+    <div class="mb-3">
+        <label for="state" class="form-label">Bundesland</label>
+        <select class="form-select" id="state" aria-label="Bundesland">
+            {% for state in states %}
+                <option value="{{ state }}">{{ state }}</option>
+            {% endfor %}
+        </select>
+        <div id="emailHelp" class="form-text">Wähle das Bundesland, für die Daten erfasst werden sollen</div>
+    </div>
+    <div class="mb-3">
+        <label for="state" class="form-label">Wahlkreis</label>
+        <select class="form-select" id="area" aria-label="Wahlkreis">
+            {% for area in areas %}
+                <option value="{{ area }}">{{ area }}</option>
+            {% endfor %}
+        </select>
+        <div id="emailHelp" class="form-text">Wähle den Wahlkreis, für die Daten erfasst werden sollen</div>
+    </div>
+    <div class="mb-3">
+        <label class="form-check-label" for="addNumber">Anzahl neuer <span class="text-bold">bestätigter</span> UUs</label>
+        <input type="number" min="1" class="form-control" id="addNumber">
+    </div>
+    <div class="mb-3">
+        <label class="form-check-label" for="addNumberUnapproved">Anzahl neuer <span class="text-bold">unbestätigter</span> UUs</label>
+        <input type="number" class="form-control" id="addNumberUnapproved">
+        <div id="addNumberUnapprovedHelp" class="form-text">Negative Zahlen reduziert die Anzahl entsprechend</div>
+    </div>
+    <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token('uus_add') }}">
+    <button type="submit" data-action="click->adminStatistic#sendDataDirektkandidat" class="btn btn-partei">Speichern</button>
+</div>

@@ -1,0 +1,4 @@
+{% for agent in useragents.__invoke() %}
+User-agent: {{- agent -}}
+Disallow: /
+{% endfor %}

@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+{% block title %}UU Zahlen Überblick{% endblock %}
+{% block stylesheets %}
+<style>
+
+</style>
+{% endblock %}
+{% block body %}
+    <main class="wrapper">
+        <div class="shadow-blur shadow-blur--rainbow shadow-blur--before">
+            <div class="Wsa-Header admin-grid">
+                {{ include('admin/menu.html.twig', {title: 'UU-Zahlen Überblick'}) }}
+            </div>
+            <div class="Wsa-Tableau ">
+                {{ include('layout/notifications.html.twig') }}
+                <div class="new-statistic-overview">
+                    <div class="container text-center" data-controller="uu-admin-new"
+                         data-uu-admin-new-url-value="{{ path('admin_uu_new_statistic_data_state', {state: '#'}, false) }}"
+                         data-uu-admin-new-edit-value="{{ path('admin_new_edit_statistic', {id: '#'}, false) }}"
+                         data-uu-admin-new-delete-value="{{ path('admin_new_delete_statistic', {id: '#'}, false) }}"
+                    >
+                        <div class="row">
+                            <div class="col-sm-1 col-md-3">
+                                <span class="menu-button-new">
+                                    <i data-lucide="menu" data-action="click->uu-admin-new#menu"></i>
+                                </span>
+                                <ul class="uu-admin-menu">
+                                    {% for key, state in states %}
+                                        <li><span class="uu-admin-item" data-state="{{ state }}">{{ key }}</span></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="col text-start" id="content">
+                                <div class="admin_new_statistic_menu">
+                                    <div><a href="{{ path('admin_new_statistic_index_new') }}" tooltip="Neuer UU-Eintrag" tooltip-position="top"><box-icon type='solid' name='file-plus'></box-icon></a></div>
+                                    <div>
+                                        <span data-tab="total" class="rounded-tab right selected">Gesamtergebnis</span>
+                                        <span data-tab="details" class="rounded-tab left">Details</span>
+                                    </div>
+                                </div>
+                                <div id="tab-results">
+                                    <span id="total"></span>
+                                    <span id="details" class="d-none"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{# <i data-lucide="volume-2" class="my-class"></i> #}
+{# <i data-lucide="circle-plus" style="color: white; fill: black"></i> #}
+{# <i data-lucide="menu"></i> #}
+
+    </main>
+{% endblock %}

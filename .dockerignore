@@ -1,0 +1,9 @@
+node_modules/
+.idea/
+.git/
+**/*.Identifier
+**/*com.dropbox.ignored
+**/*.afdesign
+.env.prod
+var
+vendor

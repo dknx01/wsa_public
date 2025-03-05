@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% block content %}
+        <main class="wrapper">
+            <div class="shadow-blur shadow-blur--rainbow shadow-blur--before">
+                <style>
+                    .shadow-blur::after {
+                        --gradient: var({{ '--wsa-gradient-dark' }}) !important;
+                    }
+                </style>
+
+                <div class="Wsa-Header header-grid">
+                    <div class="header-item-logo ">
+                        {{ include('wsa/stern.html.twig') }}
+                    </div>
+                    <div class="header-item-title">
+                        <span>Hier findest du Anleitungen zur Unterstützung beim Ausfüllen der Unterstützungsunterschriften</span><br>
+                    </div>
+                    <div class="header-item-search">
+                    </div>
+                    <div class="header-item-help">
+                        <nav class="navbar navbar-expand-lg">
+                            <div class="container-fluid">
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path('help') }}">Hilfe beim Ausfüllen</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+                <div class="Wsa-Tableau">
+                        <div class="content Wsa-CardSlot" id="documents">
+                            <h2>Landesliste</h2>
+                            <img src="{{ uuHelpImage('ll')|raw }}"/>
+                            <h2>Direktkandidaten</h2>
+                            <img src="{{ uuHelpImage('wk')|raw }}"/>
+                        </div>
+                </div>
+
+            </div>
+        </main>
+    {% endblock %}
+{% endblock %}

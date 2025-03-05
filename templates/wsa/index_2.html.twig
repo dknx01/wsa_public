@@ -1,0 +1,188 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% block content %}
+        <main class="wrapper">
+            <div class="shadow-blur shadow-blur--rainbow shadow-blur--before">
+                <style>
+                    .shadow-blur::after {
+                        --gradient: var({{ '--wsa-gradient-dark' }}) !important;
+                    }
+                </style>
+
+                <div class="Wsa-Header header-grid">
+                    <div class="header-item-logo ">
+                        {{ include('wsa/stern.html.twig') }}
+                    </div>
+                    <div class="header-item-title">
+                        <span>Finde die Wählbarkeitsinformation für dein Bundesland oder Direktkandidierenden</span><br>
+                    </div>
+                    <div class="header-item-help">
+                        <nav class="navbar navbar-expand-lg">
+                            <div class="container-fluid">
+                                <div class="" id="navbarSupportedContent">
+                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path('help') }}">Hilfe beim Ausfüllen</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path('new_statistic') }}">Stand der
+                                                UUs</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path('faq') }}">FAQ</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+                <div class="Wsa-Tableau">
+                    <div class="main-area">
+                        <div class="content Wsa-CardSlot">
+                            <div>
+                                <table class="table table-sm table-borderless" style="width: 50em;">
+                                    <tr>
+                                        <td><box-icon type='solid' style="fill: green" name='check-circle'></box-icon> geschafft</td>
+                                        <td><box-icon type='solid' style="fill: darkgoldenrod" name='help-circle'></box-icon> unbekannt</td>
+                                        <td><box-icon type='solid' style="fill: red" name='x-circle'></box-icon> nicht geschafft</td>
+                                        <td><box-icon type='solid' style="fill: grey" name='minus-circle'></box-icon> nicht angetreten</td>
+                                    </tr>
+                                </table>
+                        </div>
+                            <div class="card" style="width: 70em;" {{ stimulus_controller('result') }}>
+                                {% for result in results %}
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ result.state }}</h5>
+                                        {{ _self.ll_result(result.LL) }}
+                                        <div>
+                                        <a class="result-state" data-target="wk_dk_{{ result.state }}" style="color: black; text-decoration: none;">
+                                                <box-icon type='solid' name='caret-down-circle'></box-icon>Direktkandidaten
+                                            </a>
+                                            <div class="row row-cols-1 row-cols-md-2 g-4 result-details" id="wk_dk_{{ result.state }}">
+                                                {% if result.Kommunal is empty %}
+                                                    <div class="col">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                Keine Daten vorhanden.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% else %}
+                                                    {% for data in result.WKs %}
+                                                    <div class="col">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <table class="table table-borderless">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th>UUs</th>
+                                                                        <th>Zugelassen</th>
+                                                                        <th>Name</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    {% for wk in data %}
+                                                                        <tr>
+                                                                            <td>
+                                                                                {{ _self.icon(wk.uus) }}
+                                                                            </td>
+                                                                            <td>
+                                                                                {{ _self.icon(wk.zugelassen) }}
+                                                                            </td>
+                                                                            <td>{{ wk.name }}</td>
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a class="result-state" data-target="wk_kom_{{ result.state }}" style="color: black; text-decoration: none;">
+                                                <box-icon type='solid' name='caret-down-circle'></box-icon>Kommunalwahlen
+                                            </a>
+                                            <div class="row row-cols-1 row-cols-md-2 g-4 result-details" id="wk_kom_{{ result.state }}">
+                                                {% if result.Kommunal is empty %}
+                                                    <div class="col">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                Keine Daten vorhanden.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% else %}
+                                                    {% for data in result.Kommunal %}
+                                                    <div class="col">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <table class="table table-borderless">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th>UUs</th>
+                                                                        <th>Zugelassen</th>
+                                                                        <th>Name</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    {% for wk in data %}
+                                                                        <tr>
+                                                                            <td>
+                                                                                {{ _self.icon(wk.uus) }}
+                                                                            </td>
+                                                                            <td>
+                                                                                {{ _self.icon(wk.zugelassen) }}
+                                                                            </td>
+                                                                            <td>{{ wk.name }}</td>
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    {% endblock %}
+{% endblock %}
+
+{% macro ll_result(value) %}
+    <div class="alert  {% if value starts with 'ZUGELASSEN' %}alert-success {% else %}alert-danger{% endif %}"
+         role="alert">
+        {{ value }}
+    </div>
+{% endmacro %}
+
+{% macro icon(value) %}
+    {% if value is same as 1 %}
+        <box-icon type='solid'
+                  style="fill: green"
+                  name='check-circle'></box-icon>
+    {% elseif value is same as 0 %}
+        <box-icon type='solid'
+                  style="fill: darkgoldenrod"
+                  name='help-circle'></box-icon>
+    {% elseif value is same as - 1 %}
+        <box-icon type='solid' style="fill: red"
+                  name='x-circle'></box-icon>
+    {% elseif value is null - 2 %}
+        <box-icon type='solid' style="fill: grey"
+                  name='minus-circle'></box-icon>
+    {% endif %}
+{% endmacro %}

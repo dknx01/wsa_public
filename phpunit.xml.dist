@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         bootstrap="tests/bootstrap.php"
+>
+    <php>
+        <ini name="display_errors" value="1" />
+        <ini name="error_reporting" value="-1" />
+        <server name="APP_ENV" value="test" force="true" />
+        <server name="SHELL_VERBOSITY" value="-1" />
+        <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
+        <server name="SYMFONY_PHPUNIT_VERSION" value="11.5" />
+    </php>
+
+    <testsuites>
+        <testsuite name="Unit Test Suite">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Integration Test Suite">
+            <directory>tests/Integration</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+        <exclude>
+            <file>src/Kernel.php</file>
+            <file>src/Security/AccessDeniedHandler.php</file>
+            <file>src/Btw/Results.php</file>
+            <file>src/Btw/Wahlkreise.php</file>
+            <file>src/Dto/StateCollection.php</file>
+            <file>src/Dto/WahlkreisType.php</file>
+            <!--Interactive Commands START-->
+            <file>src/Command/AddSupportNumbersCommand.php</file>
+            <file>src/Command/UserActivateCommand.php</file>
+            <file>src/Command/UserAddCommand.php</file>
+            <file>src/Command/UserChangePasswordCommand.php</file>
+            <!--Interactive Commands END-->
+            <file>src/Command/StatisticConvertCommand.php</file>
+            <file>src/Dto/Statistic.php</file>
+            <directory>src/Entity</directory>
+            <directory>src/Controller</directory>
+            <directory>src/Contracts</directory>
+            <directory>src/Form</directory>
+            <directory>src/Dto/Api</directory>
+        </exclude>
+    </source>
+
+    <coverage ignoreDeprecatedCodeUnits="true" disableCodeCoverageIgnore="true">
+        <report>
+            <html outputDirectory="./reports"/>
+        </report>
+    </coverage>
+</phpunit>

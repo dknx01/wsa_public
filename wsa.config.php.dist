@@ -1,0 +1,10 @@
+<?php
+return [
+    'pageTitle'=> 'Weltsozialamt',
+    'impress' => 'Das Impressum',
+    'logoPath' => './assets/images/Live.svg', #relativer Pfad zum Logo der Organisation (SVG-Datei)
+    'pageLogoPath' => './assets/images/Logo.svg', #relativer Pfad zum Logo der Seite (SVG-Datei)
+    'uuHelpWk' => './assets/images/Ausfuellhilfe-UU-Wahlkreise.png', # relativer Pfad zum Bilder mit der Hilfe zur Ausfüllung der Wahlkreis-UU (PNG-Datei)
+    'uuHelpLl' => './assets/images/Ausfuellhilfe-UU-Landesliste.png', #relativer Pfad zum Bilder mit der Hilfe zur Ausfüllung der Landesliste-UU (PNG-Datei)
+    'resultFile' => './results.json', #relativer Pfad zur Ergebnis-Datei (JSON-Datei)
+];

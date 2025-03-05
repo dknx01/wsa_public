@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block title %}UU-Detail{% endblock %}
+
+{% block body %}
+<main class="wrapper">
+    <div class="shadow-blur shadow-blur--rainbow shadow-blur--before">
+        <div class="Wsa-Header admin-grid">
+            {{ include('admin/menu.html.twig') }}
+        </div>
+        <div class="Wsa-Tableau">
+            <div class="" style="padding: 0.75rem 1.25rem; border-radius: 1rem; border: 1px solid #000;">
+                {{ include('layout/notifications.html.twig') }}
+
+                {% if errors is defined %}
+                    {% for error in errors %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+                {{ form(form) }}
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

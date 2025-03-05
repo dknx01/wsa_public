@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+{% block title %}UU Zahlen erfassen{% endblock %}
+
+{% block body %}
+{{ include('snippets/loader.html.twig') }}
+<main class="wrapper">
+    <div class="shadow-blur shadow-blur--rainbow shadow-blur--before">
+        <div class="Wsa-Header admin-grid">
+            {{ include('admin/menu.html.twig', {title: 'UU-Zahlen Eintrag'}) }}
+        </div>
+        <div class="Wsa-Tableau ">
+            {{ include('layout/notifications.html.twig') }}
+            <div class="new-statistic-form">
+
+                {% if errors is defined %}
+                    {% for error in errors %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+                <form data-controller="uu-admin-new"
+                      data-uu-admin-new-url-value="{{ path('admin_uu_new_area_by_state', {state: '#'}, false) }}"
+                      {% if disableWahlkreis is defined %}
+                          data-uu-admin-new-wahlkreis-value="{{ disableWahlkreis }}"
+                        {% endif %}
+                      method="post" action="{% if update %}{{ path('admin_new_edit_statistic', {id: id}) }}{% else %}{{ path('admin_new_statistic_index_new') }}{% endif %}">
+                    <div class="row mb-3">
+                        {{ form_label(form.name) }}
+                        <div class="col-auto">
+                            {{ form_errors(form.name) }}
+                            {{ form_widget(form.name) }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        {{ form_label(form.type) }}
+                        <div class="col-auto">
+                            {{ form_widget(form.type) }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        {{ form_label(form.bundesland) }}
+                        <div class="col-auto">
+                            {{ form_widget(form.bundesland) }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        {{ form_label(form.wahlkreis) }}
+                        <div class="col-auto">
+                            {{ form_widget(form.wahlkreis) }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        {{ form_label(form.approved) }}
+                        <div class="col-auto">
+                            {{ form_widget(form.approved) }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        {{ form_label(form.unapproved) }}
+                        <div class="col-auto">
+                            {{ form_widget(form.unapproved) }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        {{ form_label(form.comment) }}
+                        <div class="col-auto">
+                            {{ form_widget(form.comment) }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        {{ form_label(form.updatedAt) }}
+                        <div class="col-auto">
+                            {{ form_widget(form.updatedAt) }}
+                        </div>
+                    </div>
+                    {{ form_widget(form.submit) }}
+                    {{ form_end(form) }}
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

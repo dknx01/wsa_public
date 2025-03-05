@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% block content %}
+        <main class="wrapper">
+            <div class="shadow-blur shadow-blur--rainbow shadow-blur--before">
+                <style>
+                    .shadow-blur::after {
+                        --gradient: var({{ '--wsa-gradient-dark' }}) !important;
+                    }
+                </style>
+
+                <div class="Wsa-Header header-grid">
+                    <div class="header-item-logo ">
+                        {{ include('wsa/stern.html.twig') }}
+                    </div>
+                    <div class="header-item-title">
+                        <span>Hier findest du Anleitungen zur Unterstützung beim Ausfüllen der Unterstützungsunterschriften</span><br>
+                    </div>
+                    <div class="header-item-search">
+                    </div>
+                    <div class="header-item-help">
+                        <nav class="navbar navbar-expand-lg">
+                            <div class="container-fluid">
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path('help') }}">Hilfe beim Ausfüllen</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path('faq') }}">FAQ</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+                <div class="Wsa-Tableau">
+                    <div class="content Wsa-CardSlot" id="documents">
+                        <h2>Häufige Fragen</h2>
+                        <h3>Gültigkeit</h3>
+                        <span style="font-weight: bold">Gibt es Voraussetzungen, die ich erfüllen muss, um eine Unterstützungsunterschrift zu leisten?</span><br>
+                        Ja: Sie müssen laut Wahlgesetz die deutsche Staatsbürgerschaft besitzen, zum Zeitpunkt der Unterschrift mind. 18 Jahre alt und in Deutschland gemeldet sein.
+                        <br><br>
+                        <span style="font-weight: bold">Wie finde ich heraus, in welchem Wahlkreis ich wähle?</span><br>
+                        Sollten Sie noch nicht wissen, welchem Wahlkreis Sie bei der Bundestagswahl 2025 zugeordnet sind (Achtung, die Kreise wurden neu zugeschnitten!), dann können Sie dies über <a href="https://www.wahlkreissuche.de" target="_blank">www.wahlkreissuche.de</a> einfach herausfinden.
+                        <br><br>
+                        <span style="font-weight: bold">Kann ich das Formular auch als Scan an die PARTEI schicken?</span>
+                        <br><br>
+                        Nein: Wir benötigen das Formular im Original, damit es gültig ist. Bitte senden Sie es uns per Post zu.
+                        <br><br>
+                        <span style="font-weight: bold">Kann ich für mehrere Parteien unterschreiben?</span><br>
+                        Nein: Sie dürfen pro Wahl maximal eine Partei unterstützen. Sollten Sie mehr als einen Wahlvorschlag durch Ihre Unterschrift unterstützen, wird Ihre Unterschrift auf allen weiteren Wahlvorschlägen ungültig.
+                        <br><br>
+                        <span style="font-weight: bold">Darf ich unterschreiben, wenn ich schon bei einer anderen Wahl unterschrieben habe?</span><br>
+                        Ja: Sie dürfen pro Wahl genau eine Partei unterstützen.
+                        <br><br>
+                        <h3>Datenschutz</h3>
+                        <span style="font-weight: bold">Muss ich wirklich mein Geburtsdatum und meine Anschrift angeben?</span><br>
+                        Ja: die Felder sind Pflichtfelder. Ohne diese Information kann das Wahlamt nicht überprüfen, ob Sie wahlberechtigt sind (und Ihre Unterschrift damit auch gültig ist).
+                        <br><br>
+                        <span style="font-weight: bold">Werden meine persönlichen Daten gespeichert?</span><br>
+                        Jein: Wir speichern und verarbeiten Ihre Daten nicht. Wir lassen die Formulare aber zur Überprüfung Ihrer Wahlberechtigung den zuständigen Ämtern zukommen und geben sie anschließend beim jeweiligen Wahlamt ab. Details dazu finden Sie auf der Rückseite des Unterstützungsunterschriftenformulars.
+                        Sechs Monate nach der Wahl sollten die Daten vernichtet werden. Details dazu sowie weitere Informationen zum Datenschutz finden Sie ebenfalls auf der Rückseite des Formulars.
+                        <br><br>
+                        <h3>Sonstiges</h3>
+                        <span style="font-weight: bold">Habe ich bestimmte Fristen zu beachten?</span><br>
+                        Jein: Die Frist zur Abgabe der Unterstützungsunterschriften ist gesetzlich geregelt und endet am 20. Januar 2025 (bei einem Wahltermin 23. Februar 2025). Wir möchten jedoch so schnell wie möglich fertig werden, weshalb wir um eine zeitnahe Übersendung der Formulare bitten.
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    {% endblock %}
+{% endblock %}
