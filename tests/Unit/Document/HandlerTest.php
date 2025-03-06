@@ -41,6 +41,23 @@ class HandlerTest extends TestCase
         $this->loadFaker();
     }
 
+    public function testDelete(): void
+    {
+        $docRepo = $this->createMock(DocumentsRepository::class);
+        $docRepo->expects($this->once())->method('delete')->with(new IsInstanceOf(Document::class));
+        $wahlkreisRepo = $this->createMock(WahlkreisRepository::class);
+        $handler = new Handler(
+            \dirname(\dirname(__DIR__, 2).\DIRECTORY_SEPARATOR.'Faker/var/'),
+            $docRepo,
+            $wahlkreisRepo,
+        );
+
+        $document = new Document();
+        $document->setId(Uuid::uuid4());
+
+        $handler->delete($document);
+    }
+
     public static function provideEdit(): \Generator
     {
         yield [
@@ -158,9 +175,8 @@ class HandlerTest extends TestCase
     public function testHandleUpload(DocumentType|string $type, callable $fileUploadCallback, callable $wahlkreisCallback, string $saveClass): void
     {
         $docRepo = $this->createMock(DocumentsRepository::class);
-        $docRepo->expects($this->once())->method('save')->with(
-            new IsInstanceOf($saveClass)
-        );
+        $docRepo->expects($this->once())->method('save')->with(new IsInstanceOf($saveClass))
+            ->willReturnCallback(fn (Document $entity) => $entity->setId(Uuid::uuid4()));
         $wahlkreisRepo = $this->createMock(WahlkreisRepository::class);
         $wahlkreisCallback($wahlkreisRepo);
         $handler = new Handler(

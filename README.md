@@ -9,6 +9,7 @@ docker [-f docker-compose.prod.yaml] compose up -d
 ```bash
 docker exec -it [container name] bash -
 composer install
+./bin/console doc:mig:mig -n
 ./rebuild.sh or ./rebuild.prod.sh
 ``` 
 3. Configure the app
@@ -20,4 +21,4 @@ composer install
   
    Logos must be provided as svg file. 
 
-   Helper images must be proived as png files.
+   Helper images must be provided as png files.

@@ -23,16 +23,19 @@ use App\Repository\WahlkreisRepository;
 use App\Security\ActiveUserVoter;
 use App\User\Roles;
 use App\Wahlkreis\Handler as WahlkreisHandler;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin/documents')]
+#[IsGranted(ActiveUserVoter::ACTIVE_USER)]
 class DocumentAdminController extends AbstractController
 {
     public function __construct(private readonly Handler $handler)
@@ -43,7 +46,6 @@ class DocumentAdminController extends AbstractController
     public function landesliste(
         Request $request,
     ): Response {
-        $this->denyAccessUnlessGranted(ActiveUserVoter::ACTIVE_USER);
         $this->denyAccessUnlessGranted(Roles::ROLE_USER->name);
 
         $form = $this->createForm(DocumentLandeslisteType::class, new FileUpload());
@@ -72,7 +74,6 @@ class DocumentAdminController extends AbstractController
     #[Route('/direktkandidat')]
     public function direktkandidat(Request $request): Response
     {
-        $this->denyAccessUnlessGranted(ActiveUserVoter::ACTIVE_USER);
         $this->denyAccessUnlessGranted(Roles::ROLE_USER->name);
 
         $form = $this->createForm(DocumentDirektkandidatenType::class, new FileUploadDirektkandidat());
@@ -101,7 +102,6 @@ class DocumentAdminController extends AbstractController
     #[Route('/ueberblick', 'admin_document_overview')]
     public function overview(DocumentsRepository $documentsRepos): Response
     {
-        $this->denyAccessUnlessGranted(ActiveUserVoter::ACTIVE_USER);
         $this->denyAccessUnlessGranted(Roles::ROLE_ADMIN->name);
 
         return $this->render(
@@ -119,15 +119,17 @@ class DocumentAdminController extends AbstractController
         WahlkreisRepository $wahlkreisRepo,
         WahlkreisHandler $handler,
     ): Response {
-        $this->denyAccessUnlessGranted(ActiveUserVoter::ACTIVE_USER);
-
         $form = $this->createForm(AdminDocumentType::class, $document);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $fileUpload = $form->get('file')->getData();
 
-            $this->handler->handleEdit($document, $fileUpload);
-            $this->addFlash('success', 'Datei erfolgreich gespeichert.');
+            try {
+                $this->handler->handleEdit($document, $fileUpload);
+                $this->addFlash('success', 'Datei erfolgreich gespeichert.');
+            } catch (IOException|FileException $e) {
+                $this->addFlash('error', 'Datei konnte nicht gespeichert werden.');
+            }
         }
 
         return $this->render(
@@ -157,15 +159,17 @@ class DocumentAdminController extends AbstractController
     #[Route('/delete/{id}', 'admin_document_delete')]
     public function delete(
         Document $document,
-        DocumentsRepository $documentsRepos,
+        LoggerInterface $logger,
+        Handler $handler,
         #[Autowire('%kernel.project_dir%/var/docs/')] string $dir,
     ): Response {
-        $this->denyAccessUnlessGranted(ActiveUserVoter::ACTIVE_USER);
-
-        $documentsRepos->delete($document);
-        $fs = new Filesystem();
-        $fs->remove(\sprintf('%s/%s', $dir, $document->getFileName()));
-        $this->addFlash('success', 'Dokument gelöscht');
+        try {
+            $handler->delete($document);
+            $this->addFlash('success', 'Dokument gelöscht');
+        } catch (IOException $exception) {
+            $logger->error($exception->getMessage());
+            $this->addFlash('error', 'Dokument konnte nicht gelöscht werden');
+        }
 
         return $this->redirectToRoute('admin_document_overview');
     }

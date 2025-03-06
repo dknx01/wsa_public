@@ -14,7 +14,7 @@ use App\Dto\WahlkreisType;
 use App\Entity\Wahlkreis;
 use Doctrine\DBAL\Schema\Schema;
 
-final class Version20241210164953 extends RepositoryAwareMigration
+final class Version20250306075556 extends RepositoryAwareMigration
 {
     private const array DATA = [
         ['number' => 1, 'name' => 'Flensburg – Schleswig', 'state' => 'Schleswig-Holstein'],
@@ -333,6 +333,7 @@ final class Version20241210164953 extends RepositoryAwareMigration
             $wk->setState($data['state']);
             $wk->setNumber($data['number']);
             $wk->setType(WahlkreisType::BTW);
+            $wk->setYear(2025);
             $repo->save($wk);
         }
     }

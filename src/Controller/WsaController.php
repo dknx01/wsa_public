@@ -97,7 +97,7 @@ class WsaController extends AbstractController
         if (!$document) {
             return $this->json(null, Response::HTTP_NOT_FOUND);
         }
-        $file = new File(\sprintf('%s/%s', $this->documentPath, $document->getFileName()));
+        $file = new File(\sprintf('%s/%s', $this->documentPath, \sprintf('%s.pdf', $document->getId()->toString())));
 
         return $this->file($file, $document->getFileName(), ResponseHeaderBag::DISPOSITION_INLINE);
     }
