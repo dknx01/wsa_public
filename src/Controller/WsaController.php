@@ -48,21 +48,9 @@ class WsaController extends AbstractController
     }
 
     #[Route('/results', 'results')]
-    public function results(DocumentsRepository $repository, ResultPrinter $resultPrinter): Response
+    public function results(ResultPrinter $resultPrinter): Response
     {
-        $allBundeslaender = $repository->findAllBundeslaender();
-        foreach ($allBundeslaender as $key => $bundeslaender) {
-            $newKey = match ($bundeslaender) {
-                'Nordrhein-Westfalen' => 'NRW',
-                'Rheinland-Pfalz' => 'RLP',
-                default => $bundeslaender,
-            };
-            $allBundeslaender[$newKey] = $bundeslaender;
-            unset($allBundeslaender[$key]);
-        }
-
         return $this->render('wsa/index_2.html.twig', [
-            'states' => $allBundeslaender,
             'results' => $resultPrinter->getResults(),
         ]);
     }

@@ -7,9 +7,10 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Statistic;
+use App\Entity\SupportNumbersLandesliste;
 use App\Security\ActiveUserVoter;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Routing\Attribute\Route;
@@ -21,7 +22,7 @@ class StatisticCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Statistic::class;
+        return SupportNumbersLandesliste::class;
     }
 
     public function configureFields(string $pageName): iterable
@@ -31,6 +32,7 @@ class StatisticCrudController extends AbstractCrudController
             IntegerField::new('approved', 'Bestätigte'),
             IntegerField::new('unapproved', 'Unbestätigte'),
             TextField::new('bundesland')->setDisabled(),
+            AssociationField::new('wahlkreis')->setDisabled(),
             TextField::new('type')->setDisabled(),
         ];
     }

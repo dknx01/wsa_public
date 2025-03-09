@@ -9,12 +9,13 @@ namespace App\Controller\Admin;
 
 use App\Configuration\Configuration;
 use App\Entity\Document;
-use App\Entity\Statistic;
+use App\Entity\SupportNumbersLandesliste;
 use App\Entity\User;
 use App\Entity\Verbandsseiten;
 use App\Entity\Wahlkreis;
 use App\Security\ActiveUserVoter;
 use App\User\Roles;
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -26,7 +27,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/admin/verwaltung')]
+#[AdminDashboard('/admin/verwaltung', 'verwaltung_dashboard')]
 #[IsGranted(ActiveUserVoter::ACTIVE_USER)]
 #[IsGranted(Roles::ROLE_ADMIN->name)]
 class AdminDashboardController extends AbstractDashboardController
@@ -36,7 +37,7 @@ class AdminDashboardController extends AbstractDashboardController
     ) {
     }
 
-    #[Route('/', name: 'data_admin')]
+    #[Route('/admin/verwaltung', name: 'data_admin')]
     public function index(): Response
     {
         return $this->render('@EasyAdmin/layout.html.twig');
@@ -54,7 +55,7 @@ class AdminDashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Listen', 'fa fa-list-alt')
             ->setSubItems([
                 MenuItem::linkToCrud('Dokumente', 'fa fa-list', Document::class),
-                MenuItem::linkToCrud('UU-Zahlen', 'fa fa-list', Statistic::class),
+                MenuItem::linkToCrud('UU-Zahlen', 'fa fa-list', SupportNumbersLandesliste::class),
                 MenuItem::linkToCrud('Wahlkreise', 'fa fa-list', Wahlkreis::class),
                 MenuItem::linkToCrud('Verbandsseiten', 'fa fa-link', Verbandsseiten::class),
                 MenuItem::linkToCrud('User', 'fa fa-users', User::class),
