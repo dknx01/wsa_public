@@ -12,8 +12,10 @@ use App\Entity\Document;
 use App\Entity\DocumentDirektkandidat;
 use App\Entity\DocumentLandesliste;
 use App\Repository\DocumentsRepository;
+use App\Repository\SupportNumbersRepository;
 use App\Repository\VerbandsseitenRepository;
 use App\Repository\WahlkreisRepository;
+use App\SupportNumbers\SupportNumbersService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,7 +54,7 @@ class DefaultController extends AbstractController
             $docs = $documents->filter(fn (Document $document) => $document->getState() === $value->getName());
             /** @var ArrayCollection<int,DocumentLandesliste|DocumentDirektkandidat> $docs */
             foreach ($docs as $doc) {
-                if ('Landesliste' === $doc->getType()) {
+                if ($doc instanceof DocumentLandesliste) {
                     $liste->sendTo = $doc->getDescription();
                     $liste->linkLandesliste = $this->generateUrl('documentDownload', ['id' => $doc->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
                     continue;
@@ -70,6 +72,21 @@ class DefaultController extends AbstractController
             [
                 'overview' => $data,
             ]
+        );
+    }
+
+    #[Route('/widget/statistic_all', name: 'statistic_all_widget')]
+    public function statisticsAll(SupportNumbersService $supportNumbersService, SupportNumbersRepository $repository): Response
+    {
+        $data = [];
+        $allBundeslaender = $repository->findAllBundeslaender();
+        foreach ($allBundeslaender as $bundeslaender) {
+            $data[$bundeslaender] = $supportNumbersService->getByState($bundeslaender);
+        }
+
+        return $this->render(
+            'statistic/all.html.twig',
+            ['data' => $data]
         );
     }
 }

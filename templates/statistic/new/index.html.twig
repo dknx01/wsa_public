@@ -8,33 +8,7 @@
     {% block content %}
         <main class="wrapper">
             <div class="shadow-blur shadow-blur--rainbow shadow-blur--before">
-                <div class="Wsa-Header header-grid">
-                    <div class="header-item-logo ">
-                        {{ include('wsa/stern.html.twig') }}
-                    </div>
-                    <div class="header-item-title">
-                        <span>Finde heraus, wie viele Unterstützungsunterschriften deine Landesliste oder DirektkandidatIn noch braucht.</span><br>
-                    </div>
-                    <div class="header-item-search">
-                        <div>
-                            <input type="text" id="resultSearch" class="form-control" placeholder="Filtere die Liste"
-                                   data-action="input->statistic#search">
-                        </div>
-                    </div>
-                    <div class="header-item-help">
-                        <nav class="navbar">
-                            <div class="container-fluid">
-                                <div class="" id="navbarSupportedContent">
-                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ path('home') }}">Wählbarkeitsinformation</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
+                {{ include('layout/menu/statistic.html.twig') }}
                 <div class="Wsa-Tableau" data-controller="statistic-new" data-statistic-new-url-value="{{ path('app_new_statistic_statedata', {state: '---'}, false) }}">
                     <div class="main-area">
                         {{ include('snippets/loader.html.twig') }}

@@ -347,6 +347,9 @@
 .statistic-needed {
   grid-column-start: 4;
 }
+.statistic-result > .progress > .progress-bar{
+  color: $black!important;
+}
 
 #mobileMenu {
   @media (min-width: 900px) {

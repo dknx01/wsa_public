@@ -87,7 +87,9 @@ class Document
     {
         return match ($this->wahlkreis) {
             null => null,
-            default => \sprintf('%s (Nr. %d)', $this->wahlkreis->getName(), $this->wahlkreis->getNumber()),
+            default => null !== $this->wahlkreis->getNumber()
+                ? \sprintf('%s (Nr. %d)', $this->wahlkreis->getName(), $this->wahlkreis->getNumber())
+                : \sprintf('%s', $this->wahlkreis->getName()),
         };
     }
 

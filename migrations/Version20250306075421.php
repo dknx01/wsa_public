@@ -24,7 +24,7 @@ final class Version20250306075421 extends AbstractMigration
         $this->addSql(
             'INSERT INTO user (id, email, password, is_active, roles) VALUES (?, ?, ?, ?, ?)',
             [
-                1, 'admin@wsa.test', '$2y$13$NXj6NlKzaOls94cwSBvLn.kVjlE61oLPwkmpPrprArirciQ.tCR96', true, '[]',
+                1, 'admin@wsa.test', '$2y$13$NXj6NlKzaOls94cwSBvLn.kVjlE61oLPwkmpPrprArirciQ.tCR96', true, '["ROLE_ADMIN"]',
             ]
         );
     }

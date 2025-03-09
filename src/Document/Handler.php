@@ -14,7 +14,6 @@ use App\Entity\DocumentDirektkandidat;
 use App\Entity\DocumentLandesliste;
 use App\Repository\DocumentsRepository;
 use App\Repository\WahlkreisRepository;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -91,15 +90,15 @@ readonly class Handler
     private function handleDirektkandidatBtw(FileUploadDirektkandidat $fileUpload): void
     {
         $doc = new DocumentDirektkandidat();
-        $doc->setId(Uuid::uuid4());
         $doc->setWahlkreis($this->wahlkreisRepository->find(Ulid::fromString($fileUpload->area)));
         $doc->setName(\sprintf('Direktkandidat %s', $doc->getWkName()));
         $doc->setState($fileUpload->state);
         $doc->setDescription($fileUpload->description);
         $originalFilename = pathinfo($fileUpload->file->getClientOriginalName(), \PATHINFO_FILENAME);
-        $newFilename = $doc->getId()->toString().'.'.self::FILE_EXTENSION;
         $doc->setFileName($originalFilename);
-        $fileUpload->file->move($this->dir, $newFilename);
         $this->documentsRepository->save($doc);
+
+        $newFilename = $doc->getId()->toString().'.'.self::FILE_EXTENSION;
+        $fileUpload->file->move($this->dir, $newFilename);
     }
 }

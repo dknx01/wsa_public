@@ -10,6 +10,7 @@ namespace App\Tests\Unit\Configuration;
 use App\Configuration\Configuration;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\NullAdapter;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -80,6 +81,18 @@ class ConfigurationTest extends TestCase
     {
         $this->config['resultFile'] = './result.json';
         $this->assertEquals('vfs://exampleDir/./result.json', $this->getConfiguration()->getResultFile());
+    }
+
+    #[TestWith(['ll'])]
+    #[TestWith(['wk'])]
+    #[TestWith(['foo'])]
+    public function testGetUuHelp(string $type): void
+    {
+        $this->config['uuHelpWk'] = './wk.svg';
+        file_put_contents($this->root->url().'/wk.svg', 'x123y');
+        $this->config['uuHelpLl'] = './ll.svg';
+        file_put_contents($this->root->url().'/ll.svg', 'x123y');
+        $this->assertStringStartsWith('data:image/png;base64', $this->getConfiguration()->getUuHelp($type));
     }
 
     private function getConfiguration(): Configuration

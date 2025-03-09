@@ -81,24 +81,30 @@ class HandlerTest extends TestCase
         $wahlkreis2->setState('Berlin');
         $wahlkreis1 = WahlkreisBuilder::build();
         $wahlkreis1->setState('Bayern');
+        $wahlkreis1->setNumber(null);
 
         $this->wahlkreisRepo->expects($this->once())
             ->method('findBy')
             ->with(['state' => $wahlkreis2->getState()])
-            ->willReturn([$wahlkreis2]);
+            ->willReturn([$wahlkreis2, $wahlkreis1]);
         $service = $this->getHandler();
-        $this->assertSame(
-            [
-                $wahlkreis2->getId()->toString() => \sprintf('%s (Nr. %s)', $wahlkreis2->getName(), $wahlkreis2->getNumber()),
-            ],
-            $service->getWahlkreiseByStateFormatted('Berlin')
-        );
+
+        $result = $service->getWahlkreiseByStateFormatted('Berlin');
+        $this->assertCount(2, $result);
+        $this->assertArrayHasKey($wahlkreis2->getId()->toString(), $result);
+        $this->assertEquals(\sprintf('%s (Nr. %s)', $wahlkreis2->getName(), $wahlkreis2->getNumber()), $result[$wahlkreis2->getId()->toString()]);
+
+        $this->assertArrayHasKey($wahlkreis1->getId()->toString(), $result);
+        $this->assertEquals(\sprintf('%s', $wahlkreis1->getName()), $result[$wahlkreis1->getId()->toString()]);
     }
 
     public function testGetWahlkreiseByStateFormattedWithNonAdminUser(): void
     {
         $wahlkreis2 = WahlkreisBuilder::build();
         $wahlkreis2->setState('Berlin');
+        $wahlkreis3 = WahlkreisBuilder::build();
+        $wahlkreis3->setState('Berlin');
+        $wahlkreis3->setNumber(null);
         $wahlkreis1 = WahlkreisBuilder::build();
         $wahlkreis1->setState('Bayern');
 
@@ -111,20 +117,23 @@ class HandlerTest extends TestCase
         $service = $this->getHandler();
         $user = UserBuilder::build();
         $user->getWahlkreisPermission()->add($wahlkreis2);
+        $user->getWahlkreisPermission()->add($wahlkreis3);
         $user->getWahlkreisPermission()->add($wahlkreis1);
 
-        $this->assertSame(
-            [
-                $wahlkreis2->getId()->toString() => \sprintf('%s (Nr. %s)', $wahlkreis2->getName(), $wahlkreis2->getNumber()),
-            ],
-            $service->getWahlkreiseByStateFormatted('Berlin', $user)
-        );
+        $result = $service->getWahlkreiseByStateFormatted('Berlin', $user);
+        $this->assertCount(2, $result);
+        $this->assertArrayHasKey($wahlkreis2->getId()->toString(), $result);
+        $this->assertEquals(\sprintf('%s (Nr. %s)', $wahlkreis2->getName(), $wahlkreis2->getNumber()), $result[$wahlkreis2->getId()->toString()]);
+
+        $this->assertArrayHasKey($wahlkreis3->getId()->toString(), $result);
+        $this->assertEquals(\sprintf('%s', $wahlkreis3->getName()), $result[$wahlkreis3->getId()->toString()]);
     }
 
     public function testGetWahlkreiseFormattedWithoutUser(): void
     {
         $wahlkreis2 = WahlkreisBuilder::build();
         $wahlkreis1 = WahlkreisBuilder::build();
+        $wahlkreis1->setNumber(null);
 
         $this->wahlkreisRepo->expects($this->once())
             ->method('findAll')
@@ -133,7 +142,7 @@ class HandlerTest extends TestCase
         $this->assertSame(
             [
                 \sprintf('%s (Nr. %s)', $wahlkreis2->getName(), $wahlkreis2->getNumber()) => $wahlkreis2->getId()->toString(),
-                \sprintf('%s (Nr. %s)', $wahlkreis1->getName(), $wahlkreis1->getNumber()) => $wahlkreis1->getId()->toString(),
+                \sprintf('%s', $wahlkreis1->getName()) => $wahlkreis1->getId()->toString(),
             ],
             $service->getWahlkreiseFormatted()
         );

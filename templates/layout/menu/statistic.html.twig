@@ -1,0 +1,27 @@
+<div class="Wsa-Header header-grid">
+    <div class="header-item-logo ">
+        {{ include('wsa/stern.html.twig') }}
+    </div>
+    <div class="header-item-title">
+        <span>Finde heraus, wie viele Unterstützungsunterschriften deine Landesliste oder DirektkandidatIn noch braucht.</span><br>
+    </div>
+    <div class="header-item-search">
+        <div>
+            <input type="text" id="resultSearch" class="form-control" placeholder="Filtere die Liste"
+                   data-action="input->statistic#search">
+        </div>
+    </div>
+    <div class="header-item-help">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <div class="" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        {{ include('layout/menu/navbar_snippets/uu.html.twig') }}
+                        {{ include('layout/menu/navbar_snippets/faq.html.twig') }}
+                        {{ include('layout/menu/navbar_snippets/loggedIn.html.twig') }}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>

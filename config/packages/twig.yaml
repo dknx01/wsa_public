@@ -4,6 +4,8 @@ twig:
 
     globals:
         useragents: '@App\Twig\Extension\UserAgentExtension'
+        version: '%version%'
+        config: '@App\Configuration\Configuration'
 
 when@test:
     twig:

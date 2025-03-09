@@ -1,20 +1,27 @@
 {% for data in overview %}
-<p id="1-11"><br><strong>{{ data.name }}</strong> <br>{{ data.sendTo|raw }}<br><br><a
-            href="{{ data.linkLandesliste }}"
-            target="_blank" rel="noreferrer noopener">Landesliste</a>
-</p>
-<details class="wp-block-details is-layout-flow wp-block-details-is-layout-flow"><summary>Wahlkreis {{ data.wahlkreisNumbers }}<br></summary>
-    <p>
-        {% for number, wahlkreis in data.wahlkreise %}
-            {% if wahlkreis.link is not null %}
-                <a href="{{ wahlkreis.link }}" target="_blank" rel="noreferrer noopener">{{ number }} {{ wahlkreis.name }}</a><br>
-            {% else %}
-                {{ number }} {{ wahlkreis.name }}<br>
-            {% endif %}
-        {% endfor %}
+    <p id="1-11"><br><strong>{{ data.name }}</strong> <br>{{ data.sendTo|raw }}<br><br>
+        {% if data.linkLandesliste is not empty %}
+        <a
+                href="{{ data.linkLandesliste }}"
+                target="_blank" rel="noreferrer noopener">Landesliste</a>
+        {% endif %}
     </p>
-</details>
-{% if data.link is not empty %}
-<p>Link zur Verbandsseite: <a href="{{ data.link }}">{{ data.linkName }}</a><br><br></p>
-{% endif %}
+    <details class="wp-block-details is-layout-flow wp-block-details-is-layout-flow">
+        {% if data.wahlkreise is not empty %}
+            <summary>Wahlkreis {{ data.wahlkreisNumbers }}<br></summary>
+            <p>
+                {% for number, wahlkreis in data.wahlkreise %}
+                    {% if wahlkreis.link is not null %}
+                        <a href="{{ wahlkreis.link }}" target="_blank"
+                           rel="noreferrer noopener">{{ number }} {{ wahlkreis.name }}</a><br>
+                    {% else %}
+                        {{ number }} {{ wahlkreis.name }}<br>
+                    {% endif %}
+                {% endfor %}
+            </p>
+        {% endif %}
+    </details>
+    {% if data.link is not empty %}
+        <p>Link zur Verbandsseite: <a href="{{ data.link }}">{{ data.linkName }}</a><br><br></p>
+    {% endif %}
 {% endfor %}

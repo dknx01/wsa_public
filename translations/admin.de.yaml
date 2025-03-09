@@ -20,7 +20,7 @@ document:
     name: Name
     name.help: 'Name des Formulars'
     state: Bundesland
-    state.help: 'Für welches Bundesland ist es die landesliste?'
+    state.help: 'Für welches Bundesland ist die UU?'
     file: UU-Datei
     save: Speichern
     hint: 'Beschreibung'
@@ -47,3 +47,10 @@ wahlkreis:
     save: Speichern
     threshold:  'Nötige UUs'
     threshold.help: 'Anzahl der benötigten UUs für den Wahlkreis'
+verbandsseiten:
+    name: Name
+    name.hint: 'Name des Verbandes'
+    link: Link
+    link.hint: 'Link zum Verband (URL)'
+    link.name: Linkname
+    link.name.hint: 'Angezeigter Linktext'

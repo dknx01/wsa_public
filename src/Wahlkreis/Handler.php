@@ -33,14 +33,22 @@ readonly class Handler
                 if ($wahlkreis->getState() !== $state) {
                     continue;
                 }
-                $name = \sprintf('%s (Nr. %s)', $wahlkreis->getName(), $wahlkreis->getNumber());
+                if (!$wahlkreis->getNumber()) {
+                    $name = \sprintf('%s', $wahlkreis->getName());
+                } else {
+                    $name = \sprintf('%s (Nr. %s)', $wahlkreis->getName(), $wahlkreis->getNumber());
+                }
                 $data[$wahlkreis->getId()->toString()] = $name;
             }
         }
         if (empty($data)) {
             /* @var Wahlkreis $bundesland */
             foreach ($this->wahlkreisRepository->findBy(['state' => $state]) as $wahlkreis) {
-                $name = \sprintf('%s (Nr. %s)', $wahlkreis->getName(), $wahlkreis->getNumber());
+                if (!$wahlkreis->getNumber()) {
+                    $name = \sprintf('%s', $wahlkreis->getName());
+                } else {
+                    $name = \sprintf('%s (Nr. %s)', $wahlkreis->getName(), $wahlkreis->getNumber());
+                }
                 $data[$wahlkreis->getId()->toString()] = $name;
             }
         }
@@ -85,7 +93,11 @@ readonly class Handler
      */
     private function formatWahlkreise(Wahlkreis $wahlkreis, array $data): array
     {
-        $name = \sprintf('%s (Nr. %s)', $wahlkreis->getName(), $wahlkreis->getNumber());
+        if (!$wahlkreis->getNumber()) {
+            $name = \sprintf('%s', $wahlkreis->getName());
+        } else {
+            $name = \sprintf('%s (Nr. %s)', $wahlkreis->getName(), $wahlkreis->getNumber());
+        }
         $data[$name] = $wahlkreis->getId()->toString();
 
         return $data;

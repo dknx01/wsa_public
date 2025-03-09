@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block title %}Verbandsseite hinzufügen{% endblock %}
+
+{% block body %}
+    <main class="wrapper">
+        <div class="shadow-blur shadow-blur--rainbow shadow-blur--before">
+            <div class="Wsa-Header admin-grid">
+                {{ include('admin/menu.html.twig', {title: 'Verbandsseite hinzufügen'}) }}
+            </div>
+            <div class="Wsa-Tableau ">
+                {{ include('layout/notifications.html.twig') }}
+                <div class="new-statistic-form">
+
+                    {% if errors is defined %}
+                        {% for error in errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                    {{ form(form) }}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

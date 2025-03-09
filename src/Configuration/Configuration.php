@@ -70,6 +70,15 @@ class Configuration
         return $this->config->resultFile;
     }
 
+    public function getUuHelp(string $type): string
+    {
+        return match ($type) {
+            'wk' => $this->getUuWkAsBase64(),
+            'll' => $this->getUuLlAsBase64(),
+            default => 'data:image/png;base64,',
+        };
+    }
+
     private function cleanupNonStream(string $string): string
     {
         return preg_match('#^[a-z]+://.+$#', $string) ? $string : realpath($string);

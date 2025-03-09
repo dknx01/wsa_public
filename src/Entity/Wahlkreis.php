@@ -22,8 +22,8 @@ class Wahlkreis
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
     private Ulid $id;
 
-    #[ORM\Column(nullable: false)]
-    private int $number = 0;
+    #[ORM\Column(nullable: true)]
+    private ?int $number = null;
 
     #[ORM\Column(length: 255, nullable: false)]
     private string $name = '';
@@ -45,12 +45,12 @@ class Wahlkreis
         return $this->id;
     }
 
-    public function getNumber(): int
+    public function getNumber(): ?int
     {
         return $this->number;
     }
 
-    public function setNumber(int $number): static
+    public function setNumber(?int $number): static
     {
         $this->number = $number;
 
@@ -107,6 +107,10 @@ class Wahlkreis
 
     public function __toString(): string
     {
+        if (!$this->getNumber()) {
+            return \sprintf('%s - %s', $this->getName(), $this->state);
+        }
+
         return \sprintf('%s (%d) - %s', $this->getName(), $this->getNumber(), $this->state);
     }
 

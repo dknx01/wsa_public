@@ -26,16 +26,17 @@
             </li>
             {% endif %}
             {% if app.user %}
+                <li><a href="#"><i data-lucide="wrench"></i></box-icon>&dtrif;</a>
+                    <ul class="dropdown">
+                        <li><a href="{{ path('wahlkreis_new') }}">Wahlkreis hinzufügen</a></li>
+                        <li><a href="{{ path('admin_verbandseiten_neu') }}">Verbandsseite hinzufügen</a></li>
+                        <li><a href="{{ path('data_admin') }}">Backend</a></li>
+                    </ul>
+                </li>
                 <li><a href="#"><box-icon type='solid' name='user-circle' animation="tada-hover"></box-icon>&dtrif;</a>
                 <ul class="dropdown">
                     <li><a href="{{ path('user_password', {id: app.user.id}) }}">Passwort ändern</a></li>
                     <li><a href="{{ path('app_logout') }}">Logout</a></li>
-                </ul>
-                </li>
-                <li><a href="#"><i data-lucide="wrench"></i></box-icon>&dtrif;</a>
-                <ul class="dropdown">
-                    <li><a href="{{ path('wahlkreis_new') }}">Wahlkreis hinzufügen</a></li>
-                    <li><a href="{{ path('data_admin') }}">Backend</a></li>
                 </ul>
                 </li>
             {% endif %}

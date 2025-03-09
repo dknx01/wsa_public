@@ -7,11 +7,14 @@
 
 namespace App\Controller\Admin;
 
+use App\Configuration\Configuration;
 use App\Entity\Document;
 use App\Entity\Statistic;
+use App\Entity\User;
 use App\Entity\Verbandsseiten;
 use App\Entity\Wahlkreis;
 use App\Security\ActiveUserVoter;
+use App\User\Roles;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -25,8 +28,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin/verwaltung')]
 #[IsGranted(ActiveUserVoter::ACTIVE_USER)]
+#[IsGranted(Roles::ROLE_ADMIN->name)]
 class AdminDashboardController extends AbstractDashboardController
 {
+    public function __construct(
+        private readonly Configuration $configuration,
+    ) {
+    }
+
     #[Route('/', name: 'data_admin')]
     public function index(): Response
     {
@@ -36,19 +45,31 @@ class AdminDashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Weltsozialamt Admin');
+            ->setTitle($this->configuration->getPageTitle().' Admin');
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToCrud('Dokumente', 'fa fa-list', Document::class);
-        yield MenuItem::linkToCrud('UU-Zahlen', 'fa fa-list', Statistic::class);
-        yield MenuItem::linkToCrud('Wahlkreise', 'fa fa-list', Wahlkreis::class);
-        yield MenuItem::linkToCrud('Verbandsseiten', 'fa fa-link', Verbandsseiten::class);
         yield MenuItem::linkToUrl('Home', 'fa fa-home', $this->generateUrl('home', [], UrlGeneratorInterface::ABSOLUTE_URL));
-        yield MenuItem::linkToUrl('UU-Zahlen erfassen', 'fa fa-plus-square', $this->generateUrl('app_admin_statisticadmin_index', [], UrlGeneratorInterface::ABSOLUTE_URL));
-        yield MenuItem::linkToUrl('UU-Dokument Direktkandidat hinzufügen', 'fa fa-plus-square', $this->generateUrl('app_admin_documentadmin_direktkandidat', [], UrlGeneratorInterface::ABSOLUTE_URL));
-        yield MenuItem::linkToUrl('UU-Dokument Landesliste hinzufügen', 'fa fa-plus-square', $this->generateUrl('app_admin_documentadmin_landesliste', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        yield MenuItem::subMenu('Listen', 'fa fa-list-alt')
+            ->setSubItems([
+                MenuItem::linkToCrud('Dokumente', 'fa fa-list', Document::class),
+                MenuItem::linkToCrud('UU-Zahlen', 'fa fa-list', Statistic::class),
+                MenuItem::linkToCrud('Wahlkreise', 'fa fa-list', Wahlkreis::class),
+                MenuItem::linkToCrud('Verbandsseiten', 'fa fa-link', Verbandsseiten::class),
+                MenuItem::linkToCrud('User', 'fa fa-users', User::class),
+            ]);
+        yield MenuItem::subMenu('Hinzufügen', 'fa fa-plus-square')
+            ->setSubItems([
+                MenuItem::linkToUrl('UU-Zahlen erfassen', 'fa fa-plus-square', $this->generateUrl('admin_new_statistic_index_new', [], UrlGeneratorInterface::ABSOLUTE_URL)),
+                MenuItem::linkToUrl('UU-Dokument Direktkandidat hinzufügen', 'fa fa-plus-square', $this->generateUrl('app_admin_documentadmin_direktkandidat', [], UrlGeneratorInterface::ABSOLUTE_URL)),
+                MenuItem::linkToUrl('UU-Dokument Landesliste hinzufügen', 'fa fa-plus-square', $this->generateUrl('app_admin_documentadmin_landesliste', [], UrlGeneratorInterface::ABSOLUTE_URL)),
+            ]);
+        yield MenuItem::subMenu('Widgets', 'fas fa-pager')
+            ->setSubItems([
+                MenuItem::linkToUrl('Verbandslisten Widget', 'fa fa-link', $this->generateUrl('uu-liste', [], UrlGeneratorInterface::ABSOLUTE_URL)),
+                MenuItem::linkToUrl('Statistic Widget', 'fa fa-link', $this->generateUrl('statistic_all_widget', [], UrlGeneratorInterface::ABSOLUTE_URL)),
+            ]);
     }
 
     public function configureActions(): Actions

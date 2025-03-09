@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ pageTitle() }} - {{ 'impressum'|trans }}{% endblock %}
+{% block title %}{{ config.pageTitle }} - {{ 'impressum'|trans }}{% endblock %}
 
 {% block body %}
         <main class="wrapper">
@@ -37,7 +37,7 @@
                                 {{ 'impressum'|trans }}
                             </div>
                             <div class="card-body">
-                                {{ getImpress()|raw }}
+                                {{ config.impress|raw }}
                             </div>
                         </div>
                 </div>

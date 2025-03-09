@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    {% block stylesheets %}
+    {% endblock %}
+    {% block javascripts %}
+        {% block importmap %}
+            {{ importmap('app') }}
+        {% endblock %}
+    {% endblock %}
+</head>
+<body class="container-grey">
+
+<div class="container container-grey min-vh-100">
+    <div id="wsa wsa-board" class="Wsa-Board" data-wsa-theme="dark">
+            <div class="jumbotron widget_statistic-grid">
+                {% for bundesland, data in data %}
+                    <div class="widget_statistic-header">{{ bundesland|upper }}</div>
+                    <div class="widget_statistic-needed">Benötigt</div>
+                    {% if data is empty %}
+                        <div class="statistic-status"></div>
+                        <div class="statistic-result">Keine Daten vorhanden</div>
+                        <div class="statistic-needed-number"></div>
+                    {% else %}
+                         {% for i, entry in data %}
+                             <div class="widget_statistic-status" id="statistic_status_{{ i }}" data-id="{{ i }}" data-area="{{ entry.name }}">{{ entry.status|raw }}</div><div class="widget_statistic-name" id="statistic_name_{{ i }}" data-id="{{ i }}" data-area="{{ entry.name }}">{{ entry.name }}<span class="badge text-bg-secondary">{{ entry.type }}</span></div>
+                             <div class="widget_statistic-result" id="statistic_result_{{ i }}" data-area="{{ entry.name }}">
+                                 {{ entry.approved }} bestätigte <div class="progress" role="progressbar" aria-label="{{ entry.name }}" aria-valuenow="{{ entry.approvedPercentage }}" aria-valuemin="0" aria-valuemax="100">
+                                         <div class="progress-bar overflow-visible" style="width: {{ entry.approvedPercentage }}%; background: linear-gradient(90deg in oklab, {{ entry.colors }})"> {{ entry.approved }}</div>
+                                     </div>
+                                        {{ entry.total }} inkl. Unbestätigte ({{ entry.unapproved }})<div class="progress" role="progressbar" aria-label="{{ entry.name }}" aria-valuenow="{{ entry.unapprovedPercentage }}" aria-valuemin="0" aria-valuemax="100">
+                                         <div class="progress-bar overflow-visible" style="width: {{ entry.unapprovedPercentage }}%; background: linear-gradient(90deg in oklab, {{ entry.unapprovedColors }})"> {{ entry.total }}</div>
+                                     </div>
+                                 </div>
+                                 <div class="widget_statistic-needed-number" id="statistic_needed_{{ i }}" data-area="{{ entry.name }}">{{ entry.max }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+    </div>
+    <div>
+        <footer class="py-4 mt-auto footer">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col">
+                        <span class="version"><i data-lucide="milestone"></i>{{ version }}</span>
+                    </div>
+                    <div class="col">
+                    </div>
+                    <div class="col">
+                        {{ include('wsa/Partei.html.twig') }}
+                    </div>
+                    <div class="col-2">
+                        <i data-lucide="copyright" style="width: 12px; height: 12px"></i><a href="https://github.com/dknx01/wsa_public" target="_blank" class="small text-black">dknx01/wsa_public</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+</body>
+</html>

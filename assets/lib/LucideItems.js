@@ -7,7 +7,8 @@ import {
     FileClock,
     ArrowBigLeft,
     Copyright,
-    Wrench
+    Wrench,
+    Milestone
 } from "lucide";
 
 export default class {
@@ -21,5 +22,6 @@ export default class {
         ArrowBigLeft,
         Copyright,
         Wrench,
+        Milestone
     };
 }

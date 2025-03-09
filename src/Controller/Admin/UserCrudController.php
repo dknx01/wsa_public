@@ -7,26 +7,28 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Verbandsseiten;
+use App\Entity\User;
 use App\Security\ActiveUserVoter;
 use App\User\Roles;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted(ActiveUserVoter::ACTIVE_USER)]
 #[IsGranted(Roles::ROLE_ADMIN->name)]
-class VerbandsseitenCrudController extends AbstractCrudController
+class UserCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Verbandsseiten::class;
+        return User::class;
     }
 
     public function configureFields(string $pageName): iterable
     {
-        yield TextField::new('name');
-        yield TextField::new('link');
-        yield TextField::new('link_name');
+        yield EmailField::new('email', 'Email');
+        yield ArrayField::new('roles', 'Rollen');
+        yield BooleanField::new('is_active', 'Aktive');
     }
 }

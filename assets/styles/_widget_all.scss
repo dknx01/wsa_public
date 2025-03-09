@@ -1,0 +1,31 @@
+.widget_statistic-grid {
+  display: grid;
+  grid-template-columns: 2vw 10vw auto 5vw;
+  grid-auto-rows: max-content;
+  gap: 4px;
+  color: $black!important;
+}
+.widget_statistic-header {
+  font-weight: bold;
+  text-decoration: underline;
+  grid-column: span 3 / span 3;
+}
+.widget_statistic-needed {
+  grid-column-start: 4;
+}
+.widget_statistic-name .widget_statistic-result .widget_statistic-needed-number .widget_statistic-status {
+  grid-row-start: 2;
+  grid-row-end: 2;
+}
+.widget_statistic-result > .progress > .progress-bar{
+  color: $black!important;
+}
+.widget_statistic-name {
+  word-break: break-word;
+}
+.widget_statistic-name >span {
+  font-size: 7pt;
+}
+.widget_statistic-needed {
+  grid-column-start: 4;
+}
