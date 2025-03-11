@@ -29,6 +29,7 @@ class ConfigurationTest extends TestCase
         'uuHelpWk' => '',
         'uuHelpLl' => '',
         'resultFile' => '',
+        'privacy' => 'Marty, I\'m sorry, but the only power source capable of generating 1.21 gigawatts of electricity is a bolt of lightning.',
     ];
 
     protected function setUp(): void

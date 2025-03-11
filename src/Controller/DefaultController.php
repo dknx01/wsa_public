@@ -89,4 +89,10 @@ class DefaultController extends AbstractController
             ['data' => $data]
         );
     }
+
+    #[Route('/datenschutz', name: 'dataPrivacy')]
+    public function dataPrivacy(): Response
+    {
+        return $this->render('defaults/dataPrivacy.html.twig');
+    }
 }

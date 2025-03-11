@@ -1,7 +1,7 @@
 parameters:
-  matomo_enabled: false
-  matomo_server_side: true
-  matomo_cookie_domain: '*.weltsozialamt.de'
-  matomo_noscript_img: '//'
-  matomo_tracker_url: 'matomo.php'
-  matomo_domain: '//'
+  matomo_enabled: '%env(bool:MATOMO_ENABLED)%'
+  matomo_server_side: '%env(bool:MATOMO_SERVER_SIDE)%'
+  matomo_cookie_domain: '%env(MATOMO_COOKE_DOMAIN)%'
+  matomo_noscript_img: '%env(string:MATOMO_NO_SCRIPT_IMG)%'
+  matomo_tracker_url: '%env(MATOMO_TRACKER_URL)%'
+  matomo_domain: '%env(MATOMO_DOMAIN)%'

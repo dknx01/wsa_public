@@ -17,6 +17,7 @@ final readonly class ConfigurationItem
         public string $uuHelpWk,
         public string $uuHelpLl,
         public string $resultFile,
+        public string $privacy,
     ) {
     }
 }

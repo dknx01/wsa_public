@@ -37,6 +37,7 @@ class ResultPrinterTest extends TestCase
             'uuHelpWk' => 'wk.svg',
             'uuHelpLl' => 'll.svg',
             'resultFile' => 'result.json',
+            'privacy' => 'Marty, I\'m sorry, but the only power source capable of generating 1.21 gigawatts of electricity is a bolt of lightning.',
         ];
         file_put_contents($this->root->url().'/result.json', <<<JSON
 {
@@ -76,6 +77,7 @@ JSON
             'uuHelpWk' => 'wk.svg',
             'uuHelpLl' => 'll.svg',
             'resultFile' => 'result.json',
+            'privacy' => 'Marty, I\'m sorry, but the only power source capable of generating 1.21 gigawatts of electricity is a bolt of lightning.',
         ];
         file_put_contents($this->root->url().'/result.json', <<<JSON
 {

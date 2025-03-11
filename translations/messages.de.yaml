@@ -1,1 +1,5 @@
 impressum: Impressum
+cookie_box:
+  title: 'Cookies und Tracking'
+  body: 'Diese Seite benutzt Cookies nur für eingeloggte Benutzer. Weitere Informationen siehe <a href="{{data_privacy}}">Datenschutz</a>.'
+data_privacy: 'Datenschutz'

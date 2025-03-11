@@ -79,6 +79,11 @@ class Configuration
         };
     }
 
+    public function getPrivacy(): string
+    {
+        return $this->config->privacy;
+    }
+
     private function cleanupNonStream(string $string): string
     {
         return preg_match('#^[a-z]+://.+$#', $string) ? $string : realpath($string);

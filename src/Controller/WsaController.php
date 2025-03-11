@@ -31,6 +31,7 @@ class WsaController extends AbstractController
     #[Route('/', 'home')]
     public function home(DocumentsRepository $repository): Response
     {
+        return $this->redirectToRoute('results');
         $allBundeslaender = $repository->findAllBundeslaender();
         foreach ($allBundeslaender as $key => $bundeslaender) {
             $newKey = match ($bundeslaender) {

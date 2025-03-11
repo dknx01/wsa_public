@@ -6,6 +6,7 @@ twig:
         useragents: '@App\Twig\Extension\UserAgentExtension'
         version: '%version%'
         config: '@App\Configuration\Configuration'
+        trackingConfig: '@App\Tracking\MatomoConfig'
 
 when@test:
     twig:

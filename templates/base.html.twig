@@ -6,6 +6,7 @@
         <title>{% block title %}{% endblock %}</title>
         {% block stylesheets %}
         {% endblock %}
+        {{ include('layout/tracking.html.twig') }}
         {% block javascripts %}
             {% block importmap %}
                 {{ importmap('app') }}
@@ -27,6 +28,11 @@
         <div id="wsa wsa-board" class="Wsa-Board" data-wsa-theme="dark">
         <main>
             {% block body %}{% endblock %}
+            <div id="cookie-box" class="cookie-container position-fixed bottom-0 end-0 p-3">
+                <input type="checkbox" id="toggleCookie">
+                <label class="cookieButton position-fixed bottom-1 end-0" for="toggleCookie"><box-icon name='fingerprint'></box-icon></label>
+                <div class="cookieContent">{{ 'cookie_box.body'|trans({'{{data_privacy}}': path('dataPrivacy')})|raw }}</div>
+            </div>
         </main>
         <footer class="py-4 mt-auto footer">
             <div class="container text-center">

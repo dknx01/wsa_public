@@ -42,6 +42,7 @@ var/log/*
 **/*com.dropbox.ignored
 
 .env.prod
+.env
 
 vendor/
 assets/vendor

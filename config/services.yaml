@@ -40,19 +40,19 @@ services:
                 'db_table': 'support_numbers_cache'
         tags:
             - {name: 'cache.pool', namespace: 'numbers'}
-#    MatomoTracker:
-#        class: MatomoTracker
-#        arguments:
-#            $idSite: '%env(resolve:MATOMO_SITE_ID:example))%'
-#            $apiUrl: '%env(resolve:MATOMO_TRACKER_URL:matomo.php))%'
-#        calls:
-#            - setTokenAuth: ['%env(MATOMO_API_TOKEN:example))%']
-#    App\Service\Tracking\MatomoConfig:
-#        arguments:
-#            $env: '%kernel.environment%'
-#            $enabled: '%matomo_enabled%'
-#            $cookieDomain: '%matomo_cookie_domain%'
-#            $noScriptImage: '%matomo_noscript_img%'
-#            $trackerUrl: '%matomo_tracker_url%'
-#            $siteId: '%env(resolve:MATOMO_SITE_ID:example))%'
-#            $serverSide: '%matomo_server_side%'
+    MatomoTracker:
+        class: MatomoTracker
+        arguments:
+            $idSite: '%env(resolve:MATOMO_SITE_ID)%'
+            $apiUrl: '%matomo_domain%'
+        calls:
+            - setTokenAuth: ['%env(MATOMO_API_TOKEN)%']
+    App\Tracking\MatomoConfig:
+        arguments:
+            $matomoDomain: '%matomo_domain%'
+            $enabled: '%matomo_enabled%'
+            $cookieDomain: '%matomo_cookie_domain%'
+            $noScriptImage: '%matomo_noscript_img%'
+            $trackerUrl: '%matomo_tracker_url%'
+            $siteId: '%env(resolve:MATOMO_SITE_ID)%'
+            $serverSide: '%matomo_server_side%'
