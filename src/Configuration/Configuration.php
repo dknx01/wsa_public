@@ -21,6 +21,7 @@ class Configuration
         private readonly CacheInterface $cache,
         #[Autowire('%kernel.project_dir%/wsa.config.php')] string $configPath,
         #[Autowire('%kernel.project_dir%')] string $basePath,
+        #[Autowire('%kernel.environment%')] private string $env,
     ) {
         $config = require $configPath;
         $config['impress'] = u($config['impress'])->replace('\n', '')->toString();
@@ -82,6 +83,15 @@ class Configuration
     public function getPrivacy(): string
     {
         return $this->config->privacy;
+    }
+
+    public function resultsAsStart(): bool
+    {
+        if (null === $this->config->resultAsStart) {
+            return false;
+        }
+
+        return \in_array($this->env, $this->config->resultAsStart, true);
     }
 
     private function cleanupNonStream(string $string): string

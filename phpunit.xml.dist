@@ -23,6 +23,9 @@
         <testsuite name="Integration Test Suite">
             <directory>tests/Integration</directory>
         </testsuite>
+        <testsuite name="Application Test Suite">
+            <directory>tests/Application</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
@@ -44,7 +47,7 @@
             <file>src/Command/StatisticConvertCommand.php</file>
             <file>src/Dto/Statistic.php</file>
             <directory>src/Entity</directory>
-            <directory>src/Controller</directory>
+            <directory>src/Controller/Admin</directory>
             <directory>src/Contracts</directory>
             <directory>src/Form</directory>
             <directory>src/Dto/Api</directory>
@@ -56,4 +59,7 @@
             <html outputDirectory="./reports"/>
         </report>
     </coverage>
+    <extensions>
+        <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
+    </extensions>
 </phpunit>

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Configuration\Configuration;
 use App\Dto\Api\DocumentResponse;
 use App\Entity\DocumentLandesliste;
 use App\Repository\DocumentsRepository;
@@ -29,9 +30,11 @@ class WsaController extends AbstractController
     }
 
     #[Route('/', 'home')]
-    public function home(DocumentsRepository $repository): Response
+    public function home(DocumentsRepository $repository, Configuration $configuration): Response
     {
-        return $this->redirectToRoute('results');
+        if ($configuration->resultsAsStart()) {
+            return $this->redirectToRoute('results');
+        }
         $allBundeslaender = $repository->findAllBundeslaender();
         foreach ($allBundeslaender as $key => $bundeslaender) {
             $newKey = match ($bundeslaender) {
