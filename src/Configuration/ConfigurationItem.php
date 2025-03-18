@@ -9,6 +9,9 @@ namespace App\Configuration;
 
 final readonly class ConfigurationItem
 {
+    /**
+     * @param string[]|null $resultAsStart
+     */
     public function __construct(
         public string $pageTitle,
         public string $impress,
@@ -18,6 +21,7 @@ final readonly class ConfigurationItem
         public string $uuHelpLl,
         public string $resultFile,
         public string $privacy,
+        public ?array $resultAsStart,
     ) {
     }
 }

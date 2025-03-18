@@ -8,5 +8,5 @@ return [
     'uuHelpLl' => './assets/images/Ausfuellhilfe-UU-Landesliste.png', #relativer Pfad zum Bilder mit der Hilfe zur Ausfüllung der Landesliste-UU (PNG-Datei)
     'resultFile' => './results.json', #relativer Pfad zur Ergebnis-Datei (JSON-Datei)
     'privacy' => 'Datenschutz und Tracking Hinweis', # Bitte ausfüllen, falls ein Tracking erfolgt oder spezielle Datenschutzhinweise notwendig sind
-
+    'resultAsStart' => null, # Soll die "results" Seite als Startseite angezeigt werden? Null === überall nicht, oder eine Liste von Umgebungen "['prod', 'qa']"
 ];

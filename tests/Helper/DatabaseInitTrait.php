@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 trait DatabaseInitTrait
 {
-    private function initDatabase(KernelInterface $kernel): void
+    protected function initDatabase(KernelInterface $kernel): void
     {
         $entityManager = $kernel->getContainer()->get('doctrine.orm.entity_manager');
         $metaData = $entityManager->getMetadataFactory()->getAllMetadata();

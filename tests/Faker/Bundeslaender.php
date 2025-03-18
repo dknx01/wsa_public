@@ -34,4 +34,21 @@ class Bundeslaender extends Base
     {
         return self::randomElement(self::STATES);
     }
+
+    /**
+     * @param string|string[] $exclude
+     */
+    public function bundeslandExclude(string|array $exclude): string
+    {
+        if (!\is_array($exclude)) {
+            $exclude = [$exclude];
+        }
+        $state = self::randomElement(self::STATES);
+
+        while (\in_array($state, $exclude, true)) {
+            $state = self::randomElement(self::STATES);
+        }
+
+        return $state;
+    }
 }

@@ -38,6 +38,7 @@ class ResultPrinterTest extends TestCase
             'uuHelpLl' => 'll.svg',
             'resultFile' => 'result.json',
             'privacy' => 'Marty, I\'m sorry, but the only power source capable of generating 1.21 gigawatts of electricity is a bolt of lightning.',
+            'resultAsStart' => null,
         ];
         file_put_contents($this->root->url().'/result.json', <<<JSON
 {
@@ -59,7 +60,8 @@ JSON
         $configuration = new Configuration(
             new NullAdapter(),
             $this->configPath,
-            $this->basePath
+            $this->basePath,
+            'test'
         );
         $printer = new ResultPrinter(new NullAdapter(), $configuration);
         foreach ($printer->getResults() as $result) {
@@ -78,6 +80,7 @@ JSON
             'uuHelpLl' => 'll.svg',
             'resultFile' => 'result.json',
             'privacy' => 'Marty, I\'m sorry, but the only power source capable of generating 1.21 gigawatts of electricity is a bolt of lightning.',
+            'resultAsStart' => null,
         ];
         file_put_contents($this->root->url().'/result.json', <<<JSON
 {
@@ -92,7 +95,8 @@ JSON
         $configuration = new Configuration(
             new NullAdapter(),
             $this->configPath,
-            $this->basePath
+            $this->basePath,
+            'test'
         );
 
         $this->expectException(\RuntimeException::class);

@@ -50,6 +50,7 @@
   },
   "require-dev": {
     "calebdw/fakerstan": "^1.1",
+    "dama/doctrine-test-bundle": "^8.3",
     "ergebnis/composer-normalize": "^2.45",
     "fakerphp/faker": "^1.24",
     "friendsofphp/php-cs-fixer": "^v3.68",
@@ -64,6 +65,8 @@
     "phpstan/phpstan-symfony": "^2.0",
     "phpunit/phpunit": "^11.0",
     "roave/security-advisories": "dev-latest",
+    "symfony/browser-kit": "7.*",
+    "symfony/css-selector": "7.*",
     "symfony/debug-bundle": "7.*",
     "symfony/maker-bundle": "^v1.62.0",
     "symfony/phpunit-bridge": "7.*",

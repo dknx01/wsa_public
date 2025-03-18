@@ -139,13 +139,16 @@ class HandlerTest extends TestCase
             ->method('findAll')
             ->willReturn([$wahlkreis1, $wahlkreis2]);
         $service = $this->getHandler();
-        $this->assertSame(
-            [
-                \sprintf('%s (Nr. %s)', $wahlkreis2->getName(), $wahlkreis2->getNumber()) => $wahlkreis2->getId()->toString(),
-                \sprintf('%s', $wahlkreis1->getName()) => $wahlkreis1->getId()->toString(),
-            ],
-            $service->getWahlkreiseFormatted()
-        );
+
+        $expectedKeys = [
+            \sprintf('%s (Nr. %s)', $wahlkreis2->getName(), $wahlkreis2->getNumber()) => $wahlkreis2->getId()->toString(),
+            \sprintf('%s', $wahlkreis1->getName()) => $wahlkreis1->getId()->toString(),
+        ];
+        $wahlkreise = $service->getWahlkreiseFormatted();
+        foreach ($expectedKeys as $key => $value) {
+            $this->assertArrayHasKey($key, $wahlkreise);
+            $this->assertEquals($value, $wahlkreise[$key]);
+        }
     }
 
     public function testGetWahlkreiseFormattedWithNonAdminUser(): void

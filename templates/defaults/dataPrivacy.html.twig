@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ config.pageTitle }} - {{ 'impressum'|trans }}{% endblock %}
+{% block title %}{{ config.pageTitle }} - {{ 'data_privacy'|trans }}{% endblock %}
 
 {% block body %}
     <main class="wrapper">
-        <div class="shadow-blur shadow-blur--rainbow shadow-blur--before" data-controller="document" data-document-url-value="{{ path('documentStateList', {state: '---'}, false) }}" data-document-search-value="{{ path('documentsSearch', {search: '---'}, false) }}">
+        <div class="shadow-blur shadow-blur--rainbow shadow-blur--before">
             <div class="Wsa-Header header-grid">
                 <div class="header-item-logo ">
                     {{ include('wsa/stern.html.twig') }}

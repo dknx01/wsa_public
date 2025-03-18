@@ -30,7 +30,9 @@ class ConfigurationTest extends TestCase
         'uuHelpLl' => '',
         'resultFile' => '',
         'privacy' => 'Marty, I\'m sorry, but the only power source capable of generating 1.21 gigawatts of electricity is a bolt of lightning.',
+        'resultAsStart' => null,
     ];
+    private string $env = 'test';
 
     protected function setUp(): void
     {
@@ -96,10 +98,25 @@ class ConfigurationTest extends TestCase
         $this->assertStringStartsWith('data:image/png;base64', $this->getConfiguration()->getUuHelp($type));
     }
 
+    #[TestWith([false, 'test', null])]
+    #[TestWith([false, 'test', ['dev']])]
+    #[TestWith([true, 'test', ['dev', 'test']])]
+    public function testResultAsStart(bool $expected, string $env, ?array $resultAsStart): void
+    {
+        $this->config['resultAsStart'] = $resultAsStart;
+        $this->env = $env;
+        $this->assertEquals($expected, $this->getConfiguration()->resultsAsStart());
+    }
+
+    public function testGetPrivacy(): void
+    {
+        $this->assertNotEmpty($this->getConfiguration()->getPrivacy());
+    }
+
     private function getConfiguration(): Configuration
     {
         file_put_contents($this->configPath, '<?php return '.var_export($this->config, true).';');
 
-        return new Configuration($this->cache, $this->configPath, $this->basePath);
+        return new Configuration($this->cache, $this->configPath, $this->basePath, $this->env);
     }
 }
