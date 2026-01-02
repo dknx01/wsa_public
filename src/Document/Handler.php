@@ -7,11 +7,7 @@
 
 namespace App\Document;
 
-use App\Dto\Api\FileUpload;
-use App\Dto\Api\FileUploadDirektkandidat;
 use App\Entity\Document;
-use App\Entity\DocumentDirektkandidat;
-use App\Entity\DocumentLandesliste;
 use App\Repository\DocumentsRepository;
 use App\Repository\WahlkreisRepository;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -19,7 +15,6 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Uid\Ulid;
 
 readonly class Handler
 {
@@ -61,44 +56,20 @@ readonly class Handler
         $this->documentsRepository->refresh($document);
     }
 
-    /**
-     * @throws UnsupportedDocumentTypeException
-     */
-    public function handleUpload(FileUpload|FileUploadDirektkandidat $fileUpload, DocumentType|string $type): void
+    public function handleUploadDocument(\App\Dto\Document\Document $documentDto): void
     {
-        match ($type) {
-            DocumentType::LANDESLISTE, DocumentType::LANDESLISTE->value => $this->handleLandesliste($fileUpload),
-            DocumentType::DIREKTKANDIDAT_BTW, DocumentType::DIREKTKANDIDAT_BTW->value => $this->handleDirektkandidatBtw($fileUpload),
-            default => throw new UnsupportedDocumentTypeException($type),
-        };
-    }
-
-    private function handleLandesliste(FileUpload $fileUpload): void
-    {
-        $doc = new DocumentLandesliste();
-        $doc->setName(\sprintf('Landesliste %s', $fileUpload->state));
-        $doc->setState($fileUpload->state);
-        $doc->setDescription($fileUpload->description);
-        $originalFilename = pathinfo($fileUpload->file->getClientOriginalName(), \PATHINFO_FILENAME);
-        $doc->setFileName($originalFilename);
-        $this->documentsRepository->save($doc);
-
-        $newFilename = $doc->getId()->toString().'.'.self::FILE_EXTENSION;
-        $fileUpload->file?->move($this->dir, $newFilename);
-    }
-
-    private function handleDirektkandidatBtw(FileUploadDirektkandidat $fileUpload): void
-    {
-        $doc = new DocumentDirektkandidat();
-        $doc->setWahlkreis($this->wahlkreisRepository->find(Ulid::fromString($fileUpload->area)));
-        $doc->setName(\sprintf('Direktkandidat %s', $doc->getWkName()));
-        $doc->setState($fileUpload->state);
-        $doc->setDescription($fileUpload->description);
-        $originalFilename = pathinfo($fileUpload->file->getClientOriginalName(), \PATHINFO_FILENAME);
-        $doc->setFileName($originalFilename);
-        $this->documentsRepository->save($doc);
-
-        $newFilename = $doc->getId()->toString().'.'.self::FILE_EXTENSION;
-        $fileUpload->file->move($this->dir, $newFilename);
+        $document = new Document();
+        $document->setType($documentDto->file->type);
+        $document->setName(\sprintf('%s %s', $documentDto->wahlkreis->wahlkreis->getName(), $documentDto->wahlkreis->wahlkreis->getState()));
+        $document->setDescription($documentDto->file->description);
+        $document->setWahlkreis(
+            $this->wahlkreisRepository->find($documentDto->wahlkreis->wahlkreis->getId())
+        );
+        $document->setState($documentDto->wahlkreis->wahlkreis->getState());
+        $originalFilename = pathinfo($documentDto->file->file->getClientOriginalName(), \PATHINFO_FILENAME);
+        $document->setFileName($originalFilename);
+        $this->documentsRepository->save($document);
+        $newFilename = $document->getId()->toString().'.'.self::FILE_EXTENSION;
+        $documentDto->file->file?->move($this->dir, $newFilename);
     }
 }

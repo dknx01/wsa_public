@@ -10,6 +10,8 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -141,7 +143,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getWahlkreisPermission(): Collection
     {
-        return $this->wahlkreisPermission;
+        return $this->wahlkreisPermission->matching(Criteria::create()->orderBy(['name' => Order::Ascending]));
     }
 
     public function addWahlkreisPermission(Wahlkreis $wahlkreis): static

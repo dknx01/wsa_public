@@ -1,0 +1,175 @@
+
+.admin-container {
+  display: grid;
+  grid-template-areas:
+     "menu header borderHeader"
+    "content content content"
+    "footer footer footer";
+  grid-template-columns: 0.1fr 3fr 0.1fr;
+  padding: 5px;
+}
+.admin-container div.header {
+  grid-area: header;
+  text-align: center;
+}
+.admin-container div.menu {
+  grid-area: menu;
+}
+.admin-container div.content {
+  grid-area: content;
+  padding-left: 1vw;
+  tr {
+    word-break: break-all;
+  }
+}
+.container div.borderHeader {
+  grid-area: borderHeader;
+}
+.adminnav {
+  overflow: hidden;
+  background-color: $gray-500;
+}
+
+.adminnav a {
+  //float: left;
+  display: block;
+  color: $black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.adminnav a:hover {
+  background-color: $gray-500;
+  color: $wsa-red;
+}
+
+.adminnav a.active {
+  background-color: $gray-700;
+  //color: white;
+}
+
+.adminnav .icon {
+  display: none;
+}
+.adminnav div span {
+  margin-left: 10px;
+}
+
+@media screen and (max-width: 600px) {
+  .adminnav > div span {display: none;}
+  .adminnav > div a {display: none;}
+  .adminnav a.icon {
+    //float: left;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .adminnav.responsive {position: relative;}
+  .adminnav.responsive .icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin-buttom: 50px;
+  }
+  .adminnav.responsive span:is(:first-child){
+    margin-top:55px;
+  }
+  .adminnav.responsive span:not(:first-child){
+    margin-top:0px;
+  }
+  .adminnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  .adminnav.responsive span {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  .adminnav.responsive span {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+}
+/** Table header for sorting **/
+table[data-controller="adminStatisticAll"] th::after {
+  content: "⇅";
+  margin-left: 8px;
+  color: grey;
+}
+table[data-controller="adminStatisticAll"] th[data-sort="asc"]::after {
+  content: "▲";
+}
+table[data-controller="adminStatisticAll"] th[data-sort="desc"]::after {
+  content: "▼";
+}
+table[data-controller="adminDocuments"] th::after {
+  content: "⇅";
+  margin-left: 8px;
+  color: grey;
+}
+table[data-controller="adminDocuments"] th[data-sort="asc"]::after {
+  content: "▲";
+}
+table[data-controller="adminDocuments"] th[data-sort="desc"]::after {
+  content: "▼";
+}
+table[data-controller="admin-wahlkreis"] th::after {
+  content: "⇅";
+  margin-left: 8px;
+  color: grey;
+}
+table[data-controller="admin-wahlkreis"] th[data-sort="asc"]::after {
+  content: "▲";
+}
+table[data-controller="admin-wahlkreis"] th[data-sort="desc"]::after {
+  content: "▼";
+}
+
+table[data-controller="adminUser"] th::after {
+  content: "⇅";
+  margin-left: 8px;
+  color: grey;
+}
+table[data-controller="adminUser"] th[data-sort="asc"]::after {
+  content: "▲";
+}
+table[data-controller="adminUser"] th[data-sort="desc"]::after {
+  content: "▼";
+}
+
+table[data-controller="admin-wahlkreistypes"] th::after {
+  content: "⇅";
+  margin-left: 8px;
+  color: grey;
+}
+table[data-controller="admin-wahlkreistypes"] th[data-sort="asc"]::after {
+  content: "▲";
+}
+table[data-controller="admin-wahlkreistypes"] th[data-sort="desc"]::after {
+  content: "▼";
+}
+
+/** Uaser admin form*/
+.userFormContainer {
+  display: grid;
+  grid-template-areas:
+    "email status"
+    "wahlkreise wahlkreise";
+  grid-template-columns: 1fr 3fr;
+}
+.userFormContainer div.userFormContainer_email {
+  grid-area: email;
+}
+.userFormContainer div.userFormContainer_status {
+  grid-area: status;
+  margin-top: 6px;
+}
+.userFormContainer div.userFormContainer_wahlkreise {
+  grid-area: wahlkreise;
+}

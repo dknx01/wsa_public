@@ -7,30 +7,22 @@
 
 namespace App\Form\Admin;
 
-use App\Entity\SupportNumbersLandesliste;
+use App\Entity\WahlkreisNumber;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NoSuspiciousCharacters;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @extends AbstractType<SupportNumbersLandesliste>
+ * @extends AbstractType<WahlkreisNumber>
  */
 class StatisticEditType extends AbstractType
 {
-    public function __construct(
-        private readonly TranslatorInterface $translator,
-    ) {
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -46,31 +38,9 @@ class StatisticEditType extends AbstractType
                     'disabled' => true,
                     'constraints' => [
                         new NotBlank(),
-                        new Callback([$this, 'validateName']),
                     ],
                 ]
             )
-            ->add(child: 'bundesland', type: TextType::class, options: [
-                'label' => 'statistic.bundesland',
-                'translation_domain' => 'admin',
-                'label_attr' => ['class' => 'col-sm-2 col-form-label'],
-                'disabled' => true,
-            ])
-            ->add(child: 'wahlkreis', type: TextType::class, options: [
-                'label' => 'statistic.wahlkreis',
-                'translation_domain' => 'admin',
-                'label_attr' => ['class' => 'col-sm-2 col-form-label'],
-                'required' => false,
-                'disabled' => true,
-                'getter' => fn (?SupportNumbersLandesliste $value) => $value?->getWahlkreis()?->getName(),
-            ]
-            )
-            ->add(child: 'type', type: TextType::class, options: [
-                'translation_domain' => 'admin',
-                'label' => 'statistic.type',
-                'label_attr' => ['class' => 'col-sm-2 col-form-label'],
-                'disabled' => true,
-            ])
             ->add(child: 'approved', options: [
                 'translation_domain' => 'admin',
                 'label' => 'statistic.approved',
@@ -102,6 +72,12 @@ class StatisticEditType extends AbstractType
                 ],
                 'data' => new \DateTimeImmutable(),
             ])
+            ->add('deleted', CheckboxType::class, [
+                'translation_domain' => 'admin',
+                'label' => 'statistic.deleted',
+                'required' => false,
+                'label_attr' => ['class' => 'col-sm-2 col-form-label'],
+            ])
             ->add('submit', SubmitType::class, [
                 'translation_domain' => 'admin',
                 'label' => 'form.save',
@@ -115,17 +91,7 @@ class StatisticEditType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => SupportNumbersLandesliste::class,
+            'data_class' => WahlkreisNumber::class,
         ]);
-    }
-
-    public function validateName(mixed $payload, ExecutionContextInterface $context): void
-    {
-        $payload = trim($payload);
-        if (str_contains($payload, '---') || \in_array($payload, ['Landesliste', 'Direktkandidat'])) {
-            $context->buildViolation($this->translator->trans(id: 'statistic.invalid.name', domain: 'admin'))
-            ->atPath('name')
-            ->addViolation();
-        }
     }
 }

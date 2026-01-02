@@ -10,15 +10,19 @@ namespace App\Tests\Unit\Twig\Extension;
 use App\Tracking\Matomo;
 use App\Twig\Extension\TrackingExtension;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Symfony\Component\HttpFoundation\Request;
 
 class TrackingExtensionTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testGetFunctions(): void
     {
-        $extension = new TrackingExtension();
-        $functions = $extension->getFunctions();
-        $this->assertCount(1, $functions);
-        $this->assertSame('tracking', $functions[0]->getName());
-        $this->assertEquals([Matomo::class, 'track'], $functions[0]->getCallable());
+        $matomo = $this->prophesize(Matomo::class);
+        $matomo->track(Argument::type(Request::class), Argument::type('string'))->shouldBeCalled();
+        $extension = new TrackingExtension($matomo->reveal());
+        $extension->tracking(new Request(), 'foo');
     }
 }

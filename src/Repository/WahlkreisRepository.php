@@ -9,6 +9,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Entity\Wahlkreis;
+use App\Entity\WahlkreisNumber;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -69,5 +70,29 @@ class WahlkreisRepository extends ServiceEntityRepository
         }
 
         return $data;
+    }
+
+    /**
+     * @return Wahlkreis[]
+     */
+    public function findAllOrdered(): array
+    {
+        return $this->findBy([], ['name' => 'ASC']);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function findAllStatesWithNumbers(): array
+    {
+        $qb = $this->createQueryBuilder('w');
+        $qb->select('w.state')
+            ->distinct()
+            ->join(WahlkreisNumber::class, 'wn', 'WITH', 'w.id = wn.wahlkreis');
+        $qb->where($qb->expr()->eq('wn.deleted', 0));
+        $qb->andWhere('wn.deleted = 0');
+        $qb->orderBy('w.state', 'ASC');
+
+        return $qb->getQuery()->getSingleColumnResult();
     }
 }

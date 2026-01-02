@@ -1,4 +1,4 @@
-FROM php:8.3-fpm
+FROM php:8.4-fpm
 
 RUN apt-get update \
     && apt-get install -y git zlib1g-dev libonig-dev libicu-dev libxrender1 libfontconfig1 libxext6 libmagickwand-dev libfreetype6 libjpeg-dev libpng-dev libfreetype6-dev libxml2-utils libxml2-dev libzip-dev zip sqlite3 \
@@ -21,5 +21,3 @@ RUN mkdir /var/log/php && touch /var/log/php/php_errors.log && ln -sf /dev/stder
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-# Local PHP Security Checker
-RUN curl -sSL https://github.com/fabpot/local-php-security-checker/releases/download/v2.1.3/local-php-security-checker_linux_386 --output local-php-security-checker && chmod +x local-php-security-checker

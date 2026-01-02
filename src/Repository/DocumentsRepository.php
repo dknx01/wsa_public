@@ -34,7 +34,9 @@ class DocumentsRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('d');
         $qb->where('d.state = :state');
+        $qb->andWhere('d.archived = :archived');
         $qb->setParameter('state', $state);
+        $qb->setParameter('archived', false);
 
         return $qb->getQuery()->getResult();
     }
@@ -47,6 +49,7 @@ class DocumentsRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('d')
             ->select('d.state')
             ->orderBy('d.state', 'ASC')
+            ->where('d.archived = 0')
             ->distinct()
             ->getQuery()->getSingleColumnResult();
     }
@@ -58,6 +61,7 @@ class DocumentsRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('d');
         $qb->where('d.name LIKE :search')
+            ->andWhere('d.archived = 0')
             ->setParameter('search', '%'.$search.'%');
 
         return $qb->getQuery()->getResult();

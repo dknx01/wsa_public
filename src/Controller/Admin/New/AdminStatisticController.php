@@ -9,22 +9,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\New;
 
-use App\Entity\SupportNumbersDirektkandidat;
-use App\Entity\SupportNumbersDirektkandidatKommunal;
-use App\Entity\SupportNumbersDirektkandidatLandtag;
-use App\Entity\SupportNumbersLandesliste;
-use App\Entity\SupportNumbersLandeslisteKommunal;
-use App\Entity\SupportNumbersLandeslisteLandtag;
+use App\Entity\WahlkreisNumber;
 use App\Form\Admin\StatisticEditType;
 use App\Form\Admin\StatisticType;
-use App\Repository\SupportNumbersRepository;
-use App\Repository\UserRepository;
+use App\Number\NumberDto;
+use App\Number\NumbersService;
+use App\Repository\WahlkreisNumberRepository;
 use App\Security\ActiveUserVoter;
-use App\SupportNumbers\SupportNumbersService;
-use App\SupportNumbers\Type;
 use App\User\Roles;
 use App\Wahlkreis\Handler;
-use Doctrine\ORM\Exception\ORMException;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/admin/new/statistic')]
+#[Route('/admin/statistic')]
 #[IsGranted(Roles::ROLE_USER->name)]
 class AdminStatisticController extends AbstractController
 {
@@ -42,38 +35,29 @@ class AdminStatisticController extends AbstractController
     {
     }
 
-    #[Route('/', name: 'statistic_new_overview', methods: ['GET'])]
-    public function overview(SupportNumbersRepository $repository): Response
+    #[Route('/', name: 'statistic_new_overview_all', methods: ['GET'])]
+    public function overviewAll(WahlkreisNumberRepository $repository): Response
     {
-        $allBundeslaender = $repository->findAllBundeslaender();
-        foreach ($allBundeslaender as $key => $bundeslaender) {
-            $newKey = match ($bundeslaender) {
-                'Nordrhein-Westfalen' => 'NRW',
-                'Rheinland-Pfalz' => 'RLP',
-                default => $bundeslaender,
-            };
-            $allBundeslaender[$newKey] = $bundeslaender;
-            unset($allBundeslaender[$key]);
-        }
+        return $this->render('admin/new/statistic/overview_all.html.twig', ['entries' => $repository->findAllActive()]);
+    }
 
-        return $this->render('admin/new/statistic/overview.html.twig', ['states' => $allBundeslaender]);
+    #[Route('/partial/all', name: 'statistic_new_partial_all', methods: ['GET'])]
+    public function partialAll(WahlkreisNumberRepository $repository): Response
+    {
+        return $this->render('admin/new/statistic/table.html.twig', ['entries' => $repository->findAllOrdered()]);
+    }
+
+    #[Route('/partial/all/active', name: 'statistic_new_partial_all_active', methods: ['GET'])]
+    public function partialAllActive(WahlkreisNumberRepository $repository): Response
+    {
+        return $this->render('admin/new/statistic/table.html.twig', ['entries' => $repository->findAllActive()]);
     }
 
     #[Route(path: '/new', name: 'admin_new_statistic_index_new')]
-    public function new(Request $request, SupportNumbersRepository $repository, UserRepository $userRepo, SupportNumbersService $supportNumbersService): Response
+    public function new(Request $request, NumbersService $numbersService): Response
     {
         $this->denyAccessUnlessGranted(ActiveUserVoter::ACTIVE_USER);
-        $dataClass = SupportNumbersLandesliste::class;
-        if ('POST' === $request->getMethod()) {
-            $dataClass = match ($request->request->all()['statistic']['type']) {
-                Type::DK_KW->name => SupportNumbersDirektkandidatKommunal::class,
-                Type::DK_LTW->name => SupportNumbersDirektkandidatLandtag::class,
-                Type::LL_KW->name => SupportNumbersLandeslisteKommunal::class,
-                Type::LL_LTW->name => SupportNumbersLandeslisteLandtag::class,
-                Type::DK_BTW->name => SupportNumbersDirektkandidat::class,
-                default => $dataClass,
-            };
-        }
+        $dataClass = NumberDto::class;
         $form = $this->createForm(
             type: StatisticType::class,
             options: [
@@ -82,21 +66,21 @@ class AdminStatisticController extends AbstractController
         );
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var SupportNumbersLandesliste|SupportNumbersDirektkandidat $supportNumber */
-            $supportNumber = $form->getData();
+            /** @var NumberDto $number */
+            $number = $form->getData();
             try {
-                $supportNumbersService->save($supportNumber, $userRepo->find(1));
+                $numbersService->save($number, $this->getUser());
                 $this->addFlash('success', 'Erfolgreich gespeichert.');
-            } catch (ORMException|InvalidArgumentException $e) {
+            } catch (InvalidArgumentException $e) {
                 $this->addFlash('error', 'Fehler beim Speichern der Daten');
                 $this->logger->error($e->getMessage(), ['exception' => $e::class, 'action' => \sprintf('%s::%s', self::class, __FUNCTION__)]);
             }
 
-            return $this->redirectToRoute('statistic_new_overview');
+            return $this->redirectToRoute('statistic_new_overview_all');
         }
 
         return $this->render(
-            'admin/new/statistic/index.html.twig',
+            'admin/new/statistic/new.html.twig',
             [
                 'form' => $form->createView(),
                 'errors' => $form->getErrors(),
@@ -123,12 +107,12 @@ class AdminStatisticController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'admin_new_delete_statistic', methods: ['DELETE', 'GET'])]
-    public function delete(string $id, SupportNumbersRepository $repository, SupportNumbersService $supportNumbers): Response
+    public function delete(string $id, WahlkreisNumberRepository $repository, NumbersService $numbersService): Response
     {
         $entry = $repository->find($id);
-        if ($entry instanceof SupportNumbersLandesliste) {
+        if ($entry instanceof WahlkreisNumber) {
             try {
-                $supportNumbers->delete($entry);
+                $numbersService->delete($entry);
                 $this->addFlash('success', 'Eintrag gelöscht');
             } catch (InvalidArgumentException $e) {
                 $this->addFlash('error', 'Fehler beim Löschen des Eintrags');
@@ -138,24 +122,24 @@ class AdminStatisticController extends AbstractController
             $this->addFlash('error', 'Konnte Eintrag nicht löschen');
         }
 
-        return $this->redirectToRoute('statistic_new_overview');
+        return $this->redirectToRoute('statistic_new_overview_all');
     }
 
     #[Route('/edit/{id}', name: 'admin_new_edit_statistic')]
-    public function edit(SupportNumbersLandesliste $supportNumber, Request $request, SupportNumbersService $supportNumbersService): Response
+    public function edit(WahlkreisNumber $wahlkreisNumber, Request $request, NumbersService $numbersService): Response
     {
-        $form = $this->createForm(StatisticEditType::class, $supportNumber);
+        $form = $this->createForm(StatisticEditType::class, $wahlkreisNumber);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $supportNumbersService->save($supportNumber, $this->getUser());
+                $numbersService->saveEntity($wahlkreisNumber, $this->getUser());
                 $this->addFlash('success', 'Eintrag gespeichert.');
-            } catch (ORMException|InvalidArgumentException $e) {
+            } catch (InvalidArgumentException $e) {
                 $this->addFlash('error', 'Fehler beim Speichern der Daten');
                 $this->logger->error($e->getMessage(), ['exception' => $e::class, 'action' => \sprintf('%s::%s', self::class, __FUNCTION__)]);
             }
 
-            return $this->redirectToRoute('statistic_new_overview');
+            return $this->redirectToRoute('statistic_new_overview_all');
         }
 
         return $this->render(
@@ -164,7 +148,7 @@ class AdminStatisticController extends AbstractController
                 'form' => $form->createView(),
                 'errors' => $form->getErrors(),
                 'disableWahlkreis' => true,
-                'id' => $supportNumber->getId()?->toString(),
+                'id' => $wahlkreisNumber->getId()?->toString(),
                 'update' => true,
             ]
         );

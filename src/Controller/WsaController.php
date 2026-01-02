@@ -11,9 +11,7 @@ namespace App\Controller;
 
 use App\Configuration\Configuration;
 use App\Dto\Api\DocumentResponse;
-use App\Entity\DocumentLandesliste;
 use App\Repository\DocumentsRepository;
-use App\Result\ResultPrinter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -51,14 +49,6 @@ class WsaController extends AbstractController
         ]);
     }
 
-    #[Route('/results', 'results')]
-    public function results(ResultPrinter $resultPrinter): Response
-    {
-        return $this->render('wsa/index_2.html.twig', [
-            'results' => $resultPrinter->getResults(),
-        ]);
-    }
-
     #[Route('/documents/bundesland/{state}', 'documentStateList')]
     public function getByState(string $state, DocumentsRepository $repository, Packages $packages): JsonResponse
     {
@@ -72,7 +62,7 @@ class WsaController extends AbstractController
                 $this->generateUrl('documentDownload', ['id' => $document->getId()]),
                 $state
             );
-            if ($document instanceof DocumentLandesliste) {
+            if ('Landesliste' === $document->getType()) {
                 array_unshift($data, $documentResponse);
             } else {
                 $data[] = $documentResponse;

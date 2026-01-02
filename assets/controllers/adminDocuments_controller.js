@@ -1,17 +1,20 @@
 import { Controller } from "@hotwired/stimulus"
+import { TableSortController } from "stimulus-library";
 import axios from "axios"
 import u from "umbrellajs"
 
-export default class extends Controller {
+export default class extends TableSortController {
 
     connect() {
         super.connect();
-        u('#document_direktkandidaten_state').on("change", e => {
+        u("#document_direktkandidaten_state").on("change", e => {
             this.selected(e.currentTarget.value)
         })
     }
-
     selected(state) {
+        if (state.length === 0) {
+            state = "all"
+        }
         axios.get(
             `/admin/documents/wahlkreise/${encodeURI(state)}`
         )
@@ -23,12 +26,12 @@ export default class extends Controller {
 
     error(error) {
         console.log(error);
-        alert('Es gab einen Fehler');
-        u(document.getElementsByClassName('loader')).addClass('d-none');
+        alert("Es gab einen Fehler");
+        u(document.getElementsByClassName("loader")).addClass("d-none");
     }
 
     changeDropdown(data) {
-        let area = u('#document_direktkandidaten_area').html('');
+        let area = u("#document_direktkandidaten_area").html('');
         for ( let value of data ) {
            area.append(value)
         }

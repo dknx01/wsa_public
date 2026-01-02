@@ -1,87 +1,69 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_admin.html.twig' %}
 {% block title %}Benutzerdetails{% endblock %}
+{% block pageHeader %}Benutzerdetails{% endblock %}
 
 {% block body %}
-{{ include('admin/menu.html.twig') }}
 
-<div class="jumbotron">
     {{ include('layout/flash_messages.html.twig') }}
-    <div class="card">
-        <div class="card-body" id="userForm">
-            <form method="POST" name="user">
-                {% if errors is defined %}
-                    {% for error in errors %}
-                        <div class="alert alert-danger">{{ error }}</div>
+    <form method="POST" name="user">
+        {% if errors is defined %}
+            {% for error in errors %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+    <div class="userFormContainer">
+        <div class="userFormContainer_email">
+            <div>
+                <input type="hidden" name="csrf_token" id="csrf_token_user" value="{{ csrf_token('admin_user_edit') }}">
+                <input type="submit" class="btn btn-partei" value="Speichern">
+            </div>
+            <div>
+                <label for="user_email" class="form-label required">Email</label>
+                <small id="emailHelp" class="form-text text-muted">Email-Adresse des User</small>
+                <input type="text" id="user_email" name="user[email]" required="required" maxlength="180" class="form-control" value="{{ user.email }}">
+            </div>
+        </div>
+        <div class="userFormContainer_status">
+            <div>
+                <label for="user_active" class="form-label required">Aktiv</label>
+                <small id="activeHelp" class="form-text text-muted">Ist der Benutzer aktiv?</small>
+                <input type="checkbox" id="user_active" name="user[active]" class="form-check-input" {% if user.active %}checked{% endif %}>
+            </div>
+            <div>
+                <label for="user_role" class="form-label required">Rolle</label>
+                <small id="roleHelp" class="form-text text-muted">Rolle des Benutzers</small>
+                <select class="form-select" aria-label="Roles" id="user_role" name="user[role]">
+                    <option value="">Keine</option>
+                    {% for role in enum_cases('App\\User\\Roles') %}
+                        <option value="{{ role.name }}" {% if role.name in user.roles %}selected{% endif %}>{{ role.value }}</option>
                     {% endfor %}
-                {% endif %}
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label for="user_email" class="form-label required">Email</label>
-                            <small id="emailHelp" class="form-text text-muted">Email-Adresse des User</small>
-                            <input type="text" id="user_email" name="user[email]" required="required" maxlength="180" class="form-control" value="{{ user.email }}">
+                </select>
+            </div>
+        </div>
+        <div class="userFormContainer_wahlkreise">
+            <span class="text-bold text-decoration-underline">Wahlkreise</span>
+            <small id="activeHelp" class="form-text text-muted">Zugriff auf nur folgende Wahlkreise. Wenn keine ausgewählt sind, sind automatisch alle erlaubt.</small>
+            {% set i = 0 %}
+                <div class="row checkbox-group g-0">
+                {% for wahlkreis in wahlkreise %}
+                    {% if i < 3 %}
+                        {% set i = i + 1 %}
+                    {% else %}
+                        {% set i = 0 %}
+                        </div>
+                        <div class="row checkbox-group g-0">
+                    {% endif %}
+                    <div class="col-12 col-sm-6 col-md-auto">
+                        <div class="form-check">
+                            <input {% if wahlkreis.assigned %}checked{% endif %} class="btn-check" type="checkbox" id="user_wahlkreis[{{ wahlkreis.wahlkreis.name }}]" name="user[wahlkreis][{{ wahlkreis.wahlkreis.id }}]"  autocomplete="off" value="active">
+                            <label class="btn btn-outline-dark" for="user_wahlkreis[{{ wahlkreis.wahlkreis.name }}]">{{ wahlkreis.wahlkreis.name }}</label>
                         </div>
                     </div>
-                    <div class="col-2">
-                        <div class="form-group">
-                            <label for="user_active" class="form-label required">Aktiv</label>
-                            <small id="activeHelp" class="form-text text-muted">Ist der Benutzer aktiv?</small>
-                            <input type="checkbox" id="user_active" name="user[active]" class="form-check-input" {% if user.active %}checked{% endif %}>
-                        </div>
-                        <div class="form-group">
-                            <label for="user_role" class="form-label required">Rolle</label>
-                            <small id="roleHelp" class="form-text text-muted">Rolle des Benutzers</small>
-                            <select class="form-select" aria-label="Roles" id="user_role" name="user[role]">
-                                <option value="">Keine</option>
-                                {% for role in enum_cases('App\\User\\Roles') %}
-                                    <option value="{{ role.name }}" {% if role.name in user.roles %}selected{% endif %}>{{ role.value }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div class="form-group">
-                            <input type="hidden" name="csrf_token" id="csrf_token_user" value="{{ csrf_token('admin_user_edit') }}">
-                            <input type="submit" class="btn btn-partei" value="Speichern">
-                        </div>
-                    </div>
+                {% endfor %}
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <span class="text-bold text-decoration-underline">Wahlkreise</span>
-                        <small id="activeHelp" class="form-text text-muted">Zugriff auf nur folgende Wahlkreise. Wenn keine ausgewählt sind, sind automatisch alle erlaubt.</small>
-                        <ul class="" style="list-style-type: disclosure-closed">
-                        {% for wahlkreis in wahlkreise %}
-                            <div class="form-group">
-                                <li>
-                                    <input
-                                            type="checkbox"
-                                            id="user_wahlkreis_{{ wahlkreis.wahlkreis.id }}"
-                                            name="user[wahlkreis][{{ wahlkreis.wahlkreis.id }}]"
-                                            class="form-check-input"
-                                            {% if wahlkreis.assigned %}checked{% endif %}
-                                            value="active"
-                                    >
-                                    <label for="user_wahlkreis[{{ wahlkreis.wahlkreis.name }}]" class="form-label">{{ wahlkreis.wahlkreis.name }}</label>
-                                    <small id="wahlkreis{{ wahlkreis.wahlkreis.id }}Help" class="form-text text-muted">
-                                    ({{ wahlkreis.wahlkreis.number }}) {{ wahlkreis.wahlkreis.state }}, {{ wahlkreis.wahlkreis.type.value }}
-                                </small>
-                                </li>
-                            </div>
-                        {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-2">
-                        <div class="form-group">
-                            <input type="submit" class="btn btn-partei" value="Speichern">
-                        </div>
-                    </div>
-                </div>
-            </form>
 
+            <input type="submit" class="btn btn-partei" value="Speichern">
         </div>
     </div>
-</div>
+    </form>
 {% endblock %}

@@ -1,0 +1,44 @@
+{% trans_default_domain 'admin' %}
+{% extends 'base_admin.html.twig' %}
+{% block title %}{{ 'wahlkreis.title'|trans }}{% endblock %}
+{% block pageHeader %}{{ 'wahlkreis.title'|trans }}{% endblock %}
+{% block body %}
+    <div class="table-responsive table-responsive-sm">
+            <div class="form-text" data-controller="adminStatisticLoad">
+                <input class="form-text" type="text" id="filter">
+                <label class="form-check-label" for="filter">{{ 'wahlkreis.filter'|trans }}</label>
+            </div>
+            <table id="wahlkreisTable" class="table table-sm table-hover table-striped" data-controller="admin-wahlkreis">
+                <thead>
+                <tr>
+                    <th scope="col">{{ 'wahlkreis.name'|trans }}</th>
+                    <th scope="col">{{ 'wahlkreis.number'|trans }}</th>
+                    <th scope="col">{{ 'wahlkreis.state'|trans }}</th>
+                    <th scope="col">{{ 'wahlkreis.type'|trans }}</th>
+                    <th scope="col">{{ 'wahlkreis.year'|trans }}</th>
+                    <th scope="col">{{ 'wahlkreis.enabled'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, wahlkreis in wahlkreise %}
+                    <tr>
+                        <td data-sort-value="{{ wahlkreis.name }}"><a href="{{ path('admin_wahlkreis_edit', {id: wahlkreis.id}) }}">{{ wahlkreis.name }}</a></td>
+                        <td data-sort-value="{{ wahlkreis.number }}"><a href="{{ path('admin_wahlkreis_edit', {id: wahlkreis.id}) }}">{{ wahlkreis.number }}</a></td>
+                        <td data-sort-value="{{ wahlkreis.state }}"><a href="{{ path('admin_wahlkreis_edit', {id: wahlkreis.id}) }}">{{ wahlkreis.state }}</a></td>
+                        <td data-sort-value="{{ wahlkreis.wahlkreistyp.name }}"><a href="{{ path('admin_wahlkreis_edit', {id: wahlkreis.id}) }}">{{ wahlkreis.wahlkreistyp.name }}</a></td>
+                        <td data-sort-value="{{ wahlkreis.year }}"><a href="{{ path('admin_wahlkreis_edit', {id: wahlkreis.id}) }}">{{ wahlkreis.year }}</a></td>
+                        <td data-sort-value="{{ wahlkreis.enabled }}"><a href="{{ path('admin_wahlkreis_edit', {id: wahlkreis.id}) }}">{{ _self.simple_status(wahlkreis.enabled) }}</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+    </div>
+{% endblock %}
+
+{% macro simple_status(value) %}
+    {% if value is true %}
+        <span class="badge text-black icon-green"><box-icon type='solid' name='check-circle' animation="tada-hover"></box-icon></span>
+    {% else %}
+        <span class="badge text-black icon-red"><box-icon type='solid' name='x-circle' animation="tada-hover"></box-icon></span>
+    {% endif %}
+{% endmacro %}

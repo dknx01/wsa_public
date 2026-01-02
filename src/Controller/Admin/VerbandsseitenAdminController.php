@@ -9,22 +9,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Document\Handler;
-use App\Entity\Document;
-use App\Form\AdminDocumentType;
+use App\Entity\Verbandsseiten;
 use App\Form\VerbandsseitenType;
-use App\Repository\DocumentsRepository;
 use App\Repository\VerbandsseitenRepository;
-use App\Repository\WahlkreisRepository;
 use App\Security\ActiveUserVoter;
 use App\User\Roles;
-use App\Wahlkreis\Handler as WahlkreisHandler;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -34,12 +24,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted(ActiveUserVoter::ACTIVE_USER)]
 class VerbandsseitenAdminController extends AbstractController
 {
-    public function __construct(private readonly Handler $handler)
-    {
-    }
-
     #[Route('/neu', 'admin_verbandseiten_neu')]
-    public function landesliste(
+    public function new(
         Request $request,
         VerbandsseitenRepository $verbandsseitenRepository,
     ): Response {
@@ -60,78 +46,40 @@ class VerbandsseitenAdminController extends AbstractController
         );
     }
 
-    #[Route('/ueberblick', 'admin_document_overview')]
-    public function overview(DocumentsRepository $documentsRepos): Response
-    {
-        $this->denyAccessUnlessGranted(Roles::ROLE_ADMIN->name);
-
-        return $this->render(
-            'admin/documents/overview.html.twig',
-            [
-                'documents' => $documentsRepos->findAll(),
-            ]
-        );
-    }
-
-    #[Route('/{id}', 'admin_document_edit')]
+    #[Route('/edit/{id}', 'admin_verbandseiten_edit')]
     public function edit(
-        Document $document,
+        Verbandsseiten $verbandsseite,
         Request $request,
-        WahlkreisRepository $wahlkreisRepo,
-        WahlkreisHandler $handler,
+        VerbandsseitenRepository $verbandsseitenRepository,
     ): Response {
-        $form = $this->createForm(AdminDocumentType::class, $document);
+        $this->denyAccessUnlessGranted(Roles::ROLE_USER->name);
+
+        $form = $this->createForm(VerbandsseitenType::class, $verbandsseite);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $fileUpload = $form->get('file')->getData();
-
-            try {
-                $this->handler->handleEdit($document, $fileUpload);
-                $this->addFlash('success', 'Datei erfolgreich gespeichert.');
-            } catch (IOException|FileException $e) {
-                $this->addFlash('error', 'Datei konnte nicht gespeichert werden.');
-            }
+            $verbandsseitenRepository->save($form->getData());
+            $this->addFlash('success', 'Verbandsseite erfolgreich geändert.');
         }
 
         return $this->render(
-            'admin/documents/edit.html.twig',
+            'admin/verbandsseiten/edit.html.twig',
             [
                 'form' => $form,
-                'document' => $document,
-                'states' => $wahlkreisRepo->getStates(),
-                'areas' => $handler->getWahlkreiseFormatted(),
             ]
         );
     }
 
-    #[Route('/wahlkreise/{state}', 'admin_document_area_by_state')]
-    public function getAreaByState(string $state, WahlkreisHandler $handler): JsonResponse
-    {
-        $this->denyAccessUnlessGranted(ActiveUserVoter::ACTIVE_USER);
-
-        $options = [];
-        foreach ($handler->getWahlkreiseByStateFormatted($state, $this->getUser()) as $key => $value) {
-            $options[] = \sprintf('<option value="%s">%s</option>', $key, $value);
-        }
-
-        return $this->json($options);
-    }
-
-    #[Route('/delete/{id}', 'admin_document_delete')]
-    public function delete(
-        Document $document,
-        LoggerInterface $logger,
-        Handler $handler,
-        #[Autowire('%kernel.project_dir%/var/docs/')] string $dir,
+    #[Route('/', 'admin_verbandseiten_overview')]
+    public function overview(
+        VerbandsseitenRepository $verbandsseitenRepository,
     ): Response {
-        try {
-            $handler->delete($document);
-            $this->addFlash('success', 'Dokument gelöscht');
-        } catch (IOException $exception) {
-            $logger->error($exception->getMessage());
-            $this->addFlash('error', 'Dokument konnte nicht gelöscht werden');
-        }
+        $this->denyAccessUnlessGranted(Roles::ROLE_USER->name);
 
-        return $this->redirectToRoute('admin_document_overview');
+        return $this->render(
+            'admin/verbandsseiten/overview.html.twig',
+            [
+                'seiten' => $verbandsseitenRepository->findAll(),
+            ]
+        );
     }
 }

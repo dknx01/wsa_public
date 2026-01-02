@@ -17,6 +17,7 @@ class FileUploadDirektkandidat
         public ?string $area = null,
         public ?UploadedFile $file = null,
         public ?string $description = null,
+        public ?bool $archived = null,
     ) {
     }
 }

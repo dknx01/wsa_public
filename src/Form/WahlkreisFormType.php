@@ -7,11 +7,12 @@
 
 namespace App\Form;
 
-use App\Dto\WahlkreisType;
 use App\Entity\Wahlkreis;
+use App\Repository\WahlkreistypRepository;
 use App\Wahlkreis\Handler;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -29,6 +30,7 @@ class WahlkreisFormType extends AbstractType
     public function __construct(
         private readonly Security $security,
         private readonly Handler $handler,
+        private readonly WahlkreistypRepository $wahlkreistypRepository,
     ) {
     }
 
@@ -65,22 +67,16 @@ class WahlkreisFormType extends AbstractType
                     'help' => 'wahlkreis.state.help',
                 ],
             )
-            ->add('type',
+            ->add('wahlkreistyp',
                 ChoiceType::class,
                 [
-                    'choices' => [
-                        WahlkreisType::BTW->value => WahlkreisType::BTW->value,
-                        WahlkreisType::LTW->value => WahlkreisType::LTW->value,
-                        WahlkreisType::KW->value => WahlkreisType::KW->value,
-                        WahlkreisType::KW_KREIS->value => WahlkreisType::KW_KREIS->value,
-                        WahlkreisType::KW_KOMMUNE->value => WahlkreisType::KW_KOMMUNE->value,
-                        WahlkreisType::KW_REG_BEZIRK->value => WahlkreisType::KW_REG_BEZIRK->value,
-                        WahlkreisType::KW_VERBAND->value => WahlkreisType::KW_VERBAND->value,
-                    ],
                     'choice_translation_domain' => false,
                     'translation_domain' => 'admin',
                     'label' => 'wahlkreis.type',
                     'help' => 'wahlkreis.type.help',
+                    'choice_value' => 'id',
+                    'choice_label' => 'name',
+                    'choices' => $this->wahlkreistypRepository->findAllOrdered(),
                 ]
             )
             ->add('threshold',
@@ -103,6 +99,13 @@ class WahlkreisFormType extends AbstractType
                         min: 2025,
                         max: (int) (new \DateTime())->modify('+1 year')->format('Y')),
                 ],
+            ])
+            ->add('enabled', CheckboxType::class, [
+                'label' => 'wahlkreis.enabled',
+                'help' => 'wahlkreis.enabled.help',
+                'translation_domain' => 'admin',
+                'empty_data' => false,
+                'required' => false,
             ])
             ->add('save',
                 SubmitType::class,

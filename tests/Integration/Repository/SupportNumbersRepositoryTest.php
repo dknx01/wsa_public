@@ -169,4 +169,39 @@ class SupportNumbersRepositoryTest extends KernelTestCase
         $this->repo->refresh($supportNumbers);
         $this->expectNotToPerformAssertions();
     }
+
+    public function testFindAllActive(): void
+    {
+        $user = UserBuilder::buildWithId();
+        self::getContainer()->get(UserRepository::class)->save($user);
+
+        $supportNumbers = SupportNumbersBuilder::build();
+        $supportNumbers->setDeleted(true);
+        $supportNumbers->setCreatedBy($user);
+        $this->repo->save($supportNumbers);
+        $supportNumbers = SupportNumbersBuilder::build();
+        $supportNumbers->setDeleted(true);
+        $supportNumbers->setCreatedBy($user);
+        $this->repo->save($supportNumbers);
+        $supportNumbers2 = SupportNumbersBuilder::build();
+        $supportNumbers2->setArchived(true);
+        $supportNumbers2->setCreatedBy($user);
+        $this->repo->save($supportNumbers2);
+        $supportNumbers3 = SupportNumbersBuilder::build();
+        $supportNumbers3->setBundesland('M Land');
+        $supportNumbers3->setCreatedBy($user);
+        $this->repo->save($supportNumbers3);
+        $supportNumbers4 = SupportNumbersBuilder::build();
+        $supportNumbers4->setBundesland('D Land');
+        $supportNumbers4->setCreatedBy($user);
+        $this->repo->save($supportNumbers4);
+
+        $this->assertEquals(
+            [
+                $supportNumbers4,
+                $supportNumbers3,
+            ],
+            $this->repo->findAllActive()
+        );
+    }
 }

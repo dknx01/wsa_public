@@ -1,0 +1,25 @@
+{% extends 'base_admin.html.twig' %}
+{% block title %}Verbandsseite verwalten{% endblock %}
+{% block pageHeader %}Verbandsseite verwalten{% endblock %}
+
+{% block body %}
+    {{ include('layout/flash_messages.html.twig') }}
+    <table class="table table-striped">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Link</th>
+            <th scope="col">Linkname</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for seite in seiten %}
+            <tr>
+                <td><a href="{{ path('admin_verbandseiten_edit', {id: seite.id}) }}">{{ seite.name }}</a></td>
+                <td><a href="{{ path('admin_verbandseiten_edit', {id: seite.id}) }}">{{ seite.link }}</a></td>
+                <td><a href="{{ path('admin_verbandseiten_edit', {id: seite.id}) }}">{{ seite.linkName }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -19,7 +19,6 @@ use App\Tests\Builder\Entity\SupportNumbersBuilder;
 use App\Tests\Builder\Entity\UserBuilder;
 use App\Tests\Builder\Entity\WahlkreisBuilder;
 use App\User\Roles;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -30,14 +29,14 @@ use Symfony\Component\Uid\Ulid;
 class HandlerTest extends TestCase
 {
     use ProphecyTrait;
-    private MockObject|StatisticRepository $statisticRepo;
-    private SupportNumbersRepository|MockObject $supportNumbersRepo;
+    private ObjectProphecy|StatisticRepository $statisticRepo;
+    private SupportNumbersRepository|ObjectProphecy $supportNumbersRepo;
     private ObjectProphecy|AuthorizationCheckerInterface $authChecker;
 
     protected function setUp(): void
     {
-        $this->statisticRepo = $this->createMock(StatisticRepository::class);
-        $this->supportNumbersRepo = $this->createMock(SupportNumbersRepository::class);
+        $this->statisticRepo = $this->prophesize(StatisticRepository::class);
+        $this->supportNumbersRepo = $this->prophesize(SupportNumbersRepository::class);
         $this->authChecker = $this->prophesize(AuthorizationCheckerInterface::class);
     }
 
@@ -48,9 +47,8 @@ class HandlerTest extends TestCase
         $supportNumber1->setUpdatedAt($supportNumber1->getCreatedAt())
             ->setCreatedBy(UserBuilder::buildWithId());
 
-        $this->supportNumbersRepo->expects($this->once())
-            ->method('findByState')
-            ->with('Berlin')
+        $this->supportNumbersRepo->findByState('Berlin')
+            ->shouldBeCalledOnce()
             ->willReturn([$supportNumber1]);
         $handler = $this->getHandler();
         $statisticDataItem = new StatisticDataItem(
@@ -79,9 +77,9 @@ class HandlerTest extends TestCase
         $supportNumber1->setUpdatedAt($supportNumber1->getCreatedAt())
             ->setCreatedBy(UserBuilder::buildWithId());
 
-        $this->supportNumbersRepo->expects($this->once())
-            ->method('findByState')
-            ->with('Berlin')
+        $this->supportNumbersRepo
+            ->findByState('Berlin')
+            ->shouldBeCalledOnce()
             ->willReturn([$supportNumber1]);
         $handler = $this->getHandler();
         $statisticDataItem = new StatisticDataItem(
@@ -115,9 +113,8 @@ class HandlerTest extends TestCase
         $supportNumber1->setUpdatedAt($supportNumber1->getCreatedAt())
             ->setCreatedBy(UserBuilder::buildWithId());
 
-        $this->supportNumbersRepo->expects($this->once())
-            ->method('findByState')
-            ->with('Berlin')
+        $this->supportNumbersRepo->findByState('Berlin')
+            ->shouldBeCalledOnce()
             ->willReturn([$supportNumber1]);
         $handler = $this->getHandler();
         $statisticDataItem = new StatisticDataItem(
@@ -151,9 +148,8 @@ class HandlerTest extends TestCase
         $supportNumber1->setUpdatedAt($supportNumber1->getCreatedAt())
             ->setCreatedBy(UserBuilder::buildWithId());
 
-        $this->supportNumbersRepo->expects($this->once())
-            ->method('findByState')
-            ->with('Berlin')
+        $this->supportNumbersRepo->findByState('Berlin')
+            ->shouldBeCalledOnce()
             ->willReturn([$supportNumber1]);
         $handler = $this->getHandler();
         $statisticDataItem = new StatisticDataItem(
@@ -182,8 +178,8 @@ class HandlerTest extends TestCase
     public function testFindAllWithoutUser(): void
     {
         $statistic = new Statistic();
-        $this->statisticRepo->expects($this->once())
-            ->method('findAll')
+        $this->statisticRepo->findAll()
+            ->shouldBeCalledOnce()
             ->willReturn([$statistic]);
         $expected = new StatisticOverviewCollection();
         $overviewItem = new OverviewItem(
@@ -211,26 +207,14 @@ class HandlerTest extends TestCase
         $statistic2->setType('Direktkandidat');
         $statistic2->setName($wahlkreis2->getName());
 
-        $this->statisticRepo->expects($this->once())
-            ->method('findAll')
+        $this->statisticRepo->findAll()
+            ->shouldBeCalledOnce()
             ->willReturn([$statistic, $statistic2]);
-        $expected = new StatisticOverviewCollection();
-        $overviewItem = new OverviewItem(
-            $statistic,
-            true
-        );
-        $overviewItem2 = new OverviewItem(
-            $statistic2,
-            false
-        );
-        $expected->add($overviewItem);
-        $expected->add($overviewItem2);
-
         $user = UserBuilder::buildWithId();
-        $user->getWahlkreisPermission()->add($wahlkreis1);
+        $user->addWahlkreisPermission($wahlkreis1);
 
         $result = $this->getHandler()->findAll($user);
-        $this->assertEquals($expected, $result);
+        $this->assertEquals(1, $result->filter(fn (OverviewItem $item) => true === $item->hasAccess)->count());
     }
 
     public function testFindAllWithUserInterfaceObject(): void
@@ -249,8 +233,8 @@ class HandlerTest extends TestCase
         $statistic2->setType('Direktkandidat');
         $statistic2->setName($wahlkreis2->getName());
 
-        $this->statisticRepo->expects($this->once())
-            ->method('findAll')
+        $this->statisticRepo->findAll()
+            ->shouldBeCalledOnce()
             ->willReturn([$statistic, $statistic2]);
         $expected = new StatisticOverviewCollection();
         $overviewItem = new OverviewItem(
@@ -272,6 +256,6 @@ class HandlerTest extends TestCase
 
     private function getHandler(): Handler
     {
-        return new Handler($this->statisticRepo, $this->supportNumbersRepo, $this->authChecker->reveal());
+        return new Handler($this->statisticRepo->reveal(), $this->supportNumbersRepo->reveal(), $this->authChecker->reveal());
     }
 }

@@ -1,4 +1,4 @@
-FROM php:8.3-fpm AS php-main
+FROM php:8.4-fpm AS php-main
 
 RUN apt-get update \
     && apt-get install -y git zlib1g-dev libonig-dev libicu-dev libxrender1 libfontconfig1 libxext6 libmagickwand-dev libfreetype6 libjpeg-dev libpng-dev libfreetype6-dev libxml2-utils libxml2-dev libzip-dev zip sqlite3 \

@@ -16,6 +16,7 @@ class FileUpload
         public ?string $type = null,
         public ?UploadedFile $file = null,
         public ?string $description = null,
+        public ?bool $archived = null,
     ) {
     }
 }

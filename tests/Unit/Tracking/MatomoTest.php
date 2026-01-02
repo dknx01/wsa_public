@@ -7,58 +7,84 @@
 
 namespace App\Tests\Unit\Tracking;
 
+use App\Tests\Helper\FakerTrait;
 use App\Tracking\Matomo;
 use App\Tracking\MatomoConfig;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\HttpFoundation\Request;
 
 class MatomoTest extends TestCase
 {
+    use FakerTrait;
     use ProphecyTrait;
 
-    public function testTrackForNotEnabled(): void
+    public static function provideConfig(): \Generator
     {
-        $matomoTracker = $this->prophesize(\MatomoTracker::class);
-        $matomoTracker->doTrackPageView(Argument::type('string'))->shouldNotBeCalled();
-        $config = new MatomoConfig(
-            false,
-            'www.claudine-kuhic.test',
-            'https://example.test',
-            'matomo.php',
-            '89cr23',
-            'https://example.test/matomo.php?img=68348244342',
-            true
-        );
-        $matomo = new Matomo($matomoTracker->reveal(), $config);
-        $matomo->track(new Request(), 'test');
+        $faker = self::createFaker();
+        yield [
+            new Request(),
+            new MatomoConfig(false, $faker->domainName(), 'matomo.test', $faker->url(), '1', '', true),
+            function (\MatomoTracker|ObjectProphecy $tracker) {
+                $tracker->setIp(Argument::type('string'))->shouldNotBeCalled();
+            },
+        ];
+        yield [
+            new Request(
+                server: [
+                    'REMOTE_ADDR' => '127.0.0.1',
+                    'HTTP_User-Agent' => $faker->userAgent(),
+                    'HTTP_Accept-Language' => 'de_DE',
+                ],
+            ),
+            new MatomoConfig(true, $faker->domainName(), 'matomo.test', $faker->url(), '1', '', true),
+            function (\MatomoTracker|ObjectProphecy $tracker) {
+                $tracker->setIp('127.0.0.1')->shouldBeCalledOnce();
+                $tracker->setUrl('http://:/')->shouldBeCalledOnce();
+                $tracker->setUserAgent(Argument::that(fn (string $value) => !empty($value)))->shouldBeCalledOnce();
+                $tracker->setBrowserLanguage('de_DE')->shouldbeCalledOnce();
+                $tracker->setUrlReferrer(Argument::type('string'))->shouldbeCalledOnce();
+                $tracker->doTrackPageView('TestPage')->shouldBeCalledOnce();
+            },
+        ];
+        yield [
+            new Request(
+                server: [
+                    'REMOTE_ADDR' => '127.0.0.1',
+                    'HTTP_User-Agent' => $faker->userAgent(),
+                    'HTTP_Accept-Language' => 'de_DE',
+                    'HTTP_Referer' => 'http://referer.test',
+                ],
+            ),
+            new MatomoConfig(true, $faker->domainName(), 'matomo.test', $faker->url(), '1', '', true),
+            function (\MatomoTracker|ObjectProphecy $tracker) {
+                $tracker->setIp('127.0.0.1')->shouldBeCalledOnce();
+                $tracker->setUrl('http://:/')->shouldBeCalledOnce();
+                $tracker->setUserAgent(Argument::that(fn (string $value) => !empty($value)))->shouldBeCalledOnce();
+                $tracker->setBrowserLanguage('de_DE')->shouldbeCalledOnce();
+                $tracker->setUrlReferrer('http://referer.test')->shouldbeCalledOnce();
+                $tracker->doTrackPageView('TestPage')->shouldBeCalledOnce();
+            },
+        ];
     }
 
-    public function testTrackEnabled(): void
+    #[DataProvider('provideConfig')]
+    public function testTrack(Request $request, MatomoConfig $config, callable $trackerCallback): void
     {
-        $request = new Request(server: [
-            'REMOTE_ADDR' => '127.0.0.1',
-            'HTTP_USER_AGENT' => 'Foo',
-            'HTTP_ACCEPT_LANGUAGE' => 'de-DE',
-        ]);
-        $matomoTracker = $this->prophesize(\MatomoTracker::class);
-        $matomoTracker->setIp('127.0.0.1')->shouldBeCalled();
-        $matomoTracker->setUserAgent('Foo')->shouldBeCalled();
-        $matomoTracker->setBrowserLanguage('de-DE')->shouldBeCalled();
-        $matomoTracker->setUrl('http://:/')->shouldBeCalled();
-        $matomoTracker->setUrlReferrer(Argument::any())->shouldBeCalled();
-        $matomoTracker->doTrackPageView(Argument::type('string'))->shouldBeCalled();
-        $config = new MatomoConfig(
-            true,
-            'www.claudine-kuhic.test',
-            'https://example.test',
-            'matomo.php',
-            '89cr23',
-            'https://example.test/matomo.php?img=68348244342',
-            true
-        );
-        $matomo = new Matomo($matomoTracker->reveal(), $config);
-        $matomo->track($request, 'test');
+        $tracker = $this->prophesize(\MatomoTracker::class);
+        $trackerCallback($tracker);
+        $matomo = new Matomo($tracker->reveal(), $config);
+        $this->assertIsBool($config->enabled);
+        $this->assertIsString($config->cookieDomain);
+        $this->assertIsString($config->matomoDomain);
+        $this->assertIsString($config->trackerUrl);
+        $this->assertIsString($config->siteId);
+        $this->assertIsString($config->noScriptImage);
+        $this->assertIsBool($config->serverSide);
+
+        $matomo->track($request, 'TestPage');
     }
 }

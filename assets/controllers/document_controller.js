@@ -41,11 +41,11 @@ export default class extends Controller {
         } else  {
             html += `<div style="font-weight: bold; text-decoration: underline">${data[0].state}</div>`;
             for (let i = 0; i < data.length; i++) {
-                html +=`<div class="download"><img src="${data[i].image}" style="max-height: 50px; width: auto; margin-right: 5px"><a class="wsa-link" href="${data[i].url}" target="_blank">${data[i].name}</a>`;
+                html +=`<div class="download"><a class="wsa-link" href="${data[i].url}" target="_blank"><img src="${data[i].image}" style="max-height: 50px; width: auto; margin-right: 5px">${data[i].name}`;
                 if (data[i].description.length > 0) {
                     html += `<div style="margin-left: 2.5vw">${data[i].description}</div>`;
                 }
-                html += '</div>';
+                html += '</a></div>';
             }
         }
         html += '</div>';

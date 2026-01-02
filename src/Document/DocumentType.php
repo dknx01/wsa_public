@@ -11,4 +11,6 @@ enum DocumentType: string
 {
     case LANDESLISTE = 'Landesliste';
     case DIREKTKANDIDAT_BTW = 'DirektKandidat Btw';
+    case DIREKTKANDIDAT = 'Direktkandidierend';
+    case LISTE = 'Liste';
 }

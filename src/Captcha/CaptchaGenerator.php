@@ -7,6 +7,7 @@
 
 namespace App\Captcha;
 
+use Random\Randomizer;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 use function Symfony\Component\String\u;
@@ -14,11 +15,13 @@ use function Symfony\Component\String\u;
 class CaptchaGenerator
 {
     private Configuration $configuration;
+    private Randomizer $randomizer;
 
     public function __construct(
         #[Autowire('%kernel.project_dir%/data/JetBrainsMono-ExtraBold.ttf')] private readonly string $captchaFontPath,
     ) {
         $this->configuration = new Configuration(u());
+        $this->randomizer = new Randomizer();
     }
 
     /**
@@ -103,6 +106,6 @@ class CaptchaGenerator
     private function randomFloat(float|int $min, float|int $max): float
     {
         // See https://www.php.net/manual/en/function.mt-rand.php#75793
-        return $min + lcg_value() * abs($max - $min);
+        return $min + $this->randomizer->getFloat(0, 1) * abs($max - $min);
     }
 }

@@ -11,7 +11,6 @@ use App\Repository\StatisticRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Ramsey\Uuid\UuidInterface;
 
@@ -40,7 +39,6 @@ class Statistic
     private int $unapproved = 0;
 
     #[ORM\Column(name: 'updated_at', type: Types::DATETIME_IMMUTABLE, nullable: false, )]
-    #[Gedmo\Timestampable]
     private \DateTimeImmutable $updatedAt;
 
     public function getName(): ?string

@@ -1,0 +1,35 @@
+<table class="table table-sm table-hover" data-controller="adminStatisticAll">
+    <thead>
+        <tr>
+            <th scope="col" style="width: 10%">{{ 'statistic.bundesland'|trans(domain: 'admin') }}</th>
+            <th scope="col" style="width: 10%">{{ 'statistic.name'|trans(domain: 'admin') }}</th>
+            <th scope="col" style="width: 10%">{{ 'statistic.type'|trans(domain: 'admin') }}</th>
+            <th scope="col" style="width: 6%">{{ 'statistic.approved'|trans(domain: 'admin') }}</th>
+            <th scope="col" style="width: 6%">{{ 'statistic.unapproved'|trans(domain: 'admin') }}</th>
+            <th scope="col" style="width: 10%">{{ 'statistic.created_by'|trans(domain: 'admin') }}</th>
+            <th scope="col" style="width: 6%">{{ 'statistic.created_at'|trans(domain: 'admin') }}</th>
+            <th scope="col" style="width: 6%">{{ 'statistic.changed'|trans(domain: 'admin') }}</th>
+            <th scope="col" style="width: 4%" class="text-center">{{ 'statistic.deleted'|trans(domain: 'admin') }}</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entry in entries %}
+    <tr>
+        <td scope="row">{{ entry.wahlkreis.state }}</td>
+        <td>{{ entry.name }}</td>
+        <td>{{ entry.wahlkreis.wahlkreistyp.name }}</td>
+        <td>{{ entry.approved }}</td>
+        <td>{{ entry.unapproved }}</td>
+        <td data-sort-value="{{ entry.createdBy.email }}">{{ entry.createdBy.email }}</td>
+        <td>{{ entry.createdAt|date('Y-m-d H:i') }}</td>
+        <td data-sort-value="{{ displayUserEmail(entry.updatedBy) }}">{% if entry.updatedBy %}{{ displayUserEmail(entry.updatedBy) }}<br>{% endif %}{{ entry.updatedAt|date('Y-m-d H:i') }}</td>
+        <td class="text-center" data-sort-value="{{ entry.deleted }}">{% if entry.deletedAt %}<box-icon type='solid' style="fill: red" name='check-circle'></box-icon>{% endif %}</td>
+        <td>
+            <a href="{{ path('admin_new_edit_statistic', {id: entry.id}, false) }}">{{ 'general.edit'|trans(domain: 'admin') }}</a>
+            <a href="{{ path('admin_new_delete_statistic', {id: entry.id}, false) }}">{{ 'general.delete'|trans(domain: 'admin') }}</a>
+        </td>
+        {% endfor %}
+    </tbody>
+
+</table>

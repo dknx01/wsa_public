@@ -1,0 +1,619 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \#1 \$changedBy of method App\\Entity\\WahlkreisNumberLog\:\:setChangedBy\(\) expects App\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/EventListener/WahlkreisNumberListener.php
+
+		-
+			message: '#^Parameter \#1 \$updatedBy of method App\\Entity\\WahlkreisNumber\:\:setUpdatedBy\(\) expects App\\Entity\\User\|null, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Number/NumbersService.php
+
+		-
+			message: '#^Access to constant TYPE on an unknown class App\\Entity\\DocumentDirektkandidat\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Application/Controller/DefaultControllerTest.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Bundle\\FrameworkBundle\\KernelBrowser\:\:getResponse\(\)\.$#'
+			identifier: method.notFound
+			count: 5
+			path: tests/Application/Controller/DefaultControllerTest.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Bundle\\FrameworkBundle\\KernelBrowser\:\:request\(\)\.$#'
+			identifier: method.notFound
+			count: 5
+			path: tests/Application/Controller/DefaultControllerTest.php
+
+		-
+			message: '#^Parameter \#1 \$args of method App\\Tests\\Builder\\Entity\\VerbandsseitenBuilder\:\:build\(\) expects array\{name\: string\|null, link\: string\|null, linkName\: string\|null\}, array\{name\: string\|null\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Application/Controller/DefaultControllerTest.php
+
+		-
+			message: '#^Parameter \$args of static method App\\Tests\\Builder\\Entity\\DocumentBuilder\:\:build\(\) expects array\{state\: string\|null, name\: string\|null, id\: Ramsey\\Uuid\\UuidInterface\|null, filename\: string\|null, description\: string\|null, wahlkreis\: App\\Entity\\Wahlkreis\|null, wahlkreis_number\: int\|null, wahlkreis_name\: string\|null\}, array\{state\: ''Foo''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Application/Controller/DefaultControllerTest.php
+
+		-
+			message: '#^Parameter \$args of static method App\\Tests\\Builder\\Entity\\DocumentBuilder\:\:build\(\) expects array\{state\: string\|null, name\: string\|null, id\: Ramsey\\Uuid\\UuidInterface\|null, filename\: string\|null, description\: string\|null, wahlkreis\: App\\Entity\\Wahlkreis\|null, wahlkreis_number\: int\|null, wahlkreis_name\: string\|null\}, array\{state\: string\|null\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Application/Controller/DefaultControllerTest.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Bundle\\FrameworkBundle\\KernelBrowser\:\:getResponse\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Application/Controller/MainControllerTest.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Bundle\\FrameworkBundle\\KernelBrowser\:\:request\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Application/Controller/MainControllerTest.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Bundle\\FrameworkBundle\\KernelBrowser\:\:followRedirect\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Application/Controller/RegistrationControllerTest.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Bundle\\FrameworkBundle\\KernelBrowser\:\:getResponse\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: tests/Application/Controller/RegistrationControllerTest.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Bundle\\FrameworkBundle\\KernelBrowser\:\:request\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: tests/Application/Controller/RegistrationControllerTest.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Bundle\\FrameworkBundle\\KernelBrowser\:\:submitForm\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: tests/Application/Controller/RegistrationControllerTest.php
+
+		-
+			message: '#^Call to private method initDatabase\(\) of class App\\Tests\\Application\\ApplicationTestCase\.$#'
+			identifier: method.private
+			count: 3
+			path: tests/Application/Controller/RegistrationControllerTest.php
+
+		-
+			message: '#^Parameter \#1 \$args of static method App\\Tests\\Builder\\Entity\\UserBuilder\:\:build\(\) expects array\{email\: string\|null, password\: string\|null\}, array\{email\: ''test@test\.com''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Application/Controller/RegistrationControllerTest.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Bundle\\FrameworkBundle\\KernelBrowser\:\:request\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: tests/Application/Controller/SecurityControllerTest.php
+
+		-
+			message: '#^Call to private method initDatabase\(\) of class App\\Tests\\Application\\ApplicationTestCase\.$#'
+			identifier: method.private
+			count: 2
+			path: tests/Application/Controller/SecurityControllerTest.php
+
+		-
+			message: '#^Call to an undefined method Faker\\Generator\:\:bundeslandExclude\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Application/Controller/StatisticControllerTest.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Bundle\\FrameworkBundle\\KernelBrowser\:\:getResponse\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Application/Controller/StatisticControllerTest.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Bundle\\FrameworkBundle\\KernelBrowser\:\:request\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: tests/Application/Controller/StatisticControllerTest.php
+
+		-
+			message: '#^Parameter \$data of static method App\\Tests\\Builder\\Entity\\SupportNumbersBuilder\:\:build\(\) expects array\{bundesland\: string\|null, approved\: int\|null, unapproved\: int\|null, user\: App\\Entity\\User\|null, name\: string\|null, id\: Symfony\\Component\\Uid\\Ulid\|null, deleted\: bool\|null, deletedAt\: DateTimeImmutable\|null, \.\.\.\}, array\{bundesland\: ''Nordrhein\-Westfalen''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Application/Controller/StatisticControllerTest.php
+
+		-
+			message: '#^Parameter \$data of static method App\\Tests\\Builder\\Entity\\SupportNumbersBuilder\:\:build\(\) expects array\{bundesland\: string\|null, approved\: int\|null, unapproved\: int\|null, user\: App\\Entity\\User\|null, name\: string\|null, id\: Symfony\\Component\\Uid\\Ulid\|null, deleted\: bool\|null, deletedAt\: DateTimeImmutable\|null, \.\.\.\}, array\{bundesland\: ''Rheinland\-Pfalz''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Application/Controller/StatisticControllerTest.php
+
+		-
+			message: '#^Parameter \$data of static method App\\Tests\\Builder\\Entity\\SupportNumbersBuilder\:\:build\(\) expects array\{bundesland\: string\|null, approved\: int\|null, unapproved\: int\|null, user\: App\\Entity\\User\|null, name\: string\|null, id\: Symfony\\Component\\Uid\\Ulid\|null, deleted\: bool\|null, deletedAt\: DateTimeImmutable\|null, \.\.\.\}, array\{bundesland\: mixed\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Application/Controller/StatisticControllerTest.php
+
+		-
+			message: '#^Access to constant TYPE on an unknown class App\\Entity\\DocumentDirektkandidat\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Application/Controller/WsaControllerTest.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Bundle\\FrameworkBundle\\KernelBrowser\:\:followRedirect\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Application/Controller/WsaControllerTest.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Bundle\\FrameworkBundle\\KernelBrowser\:\:request\(\)\.$#'
+			identifier: method.notFound
+			count: 8
+			path: tests/Application/Controller/WsaControllerTest.php
+
+		-
+			message: '#^Parameter \#2 \$args of static method App\\Tests\\Builder\\Entity\\DocumentBuilder\:\:build\(\) expects array\{state\: string\|null, name\: string\|null, id\: Ramsey\\Uuid\\UuidInterface\|null, filename\: string\|null, description\: string\|null, wahlkreis\: App\\Entity\\Wahlkreis\|null, wahlkreis_number\: int\|null, wahlkreis_name\: string\|null\}, array\{state\: string\|null\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Application/Controller/WsaControllerTest.php
+
+		-
+			message: '#^Parameter \$args of static method App\\Tests\\Builder\\Entity\\DocumentBuilder\:\:build\(\) expects array\{state\: string\|null, name\: string\|null, id\: Ramsey\\Uuid\\UuidInterface\|null, filename\: string\|null, description\: string\|null, wahlkreis\: App\\Entity\\Wahlkreis\|null, wahlkreis_number\: int\|null, wahlkreis_name\: string\|null\}, array\{state\: ''Berlin''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Application/Controller/WsaControllerTest.php
+
+		-
+			message: '#^Parameter \$args of static method App\\Tests\\Builder\\Entity\\DocumentBuilder\:\:build\(\) expects array\{state\: string\|null, name\: string\|null, id\: Ramsey\\Uuid\\UuidInterface\|null, filename\: string\|null, description\: string\|null, wahlkreis\: App\\Entity\\Wahlkreis\|null, wahlkreis_number\: int\|null, wahlkreis_name\: string\|null\}, array\{state\: ''Nordrhein\-Westfalen''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Application/Controller/WsaControllerTest.php
+
+		-
+			message: '#^Parameter \$args of static method App\\Tests\\Builder\\Entity\\DocumentBuilder\:\:build\(\) expects array\{state\: string\|null, name\: string\|null, id\: Ramsey\\Uuid\\UuidInterface\|null, filename\: string\|null, description\: string\|null, wahlkreis\: App\\Entity\\Wahlkreis\|null, wahlkreis_number\: int\|null, wahlkreis_name\: string\|null\}, array\{state\: ''Rheinland\-Pfalz''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Application/Controller/WsaControllerTest.php
+
+		-
+			message: '#^Access to constant TYPE on an unknown class App\\Entity\\DocumentDirektkandidat\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Access to constant TYPE on an unknown class App\\Entity\\DocumentLandesliste\.$#'
+			identifier: class.notFound
+			count: 2
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Call to an undefined method Faker\\Generator\:\:bundesland\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Call to method getName\(\) on an unknown class App\\Entity\\DocumentDirektkandidat\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Call to method getName\(\) on an unknown class App\\Entity\\DocumentLandesliste\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Call to method setDescription\(\) on an unknown class App\\Entity\\DocumentDirektkandidat\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Call to method setDescription\(\) on an unknown class App\\Entity\\DocumentLandesliste\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Call to method setFileName\(\) on an unknown class App\\Entity\\DocumentDirektkandidat\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Call to method setFileName\(\) on an unknown class App\\Entity\\DocumentLandesliste\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Call to method setId\(\) on an unknown class App\\Entity\\DocumentDirektkandidat\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Call to method setId\(\) on an unknown class App\\Entity\\DocumentLandesliste\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Call to method setName\(\) on an unknown class App\\Entity\\DocumentDirektkandidat\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Call to method setName\(\) on an unknown class App\\Entity\\DocumentLandesliste\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Call to method setState\(\) on an unknown class App\\Entity\\DocumentDirektkandidat\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Call to method setState\(\) on an unknown class App\\Entity\\DocumentLandesliste\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Call to method setWahlkreis\(\) on an unknown class App\\Entity\\DocumentDirektkandidat\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Default value of the parameter \#2 \$args \(array\{\}\) of method App\\Tests\\Builder\\Entity\\DocumentBuilder\:\:build\(\) is incompatible with type array\{state\: string\|null, name\: string\|null, id\: Ramsey\\Uuid\\UuidInterface\|null, filename\: string\|null, description\: string\|null, wahlkreis\: App\\Entity\\Wahlkreis\|null, wahlkreis_number\: int\|null, wahlkreis_name\: string\|null\}\.$#'
+			identifier: parameter.defaultValue
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Instantiated class App\\Entity\\DocumentDirektkandidat not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Instantiated class App\\Entity\\DocumentLandesliste not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Method App\\Tests\\Builder\\Entity\\DocumentBuilder\:\:build\(\) should return App\\Entity\\Document but returns App\\Entity\\DocumentDirektkandidat\|App\\Entity\\DocumentLandesliste\.$#'
+			identifier: return.type
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Method App\\Tests\\Builder\\Entity\\DocumentBuilder\:\:buildDirektkandidat\(\) has invalid return type App\\Entity\\DocumentDirektkandidat\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Method App\\Tests\\Builder\\Entity\\DocumentBuilder\:\:buildLandesliste\(\) has invalid return type App\\Entity\\DocumentLandesliste\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Builder/Entity/DocumentBuilder.php
+
+		-
+			message: '#^Call to an undefined method Faker\\Generator\:\:bundesland\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: tests/Builder/Entity/SupportNumbersBuilder.php
+
+		-
+			message: '#^Call to function array_key_exists\(\) with ''deleted'' and array\{bundesland\: string\|null, approved\: int\|null, unapproved\: int\|null, user\: App\\Entity\\User\|null, name\: string\|null, id\: Symfony\\Component\\Uid\\Ulid\|null, deleted\: bool\|null, deletedAt\: DateTimeImmutable\|null, \.\.\.\} will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 2
+			path: tests/Builder/Entity/SupportNumbersBuilder.php
+
+		-
+			message: '#^Call to function array_key_exists\(\) with ''deletedAt'' and array\{bundesland\: string\|null, approved\: int\|null, unapproved\: int\|null, user\: App\\Entity\\User\|null, name\: string\|null, id\: Symfony\\Component\\Uid\\Ulid\|null, deleted\: bool\|null, deletedAt\: DateTimeImmutable\|null, \.\.\.\} will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 2
+			path: tests/Builder/Entity/SupportNumbersBuilder.php
+
+		-
+			message: '#^Call to function array_key_exists\(\) with ''id'' and array\{bundesland\: string\|null, approved\: int\|null, unapproved\: int\|null, user\: App\\Entity\\User\|null, name\: string\|null, id\: Symfony\\Component\\Uid\\Ulid\|null, deleted\: bool\|null, deletedAt\: DateTimeImmutable\|null, \.\.\.\} will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 2
+			path: tests/Builder/Entity/SupportNumbersBuilder.php
+
+		-
+			message: '#^Call to function array_key_exists\(\) with ''updatedAt'' and array\{bundesland\: string\|null, approved\: int\|null, unapproved\: int\|null, user\: App\\Entity\\User\|null, name\: string\|null, id\: Symfony\\Component\\Uid\\Ulid\|null, deleted\: bool\|null, deletedAt\: DateTimeImmutable\|null, \.\.\.\} will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 2
+			path: tests/Builder/Entity/SupportNumbersBuilder.php
+
+		-
+			message: '#^Default value of the parameter \#2 \$data \(array\{\}\) of method App\\Tests\\Builder\\Entity\\SupportNumbersBuilder\:\:build\(\) is incompatible with type array\{bundesland\: string\|null, approved\: int\|null, unapproved\: int\|null, user\: App\\Entity\\User\|null, name\: string\|null, id\: Symfony\\Component\\Uid\\Ulid\|null, deleted\: bool\|null, deletedAt\: DateTimeImmutable\|null, \.\.\.\}\.$#'
+			identifier: parameter.defaultValue
+			count: 1
+			path: tests/Builder/Entity/SupportNumbersBuilder.php
+
+		-
+			message: '#^Default value of the parameter \#1 \$args \(array\{\}\) of method App\\Tests\\Builder\\Entity\\UserBuilder\:\:build\(\) is incompatible with type array\{email\: string\|null, password\: string\|null\}\.$#'
+			identifier: parameter.defaultValue
+			count: 1
+			path: tests/Builder/Entity/UserBuilder.php
+
+		-
+			message: '#^Default value of the parameter \#1 \$args \(array\{\}\) of method App\\Tests\\Builder\\Entity\\UserBuilder\:\:buildWithId\(\) is incompatible with type array\{email\: string\|null, password\: string\|null, id\: int\}\.$#'
+			identifier: parameter.defaultValue
+			count: 1
+			path: tests/Builder/Entity/UserBuilder.php
+
+		-
+			message: '#^Offset ''id'' on array\{email\: string\|null, password\: string\|null, id\: int\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: tests/Builder/Entity/UserBuilder.php
+
+		-
+			message: '#^Default value of the parameter \#1 \$args \(array\{\}\) of method App\\Tests\\Builder\\Entity\\VerbandsseitenBuilder\:\:build\(\) is incompatible with type array\{name\: string\|null, link\: string\|null, linkName\: string\|null\}\.$#'
+			identifier: parameter.defaultValue
+			count: 1
+			path: tests/Builder/Entity/VerbandsseitenBuilder.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with array\{''Berlin''\} and array\<string, string\> will always evaluate to false\.$#'
+			identifier: method.impossibleType
+			count: 1
+			path: tests/Integration/Repository/DocumentsRepositoryTest.php
+
+		-
+			message: '#^Parameter \#2 \$data of static method App\\Tests\\Builder\\Entity\\SupportNumbersBuilder\:\:build\(\) expects array\{bundesland\: string\|null, approved\: int\|null, unapproved\: int\|null, user\: App\\Entity\\User\|null, name\: string\|null, id\: Symfony\\Component\\Uid\\Ulid\|null, deleted\: bool\|null, deletedAt\: DateTimeImmutable\|null, \.\.\.\}, array\{bundesland\: ''Berlin'', approved\: 1, name\: ''Landesliste'', user\: App\\Entity\\User\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Integration/Repository/LogRepositoryTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with array\{''Berlin''\} and array\<string, string\> will always evaluate to false\.$#'
+			identifier: method.impossibleType
+			count: 1
+			path: tests/Integration/Repository/StatisticRepositoryTest.php
+
+		-
+			message: '#^Call to an undefined method Faker\\Generator\:\:bundesland\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Integration/Repository/SupportNumbersRepositoryTest.php
+
+		-
+			message: '#^Method App\\Tests\\Integration\\Repository\\SupportNumbersRepositoryTest\:\:testFindAllBundeslaender\(\) has parameter \$supportNumbers with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Integration/Repository/SupportNumbersRepositoryTest.php
+
+		-
+			message: '#^Parameter \$data of static method App\\Tests\\Builder\\Entity\\SupportNumbersBuilder\:\:build\(\) expects array\{bundesland\: string\|null, approved\: int\|null, unapproved\: int\|null, user\: App\\Entity\\User\|null, name\: string\|null, id\: Symfony\\Component\\Uid\\Ulid\|null, deleted\: bool\|null, deletedAt\: DateTimeImmutable\|null, \.\.\.\}, array\{bundesland\: ''Land A'', wahlkreis\: App\\Entity\\Wahlkreis, user\: App\\Entity\\User\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Integration/Repository/SupportNumbersRepositoryTest.php
+
+		-
+			message: '#^Parameter \$data of static method App\\Tests\\Builder\\Entity\\SupportNumbersBuilder\:\:build\(\) expects array\{bundesland\: string\|null, approved\: int\|null, unapproved\: int\|null, user\: App\\Entity\\User\|null, name\: string\|null, id\: Symfony\\Component\\Uid\\Ulid\|null, deleted\: bool\|null, deletedAt\: DateTimeImmutable\|null, \.\.\.\}, array\{bundesland\: ''Land A''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Integration/Repository/SupportNumbersRepositoryTest.php
+
+		-
+			message: '#^Parameter \$data of static method App\\Tests\\Builder\\Entity\\SupportNumbersBuilder\:\:build\(\) expects array\{bundesland\: string\|null, approved\: int\|null, unapproved\: int\|null, user\: App\\Entity\\User\|null, name\: string\|null, id\: Symfony\\Component\\Uid\\Ulid\|null, deleted\: bool\|null, deletedAt\: DateTimeImmutable\|null, \.\.\.\}, array\{name\: ''Number name'', approved\: 10, unapproved\: 0, user\: App\\Entity\\User\} given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/Integration/Repository/SupportNumbersRepositoryTest.php
+
+		-
+			message: '#^Parameter \$data of static method App\\Tests\\Builder\\Entity\\SupportNumbersBuilder\:\:build\(\) expects array\{bundesland\: string\|null, approved\: int\|null, unapproved\: int\|null, user\: App\\Entity\\User\|null, name\: string\|null, id\: Symfony\\Component\\Uid\\Ulid\|null, deleted\: bool\|null, deletedAt\: DateTimeImmutable\|null, \.\.\.\}, array\{name\: ''Number name'', approved\: 10, unapproved\: 5, user\: App\\Entity\\User\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Integration/Repository/SupportNumbersRepositoryTest.php
+
+		-
+			message: '#^Parameter \$data of static method App\\Tests\\Builder\\Entity\\SupportNumbersBuilder\:\:build\(\) expects array\{bundesland\: string\|null, approved\: int\|null, unapproved\: int\|null, user\: App\\Entity\\User\|null, name\: string\|null, id\: Symfony\\Component\\Uid\\Ulid\|null, deleted\: bool\|null, deletedAt\: DateTimeImmutable\|null, \.\.\.\}, array\{user\: App\\Entity\\User, name\: ''Name A'', bundesland\: ''Land A'', approved\: 10, updatedAt\: DateTimeImmutable\} given\.$#'
+			identifier: argument.type
+			count: 3
+			path: tests/Integration/Repository/SupportNumbersRepositoryTest.php
+
+		-
+			message: '#^Method Symfony\\Component\\Security\\Core\\User\\UserInterface@anonymous/tests/Integration/Repository/WahlkreisRepositoryTest\.php\:78\:\:getUserIdentifier\(\) should return non\-empty\-string but returns ''''\.$#'
+			identifier: return.type
+			count: 1
+			path: tests/Integration/Repository/WahlkreisRepositoryTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''GdImage'' and GdImage will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Unit/Captcha/LineTest.php
+
+		-
+			message: '#^Method App\\Tests\\Unit\\Captcha\\UtilsTest\:\:testHex2Rgb\(\) has parameter \$color with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Unit/Captcha/UtilsTest.php
+
+		-
+			message: '#^Method App\\Tests\\Unit\\Captcha\\UtilsTest\:\:testHex2Rgb\(\) has parameter \$expected with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Unit/Captcha/UtilsTest.php
+
+		-
+			message: '#^Method App\\Tests\\Unit\\Configuration\\ConfigurationTest\:\:testResultAsStart\(\) has parameter \$resultAsStart with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Unit/Configuration/ConfigurationTest.php
+
+		-
+			message: '#^Property App\\Tests\\Unit\\Configuration\\ConfigurationTest\:\:\$config type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Unit/Configuration/ConfigurationTest.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionBagInterface\:\:get\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Unit/Security/AuthenticationEntryPointTest.php
+
+		-
+			message: '#^Property App\\Tests\\Unit\\Statistic\\HandlerTest\:\:\$authChecker with generic class Prophecy\\Prophecy\\ObjectProphecy does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: tests/Unit/Statistic/HandlerTest.php
+
+		-
+			message: '#^Property App\\Tests\\Unit\\Statistic\\HandlerTest\:\:\$statisticRepo \(App\\Repository\\StatisticRepository\|Prophecy\\Prophecy\\ObjectProphecy\) is never assigned App\\Repository\\StatisticRepository so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: tests/Unit/Statistic/HandlerTest.php
+
+		-
+			message: '#^Property App\\Tests\\Unit\\Statistic\\HandlerTest\:\:\$statisticRepo with generic class Prophecy\\Prophecy\\ObjectProphecy does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: tests/Unit/Statistic/HandlerTest.php
+
+		-
+			message: '#^Property App\\Tests\\Unit\\Statistic\\HandlerTest\:\:\$supportNumbersRepo \(App\\Repository\\SupportNumbersRepository\|Prophecy\\Prophecy\\ObjectProphecy\) is never assigned App\\Repository\\SupportNumbersRepository so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: tests/Unit/Statistic/HandlerTest.php
+
+		-
+			message: '#^Property App\\Tests\\Unit\\Statistic\\HandlerTest\:\:\$supportNumbersRepo with generic class Prophecy\\Prophecy\\ObjectProphecy does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: tests/Unit/Statistic/HandlerTest.php
+
+		-
+			message: '#^Property App\\Tests\\Unit\\SupportNumbers\\OutputTest\:\:\$twig \(Prophecy\\Prophecy\\ObjectProphecy\|Twig\\Environment\) is never assigned Twig\\Environment so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: tests/Unit/SupportNumbers/OutputTest.php
+
+		-
+			message: '#^Property App\\Tests\\Unit\\SupportNumbers\\OutputTest\:\:\$twig with generic class Prophecy\\Prophecy\\ObjectProphecy does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: tests/Unit/SupportNumbers/OutputTest.php
+
+		-
+			message: '#^Parameter \#1 \$supportNumber of method App\\Repository\\SupportNumbersRepository\:\:refresh\(\) expects App\\Entity\\SupportNumbersLandesliste, Prophecy\\Argument\\Token\\TypeToken given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/SupportNumbers/SupportNumbersServiceTest.php
+
+		-
+			message: '#^Parameter \#1 \$supportNumbers of method App\\Repository\\SupportNumbersRepository\:\:save\(\) expects App\\Entity\\SupportNumbersLandesliste, Prophecy\\Argument\\Token\\TypeToken given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/Unit/SupportNumbers/SupportNumbersServiceTest.php
+
+		-
+			message: '#^Parameter \#2 \$callback of method Symfony\\Component\\Cache\\Adapter\\ArrayAdapter\:\:get\(\) expects callable\(Symfony\\Contracts\\Cache\\ItemInterface, bool\)\: App\\Entity\\SupportNumbersLandesliste, Closure\(Symfony\\Component\\Cache\\CacheItem\)\: App\\Entity\\SupportNumbersLandesliste given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/SupportNumbers/SupportNumbersServiceTest.php
+
+		-
+			message: '#^Property App\\Tests\\Unit\\SupportNumbers\\SupportNumbersServiceTest\:\:\$output \(App\\SupportNumbers\\Output\|Prophecy\\Prophecy\\ObjectProphecy\) is never assigned App\\SupportNumbers\\Output so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: tests/Unit/SupportNumbers/SupportNumbersServiceTest.php
+
+		-
+			message: '#^Property App\\Tests\\Unit\\SupportNumbers\\SupportNumbersServiceTest\:\:\$output with generic class Prophecy\\Prophecy\\ObjectProphecy does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: tests/Unit/SupportNumbers/SupportNumbersServiceTest.php
+
+		-
+			message: '#^Property App\\Tests\\Unit\\SupportNumbers\\SupportNumbersServiceTest\:\:\$repository \(App\\Repository\\SupportNumbersRepository\|Prophecy\\Prophecy\\ObjectProphecy\) is never assigned App\\Repository\\SupportNumbersRepository so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: tests/Unit/SupportNumbers/SupportNumbersServiceTest.php
+
+		-
+			message: '#^Property App\\Tests\\Unit\\SupportNumbers\\SupportNumbersServiceTest\:\:\$repository with generic class Prophecy\\Prophecy\\ObjectProphecy does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: tests/Unit/SupportNumbers/SupportNumbersServiceTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsBool\(\) with bool will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 2
+			path: tests/Unit/Tracking/MatomoTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsString\(\) with string will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 5
+			path: tests/Unit/Tracking/MatomoTest.php
+
+		-
+			message: '#^Variable \$wahlkreisRepository in PHPDoc tag @var does not match assigned variable \$userRepository\.$#'
+			identifier: varTag.differentVariable
+			count: 1
+			path: tests/Unit/User/UserAdminServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\Unit\\Wahlkreis\\HandlerTest\:\:testFindAllByUser\(\) has parameter \$expected with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Unit/Wahlkreis/HandlerTest.php
+
+		-
+			message: '#^Parameter \#1 \$criteria of method Doctrine\\ORM\\EntityRepository\<App\\Entity\\Wahlkreis\>\:\:findBy\(\) expects array\<string, mixed\>, Prophecy\\Argument\\Token\\AnyValueToken given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Wahlkreis/HandlerTest.php
+
+		-
+			message: '#^Parameter \#4 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, App\\Entity\\Wahlkreistyp\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Wahlkreis/HandlerTest.php
+
+		-
+			message: '#^Property App\\Tests\\Unit\\Wahlkreis\\HandlerTest\:\:\$authChecker with generic class Prophecy\\Prophecy\\ObjectProphecy does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: tests/Unit/Wahlkreis/HandlerTest.php
+
+		-
+			message: '#^Property App\\Tests\\Unit\\Wahlkreis\\HandlerTest\:\:\$wahlkreisRepo \(App\\Repository\\WahlkreisRepository\|Prophecy\\Prophecy\\ObjectProphecy\) is never assigned App\\Repository\\WahlkreisRepository so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: tests/Unit/Wahlkreis/HandlerTest.php
+
+		-
+			message: '#^Property App\\Tests\\Unit\\Wahlkreis\\HandlerTest\:\:\$wahlkreisRepo with generic class Prophecy\\Prophecy\\ObjectProphecy does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: tests/Unit/Wahlkreis/HandlerTest.php

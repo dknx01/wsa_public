@@ -10,7 +10,7 @@ namespace App\Tracking;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Extension\RuntimeExtensionInterface;
 
-readonly class Matomo implements RuntimeExtensionInterface
+class Matomo implements RuntimeExtensionInterface
 {
     public function __construct(private \MatomoTracker $tracker, private MatomoConfig $config)
     {

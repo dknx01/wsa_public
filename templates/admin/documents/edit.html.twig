@@ -1,15 +1,16 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_admin.html.twig' %}
 {% block title %}UU Dokument{% endblock %}
+{% block pageHeader %}UU Dokument bearbeiten{% endblock %}
 
 {% block body %}
-{{ include('admin/menu.html.twig') }}
 
 <div class="jumbotron">
     {{ include('layout/flash_messages.html.twig') }}
     <div class="card">
         <div class="card-body" id="documentForm">
             {{ form(form) }}
-            <a href="#" class="btn btn-dark">Löschen</a>
+            <a href="{{ path('documentDownload', {id: document.id}) }}" target="_blank" class="btn btn-dark">Download</a>
+            <a href="{{ path('admin_document_delete', {id: document.id}) }}" class="btn btn-dark">Löschen</a>
         </div>
     </div>
 {% endblock %}

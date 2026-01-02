@@ -23,6 +23,18 @@ readonly class Handler
     }
 
     /**
+     * @return Wahlkreis[]
+     */
+    public function findAllByUser(UserInterface|User|null $user = null): array
+    {
+        if ($user instanceof User && !$this->isAdminUser($user)) {
+            return $user->getWahlkreisPermission()->toArray();
+        }
+
+        return $this->wahlkreisRepository->findAllOrdered();
+    }
+
+    /**
      * @return array<string, string>
      */
     public function getWahlkreiseByStateFormatted(string $state, UserInterface|User|null $user = null): array
@@ -34,9 +46,9 @@ readonly class Handler
                     continue;
                 }
                 if (!$wahlkreis->getNumber()) {
-                    $name = \sprintf('%s', $wahlkreis->getName());
+                    $name = \sprintf('%s  - %s %s', $wahlkreis->getName(), $wahlkreis->getWahlkreistyp()?->getName(), $wahlkreis->getNumber());
                 } else {
-                    $name = \sprintf('%s (Nr. %s)', $wahlkreis->getName(), $wahlkreis->getNumber());
+                    $name = \sprintf('%s (Nr. %s) - %s %s', $wahlkreis->getName(), $wahlkreis->getNumber(), $wahlkreis->getWahlkreistyp()?->getName(), $wahlkreis->getYear());
                 }
                 $data[$wahlkreis->getId()->toString()] = $name;
             }
@@ -45,9 +57,9 @@ readonly class Handler
             /* @var Wahlkreis $bundesland */
             foreach ($this->wahlkreisRepository->findBy(['state' => $state]) as $wahlkreis) {
                 if (!$wahlkreis->getNumber()) {
-                    $name = \sprintf('%s', $wahlkreis->getName());
+                    $name = \sprintf('%s - %s %s', $wahlkreis->getName(), $wahlkreis->getWahlkreistyp()?->getName(), $wahlkreis->getNumber());
                 } else {
-                    $name = \sprintf('%s (Nr. %s)', $wahlkreis->getName(), $wahlkreis->getNumber());
+                    $name = \sprintf('%s (Nr. %s) - %s %s', $wahlkreis->getName(), $wahlkreis->getNumber(), $wahlkreis->getWahlkreistyp()?->getName(), $wahlkreis->getYear());
                 }
                 $data[$wahlkreis->getId()->toString()] = $name;
             }

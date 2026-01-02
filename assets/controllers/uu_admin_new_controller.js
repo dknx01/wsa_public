@@ -18,7 +18,6 @@ export default class extends Controller {
         super.connect();
         this.uuAddHandler = new UUAddHandler(this.urlValue);
         u(document.getElementsByClassName('loader')).addClass('d-none');
-        u('#statistic_type').on('change', e => {this.uuAddHandler.handleTypeChange(e.target.value);});
         u('#statistic_bundesland').on('change', e => {this.uuAddHandler.changedState(e.target.value);});
         u('#statistic_wahlkreis').on('change', e => {this.uuAddHandler.changedWahlkreis();});
         if (this.wahlkreisValue !== true) {

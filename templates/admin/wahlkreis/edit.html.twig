@@ -1,0 +1,9 @@
+{% trans_default_domain 'admin' %}
+{% extends 'base_admin.html.twig' %}
+{% block title %}{{ 'wahlkreis.edit.title'|trans }}{% endblock %}
+{% block pageHeader %}{{ 'wahlkreis.edit.title'|trans }}{% endblock %}
+
+{% block body %}
+    {{ include('layout/notifications.html.twig') }}
+    {{ form(form) }}
+{% endblock %}

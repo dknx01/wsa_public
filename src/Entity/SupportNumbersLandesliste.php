@@ -82,9 +82,24 @@ class SupportNumbersLandesliste
     #[ORM\ManyToOne]
     private ?User $updatedBy = null;
 
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => false])]
+    private bool $archived = false;
+
     public function __construct()
     {
         $this->history = new ArrayCollection();
+    }
+
+    public function isArchived(): bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(bool $archived): self
+    {
+        $this->archived = $archived;
+
+        return $this;
     }
 
     public function getId(): ?Ulid

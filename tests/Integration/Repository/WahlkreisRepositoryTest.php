@@ -63,7 +63,7 @@ class WahlkreisRepositoryTest extends KernelTestCase
     {
         $expected = [];
         if ($user instanceof User) {
-            $user->getWahlkreisPermission()->add($wahlkreis);
+            $user->addWahlkreisPermission($wahlkreis);
         } else {
             $this->repo->save($wahlkreis);
         }
@@ -96,5 +96,21 @@ class WahlkreisRepositoryTest extends KernelTestCase
             WahlkreisBuilder::build(),
             new User(),
         ];
+    }
+
+    public function testFindAllOrdered(): void
+    {
+        $wahlkreis = WahlkreisBuilder::build(name: 'Test');
+        $this->repo->save($wahlkreis);
+        $wahlkreis1 = WahlkreisBuilder::build(name: 'Bla');
+        $this->repo->save($wahlkreis1);
+
+        $this->assertEquals(
+            [
+                $wahlkreis1,
+                $wahlkreis,
+            ],
+            $this->repo->findAllOrdered()
+        );
     }
 }

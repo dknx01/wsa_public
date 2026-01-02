@@ -9,8 +9,6 @@ namespace App\Controller;
 
 use App\Dto\UuListe;
 use App\Entity\Document;
-use App\Entity\DocumentDirektkandidat;
-use App\Entity\DocumentLandesliste;
 use App\Repository\DocumentsRepository;
 use App\Repository\SupportNumbersRepository;
 use App\Repository\VerbandsseitenRepository;
@@ -52,9 +50,9 @@ class DefaultController extends AbstractController
             $liste->link = $value->getLink();
             $liste->linkName = $value->getLinkName();
             $docs = $documents->filter(fn (Document $document) => $document->getState() === $value->getName());
-            /** @var ArrayCollection<int,DocumentLandesliste|DocumentDirektkandidat> $docs */
+            /** @var ArrayCollection<int,Document> $docs */
             foreach ($docs as $doc) {
-                if ($doc instanceof DocumentLandesliste) {
+                if ('Landesliste' === $doc->getType()) {
                     $liste->sendTo = $doc->getDescription();
                     $liste->linkLandesliste = $this->generateUrl('documentDownload', ['id' => $doc->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
                     continue;

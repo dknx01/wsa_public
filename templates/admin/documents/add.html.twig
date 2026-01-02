@@ -1,0 +1,11 @@
+{% extends 'base_admin.html.twig' %}
+{% block title %}Dokument hinzufügen{% endblock %}
+{% block pageHeader %}Dokument hinzufügen{% endblock %}
+{% block body %}
+    <main class="wrapper">
+        <div class="Wsa-Tableau"  data-controller="adminDocuments">
+            {{ include('layout/notifications.html.twig') }}
+            {{ form(form) }}
+        </div>
+    </main>
+{% endblock %}

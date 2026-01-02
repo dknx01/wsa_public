@@ -7,8 +7,7 @@
 
 namespace App\Tests\Integration\Repository;
 
-use App\Entity\DocumentDirektkandidat;
-use App\Entity\DocumentLandesliste;
+use App\Entity\Document;
 use App\Repository\DocumentsRepository;
 use App\Tests\Helper\RepositoryTestCase;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -23,10 +22,11 @@ class DocumentsRepositoryTest extends KernelTestCase
     {
         $this->assertEmpty($this->repo->findAll());
 
-        $document = new DocumentLandesliste();
+        $document = new Document();
         $document->setName('Example Document');
         $document->setState('Berlin');
         $document->setFileName('foo.pdf');
+        $document->setType('Landesliste');
         $this->repo->save($document);
 
         $this->assertCount(1, $this->repo->findAll());
@@ -34,10 +34,11 @@ class DocumentsRepositoryTest extends KernelTestCase
 
     public function testRefresh(): void
     {
-        $document = new DocumentLandesliste();
+        $document = new Document();
         $document->setName('Example Document');
         $document->setState('Berlin');
         $document->setFileName('foo.pdf');
+        $document->setType('Landesliste');
         $this->repo->save($document);
         $this->repo->refresh($document);
         $this->expectNotToPerformAssertions();
@@ -45,10 +46,11 @@ class DocumentsRepositoryTest extends KernelTestCase
 
     public function testFindAllBundeslaender(): void
     {
-        $document = new DocumentLandesliste();
+        $document = new Document();
         $document->setName('Example Document');
         $document->setState('Berlin');
         $document->setFileName('foo.pdf');
+        $document->setType('Landesliste');
         $this->repo->save($document);
 
         $this->assertSame(['Berlin'], $this->repo->findAllBundeslaender());
@@ -56,10 +58,11 @@ class DocumentsRepositoryTest extends KernelTestCase
 
     public function testFindAllByState(): void
     {
-        $document = new DocumentLandesliste();
+        $document = new Document();
         $document->setName('Example Document');
         $document->setState('Berlin');
         $document->setFileName('foo.pdf');
+        $document->setType('Landesliste');
         $this->repo->save($document);
 
         $this->assertCount(1, $this->repo->findAllByState('Berlin'));
@@ -67,10 +70,11 @@ class DocumentsRepositoryTest extends KernelTestCase
 
     public function testDelete(): void
     {
-        $document = new DocumentDirektkandidat();
+        $document = new Document();
         $document->setName('Example Document');
         $document->setState('Berlin');
         $document->setFileName('foo.pdf');
+        $document->setType('Landesliste');
         $this->repo->save($document);
         $this->assertCount(1, $this->repo->findAll());
 
@@ -80,10 +84,11 @@ class DocumentsRepositoryTest extends KernelTestCase
 
     public function testFindByName(): void
     {
-        $document = new DocumentDirektkandidat();
+        $document = new Document();
         $document->setName('Example Document');
         $document->setState('Berlin');
         $document->setFileName('foo.pdf');
+        $document->setType('Landesliste');
         $this->repo->save($document);
         unset($document);
 

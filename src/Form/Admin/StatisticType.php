@@ -9,7 +9,6 @@ namespace App\Form\Admin;
 
 use App\Entity\SupportNumbersLandesliste;
 use App\Entity\Wahlkreis;
-use App\SupportNumbers\Type;
 use App\Wahlkreis\Handler;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -71,21 +70,21 @@ class StatisticType extends AbstractType
                 'required' => false,
             ]
             )
-            ->add(child: 'type', type: ChoiceType::class, options: [
-                'translation_domain' => 'admin',
-                'label' => 'statistic.type',
-                'label_attr' => ['class' => 'col-sm-2 col-form-label'],
-                'choices' => [
-                    'bitte wählen' => '',
-                    Type::LL_BTW->value => Type::LL_BTW->name,
-                    Type::DK_BTW->value => Type::DK_BTW->name,
-                    Type::LL_KW->value => Type::LL_KW->name,
-                    Type::DK_KW->value => Type::DK_KW->name,
-                    Type::LL_LTW->value => Type::LL_LTW->name,
-                    Type::DK_LTW->value => Type::DK_LTW->name,
-                ],
-                'choice_translation_domain' => false,
-            ])
+//            ->add(child: 'type', type: ChoiceType::class, options: [
+//                'translation_domain' => 'admin',
+//                'label' => 'statistic.type',
+//                'label_attr' => ['class' => 'col-sm-2 col-form-label'],
+//                'choices' => [
+//                    'bitte wählen' => '',
+//                    Type::LL_BTW->value => Type::LL_BTW->name,
+//                    Type::DK_BTW->value => Type::DK_BTW->name,
+//                    Type::LL_KW->value => Type::LL_KW->name,
+//                    Type::DK_KW->value => Type::DK_KW->name,
+//                    Type::LL_LTW->value => Type::LL_LTW->name,
+//                    Type::DK_LTW->value => Type::DK_LTW->name,
+//                ],
+//                'choice_translation_domain' => false,
+//            ])
             ->add(child: 'approved', options: [
                 'translation_domain' => 'admin',
                 'label' => 'statistic.approved',

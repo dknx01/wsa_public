@@ -17,10 +17,12 @@ use App\User\Roles;
 use App\User\UserAdminService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class UserAdminServiceTest extends TestCase
 {
     use FakerTrait;
+    use ProphecyTrait;
 
     protected function setUp(): void
     {
@@ -63,19 +65,18 @@ class UserAdminServiceTest extends TestCase
     public function testGetPermissionsByUser(): void
     {
         /** @var MockObject|UserRepository $wahlkreisRepository */
-        $userRepository = $this->createMock(UserRepository::class);
         /** @var MockObject|WahlkreisRepository $wahlkreisRepository */
         $wahlkreisRepository = $this->createMock(WahlkreisRepository::class);
 
-        $service = new UserAdminService($wahlkreisRepository, $userRepository);
+        $service = new UserAdminService($wahlkreisRepository, $this->prophesize(UserRepository::class)->reveal());
 
         $user = new User();
         $wahlkreis = WahlkreisBuilder::build();
         $wahlkreis2 = WahlkreisBuilder::build();
-        $user->getWahlkreisPermission()->add($wahlkreis);
+        $user->addWahlkreisPermission($wahlkreis);
 
         $wahlkreisRepository->expects($this->once())
-            ->method('findAll')
+            ->method('findAllOrdered')
             ->willReturn([$wahlkreis, $wahlkreis2]);
 
         $permissions = $service->getPermissionsByUser($user);

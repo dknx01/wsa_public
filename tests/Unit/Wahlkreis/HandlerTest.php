@@ -13,31 +13,32 @@ use App\Tests\Builder\Entity\UserBuilder;
 use App\Tests\Builder\Entity\WahlkreisBuilder;
 use App\User\Roles;
 use App\Wahlkreis\Handler;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Ulid;
 
 class HandlerTest extends TestCase
 {
     use ProphecyTrait;
-    private WahlkreisRepository|MockObject $wahlkreisRepo;
+    private WahlkreisRepository|ObjectProphecy $wahlkreisRepo;
     private ObjectProphecy|AuthorizationCheckerInterface $authChecker;
 
     protected function setUp(): void
     {
         $this->authChecker = $this->prophesize(AuthorizationCheckerInterface::class);
-        $this->wahlkreisRepo = $this->createMock(WahlkreisRepository::class);
+        $this->wahlkreisRepo = $this->prophesize(WahlkreisRepository::class);
     }
 
     public function testGetStatesWithoutUser(): void
     {
         $this->authChecker->isGranted(Argument::any(), Argument::any())->shouldNotBeCalled();
 
-        $this->wahlkreisRepo->expects($this->once())
-            ->method('getStates')
+        $this->wahlkreisRepo->getStates()->shouldBeCalledOnce()
             ->willReturn(['Hessen' => 'Hessen', 'Berlin' => 'Berlin']);
 
         $handler = $this->getHandler();
@@ -50,8 +51,7 @@ class HandlerTest extends TestCase
             ->shouldBeCalledOnce()
             ->willReturn(false);
 
-        $this->wahlkreisRepo->expects($this->once())
-            ->method('getStates')
+        $this->wahlkreisRepo->getStates()->shouldBeCalledOnce()
             ->willReturn(['Hessen' => 'Hessen', 'Berlin' => 'Berlin']);
 
         $handler = $this->getHandler();
@@ -64,14 +64,13 @@ class HandlerTest extends TestCase
             ->shouldBeCalledOnce()
             ->willReturn(false);
 
-        $this->wahlkreisRepo->expects($this->never())
-            ->method('getStates');
+        $this->wahlkreisRepo->getStates()->shouldNotBeCalled();
 
         $handler = $this->getHandler();
         $user = UserBuilder::build();
         $user->setRoles([Roles::ROLE_USER->name]);
         $wahlkreis = WahlkreisBuilder::build();
-        $user->getWahlkreisPermission()->add($wahlkreis);
+        $user->addWahlkreisPermission($wahlkreis);
         $this->assertEquals([$wahlkreis->getState() => $wahlkreis->getState()], $handler->getStates($user));
     }
 
@@ -81,87 +80,75 @@ class HandlerTest extends TestCase
         $wahlkreis2->setState('Berlin');
         $wahlkreis1 = WahlkreisBuilder::build();
         $wahlkreis1->setState('Bayern');
-        $wahlkreis1->setNumber(null);
 
-        $this->wahlkreisRepo->expects($this->once())
-            ->method('findBy')
-            ->with(['state' => $wahlkreis2->getState()])
-            ->willReturn([$wahlkreis2, $wahlkreis1]);
+        $this->wahlkreisRepo->findBy(['state' => $wahlkreis2->getState()])
+            ->shouldBeCalledOnce()
+            ->willReturn([$wahlkreis2]);
         $service = $this->getHandler();
-
-        $result = $service->getWahlkreiseByStateFormatted('Berlin');
-        $this->assertCount(2, $result);
-        $this->assertArrayHasKey($wahlkreis2->getId()->toString(), $result);
-        $this->assertEquals(\sprintf('%s (Nr. %s)', $wahlkreis2->getName(), $wahlkreis2->getNumber()), $result[$wahlkreis2->getId()->toString()]);
-
-        $this->assertArrayHasKey($wahlkreis1->getId()->toString(), $result);
-        $this->assertEquals(\sprintf('%s', $wahlkreis1->getName()), $result[$wahlkreis1->getId()->toString()]);
+        $this->assertSame(
+            [
+                $wahlkreis2->getId()->toString() => \sprintf('%s (Nr. %s) - %s %d', $wahlkreis2->getName(), $wahlkreis2->getNumber(), $wahlkreis2->getWahlkreistyp()?->getName(), $wahlkreis2->getYear()),
+            ],
+            $service->getWahlkreiseByStateFormatted('Berlin')
+        );
     }
 
     public function testGetWahlkreiseByStateFormattedWithNonAdminUser(): void
     {
         $wahlkreis2 = WahlkreisBuilder::build();
         $wahlkreis2->setState('Berlin');
-        $wahlkreis3 = WahlkreisBuilder::build();
-        $wahlkreis3->setState('Berlin');
-        $wahlkreis3->setNumber(null);
         $wahlkreis1 = WahlkreisBuilder::build();
         $wahlkreis1->setState('Bayern');
 
-        $this->wahlkreisRepo->expects($this->never())
-            ->method('findBy');
+        $this->wahlkreisRepo->findBy(Argument::any())->shouldNotBeCalled();
         $this->authChecker->isGranted(Roles::ROLE_ADMIN->name, Argument::type(User::class))
             ->shouldBeCalledOnce()
             ->willReturn(false);
 
         $service = $this->getHandler();
         $user = UserBuilder::build();
-        $user->getWahlkreisPermission()->add($wahlkreis2);
-        $user->getWahlkreisPermission()->add($wahlkreis3);
-        $user->getWahlkreisPermission()->add($wahlkreis1);
+        $user->addWahlkreisPermission($wahlkreis2);
+        $user->addWahlkreisPermission($wahlkreis1);
 
-        $result = $service->getWahlkreiseByStateFormatted('Berlin', $user);
-        $this->assertCount(2, $result);
-        $this->assertArrayHasKey($wahlkreis2->getId()->toString(), $result);
-        $this->assertEquals(\sprintf('%s (Nr. %s)', $wahlkreis2->getName(), $wahlkreis2->getNumber()), $result[$wahlkreis2->getId()->toString()]);
-
-        $this->assertArrayHasKey($wahlkreis3->getId()->toString(), $result);
-        $this->assertEquals(\sprintf('%s', $wahlkreis3->getName()), $result[$wahlkreis3->getId()->toString()]);
+        $this->assertSame(
+            [
+                $wahlkreis2->getId()->toString() => \sprintf('%s (Nr. %s) - %s %d', $wahlkreis2->getName(), $wahlkreis2->getNumber(), $wahlkreis2->getWahlkreistyp(), $wahlkreis2->getYear()),
+            ],
+            $service->getWahlkreiseByStateFormatted('Berlin', $user)
+        );
     }
 
     public function testGetWahlkreiseFormattedWithoutUser(): void
     {
         $wahlkreis2 = WahlkreisBuilder::build();
         $wahlkreis1 = WahlkreisBuilder::build();
-        $wahlkreis1->setNumber(null);
 
-        $this->wahlkreisRepo->expects($this->once())
-            ->method('findAll')
+        $this->wahlkreisRepo->findAll()->shouldBeCalledOnce()
             ->willReturn([$wahlkreis1, $wahlkreis2]);
         $service = $this->getHandler();
-
-        $expectedKeys = [
-            \sprintf('%s (Nr. %s)', $wahlkreis2->getName(), $wahlkreis2->getNumber()) => $wahlkreis2->getId()->toString(),
-            \sprintf('%s', $wahlkreis1->getName()) => $wahlkreis1->getId()->toString(),
-        ];
-        $wahlkreise = $service->getWahlkreiseFormatted();
-        foreach ($expectedKeys as $key => $value) {
-            $this->assertArrayHasKey($key, $wahlkreise);
-            $this->assertEquals($value, $wahlkreise[$key]);
-        }
+        $result = $service->getWahlkreiseFormatted();
+        $this->assertArrayHasKey(
+            \sprintf('%s (Nr. %s)', $wahlkreis2->getName(), $wahlkreis2->getNumber()),
+            $result
+        );
+        $this->assertArrayHasKey(
+            \sprintf('%s (Nr. %s)', $wahlkreis1->getName(), $wahlkreis1->getNumber()),
+            $result
+        );
     }
 
     public function testGetWahlkreiseFormattedWithNonAdminUser(): void
     {
         $wahlkreis2 = WahlkreisBuilder::build();
+        $wahlkreis2->setId(Ulid::fromString(Ulid::generate()));
         $wahlkreis1 = WahlkreisBuilder::build();
+        $wahlkreis1->setId(Ulid::fromString(Ulid::generate()));
 
         $user = UserBuilder::build();
-        $user->getWahlkreisPermission()->add($wahlkreis1);
-        $user->getWahlkreisPermission()->add($wahlkreis2);
+        $user->addWahlkreisPermission($wahlkreis1);
+        $user->addWahlkreisPermission($wahlkreis2);
 
-        $this->wahlkreisRepo->expects($this->never())
-            ->method('findAll');
+        $this->wahlkreisRepo->findAll()->shouldNotBeCalled();
         $this->authChecker->isGranted(Roles::ROLE_ADMIN->name, Argument::type(User::class))
             ->shouldBeCalledOnce()
             ->willReturn(false);
@@ -176,10 +163,59 @@ class HandlerTest extends TestCase
         );
     }
 
+    public static function provideFindAllByUser(): \Generator
+    {
+        $wahlkreis1 = WahlkreisBuilder::build();
+        $wahlkreis2 = WahlkreisBuilder::build();
+        yield 'without user' => [
+            [$wahlkreis1, $wahlkreis2],
+            function (AuthorizationCheckerInterface|ObjectProphecy $authChecker, WahlkreisRepository|ObjectProphecy $wahlkreisRepository) use ($wahlkreis1, $wahlkreis2) {
+                $wahlkreisRepository->findAllOrdered()->shouldBeCalled()
+                    ->willReturn([$wahlkreis1, $wahlkreis2]);
+            },
+            null,
+        ];
+        yield 'Admin user' => [
+            [$wahlkreis1, $wahlkreis2],
+            function (AuthorizationCheckerInterface|ObjectProphecy $authChecker, WahlkreisRepository|ObjectProphecy $wahlkreisRepository) use ($wahlkreis1, $wahlkreis2) {
+                $wahlkreisRepository->findAllOrdered()->shouldBeCalled()
+                    ->willReturn([$wahlkreis1, $wahlkreis2]);
+                $authChecker->isGranted(Roles::ROLE_ADMIN->name, Argument::type(User::class))
+                    ->shouldBeCalledOnce()
+                    ->willReturn(true);
+            },
+            UserBuilder::build(),
+        ];
+
+        $user = UserBuilder::build();
+        $user->addWahlkreisPermission($wahlkreis2);
+        yield 'With normal user' => [
+            [$wahlkreis2],
+            function (AuthorizationCheckerInterface|ObjectProphecy $authChecker, WahlkreisRepository|ObjectProphecy $wahlkreisRepository) {
+                $wahlkreisRepository->findAllOrdered()->shouldNotBeCalled();
+                $authChecker->isGranted(Roles::ROLE_ADMIN->name, Argument::type(User::class))
+                    ->shouldBeCalledOnce()
+                    ->willReturn(false);
+            },
+            $user,
+        ];
+    }
+
+    #[DataProvider('provideFindAllByUser')]
+    public function testFindAllByUser(array $expected, callable $prophesizeCallback, UserInterface|User|null $user): void
+    {
+        $prophesizeCallback($this->authChecker, $this->wahlkreisRepo);
+
+        $this->assertEquals(
+            $expected,
+            $this->getHandler()->findAllByUser($user)
+        );
+    }
+
     private function getHandler(): Handler
     {
         return new Handler(
-            $this->wahlkreisRepo,
+            $this->wahlkreisRepo->reveal(),
             $this->authChecker->reveal()
         );
     }

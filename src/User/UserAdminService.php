@@ -44,7 +44,7 @@ readonly class UserAdminService
     {
         $data = [];
 
-        foreach ($this->wahlkreisRepository->findAll() as $wahlkreis) {
+        foreach ($this->wahlkreisRepository->findAllOrdered() as $wahlkreis) {
             $data[] = [
                 'wahlkreis' => $wahlkreis,
                 'assigned' => $user->getWahlkreisPermission()->contains($wahlkreis),

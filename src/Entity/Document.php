@@ -13,12 +13,6 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Entity(repositoryClass: DocumentsRepository::class)]
-#[ORM\InheritanceType('SINGLE_TABLE')]
-#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
-#[ORM\DiscriminatorMap([
-    DocumentLandesliste::TYPE => DocumentLandesliste::class,
-    DocumentDirektkandidat::TYPE => DocumentDirektkandidat::class,
-])]
 class Document
 {
     #[ORM\Id]
@@ -41,6 +35,22 @@ class Document
 
     #[ORM\ManyToOne]
     private ?Wahlkreis $wahlkreis = null;
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => false])]
+    private bool $archived = false;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $type;
+
+    public function isArchived(): bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(bool $archived): self
+    {
+        $this->archived = $archived;
+
+        return $this;
+    }
 
     public function getId(): UuidInterface
     {
@@ -121,6 +131,18 @@ class Document
     public function setWahlkreis(?Wahlkreis $wahlkreis): static
     {
         $this->wahlkreis = $wahlkreis;
+
+        return $this;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

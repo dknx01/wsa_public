@@ -26,13 +26,12 @@ class ConfigurationTest extends TestCase
         'impress' => 'Foo',
         'logoPath' => '',
         'pageLogoPath' => '',
-        'uuHelpWk' => '',
-        'uuHelpLl' => '',
-        'resultFile' => '',
-        'privacy' => 'Marty, I\'m sorry, but the only power source capable of generating 1.21 gigawatts of electricity is a bolt of lightning.',
+        'uuHelpWk' => 'wk.help',
+        'uuHelpLl' => 'll.help',
+        'privacy' => 'Wow! Sporty go-cart, Leela! So hip and sexy. Not like you at all.',
         'resultAsStart' => null,
+        'resultFile' => 'result.file',
     ];
-    private string $env = 'test';
 
     protected function setUp(): void
     {
@@ -82,41 +81,41 @@ class ConfigurationTest extends TestCase
 
     public function testGetResultFile(): void
     {
-        $this->config['resultFile'] = './result.json';
-        $this->assertEquals('vfs://exampleDir/./result.json', $this->getConfiguration()->getResultFile());
+        $this->assertEquals('vfs://exampleDir/'.$this->config['resultFile'], $this->getConfiguration()->getResultFile());
     }
 
-    #[TestWith(['ll'])]
     #[TestWith(['wk'])]
-    #[TestWith(['foo'])]
+    #[TestWith(['ll'])]
     public function testGetUuHelp(string $type): void
     {
-        $this->config['uuHelpWk'] = './wk.svg';
-        file_put_contents($this->root->url().'/wk.svg', 'x123y');
-        $this->config['uuHelpLl'] = './ll.svg';
-        file_put_contents($this->root->url().'/ll.svg', 'x123y');
+        file_put_contents($this->root->url().'/ll.help', 'x123y');
+        file_put_contents($this->root->url().'/wk.help', 'x123y');
         $this->assertStringStartsWith('data:image/png;base64', $this->getConfiguration()->getUuHelp($type));
-    }
-
-    #[TestWith([false, 'test', null])]
-    #[TestWith([false, 'test', ['dev']])]
-    #[TestWith([true, 'test', ['dev', 'test']])]
-    public function testResultAsStart(bool $expected, string $env, ?array $resultAsStart): void
-    {
-        $this->config['resultAsStart'] = $resultAsStart;
-        $this->env = $env;
-        $this->assertEquals($expected, $this->getConfiguration()->resultsAsStart());
     }
 
     public function testGetPrivacy(): void
     {
-        $this->assertNotEmpty($this->getConfiguration()->getPrivacy());
+        $this->assertEquals($this->config['privacy'], $this->getConfiguration()->getPrivacy());
+    }
+
+    #[TestWith([false, null])]
+    #[TestWith([false, ['prod']])]
+    #[TestWith([true, ['prod', 'test']])]
+    public function testResultAsStart(bool $expected, ?array $resultAsStart): void
+    {
+        $this->config['resultAsStart'] = $resultAsStart;
+        $this->assertEquals($expected, $this->getConfiguration()->resultsAsStart());
     }
 
     private function getConfiguration(): Configuration
     {
         file_put_contents($this->configPath, '<?php return '.var_export($this->config, true).';');
 
-        return new Configuration($this->cache, $this->configPath, $this->basePath, $this->env);
+        return new Configuration(
+            $this->cache,
+            $this->configPath,
+            $this->basePath,
+            'test'
+        );
     }
 }

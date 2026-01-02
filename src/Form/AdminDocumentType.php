@@ -10,8 +10,11 @@ namespace App\Form;
 use App\Entity\Document;
 use App\Entity\Wahlkreis;
 use App\Repository\WahlkreisRepository;
+use App\Wahlkreis\Handler;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -25,8 +28,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AdminDocumentType extends AbstractType
 {
-    public function __construct(private readonly WahlkreisRepository $repository)
-    {
+    public function __construct(private readonly Security $security,
+        private readonly Handler $handler,
+        private readonly WahlkreisRepository $repository,
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -55,12 +60,14 @@ class AdminDocumentType extends AbstractType
                 ]
             )
             ->add(
-                'type',
+                'wahlkreis',
                 ChoiceType::class,
                 [
                     'label' => 'document.type',
                     'translation_domain' => 'admin',
-                    'choices' => ['Landesliste' => 'Landesliste', 'Direktkandidaten' => 'Direktkandidaten'],
+                    'choice_value' => 'id',
+                    'choice_label' => 'name',
+                    'choices' => $this->handler->findAllByUser($this->security->getUser()),
                     'choice_translation_domain' => false,
                     'required' => true,
                     'help' => 'document.type',
@@ -97,6 +104,12 @@ class AdminDocumentType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => 'document.hint',
                 'help' => 'document.hint.help',
+                'translation_domain' => 'admin',
+                'required' => false,
+            ])
+            ->add('archived', CheckboxType::class, [
+                'label' => 'document.archived',
+                'help' => 'document.archived.help',
                 'translation_domain' => 'admin',
                 'required' => false,
             ])

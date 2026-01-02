@@ -7,25 +7,21 @@
 
 namespace App\Tests\Unit\Document;
 
-use App\Document\DocumentType;
 use App\Document\Handler;
-use App\Document\UnsupportedDocumentTypeException;
-use App\Dto\Api\FileUpload;
-use App\Dto\Api\FileUploadDirektkandidat;
+use App\Dto\Document\FileDto;
+use App\Dto\Document\WahlkreisDto;
 use App\Entity\Document;
-use App\Entity\DocumentDirektkandidat;
-use App\Entity\DocumentLandesliste;
 use App\Entity\Wahlkreis;
 use App\Repository\DocumentsRepository;
 use App\Repository\WahlkreisRepository;
 use App\Tests\Helper\FakerTrait;
 use Faker\Generator;
+use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Constraint\IsInstanceOf;
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -41,32 +37,15 @@ class HandlerTest extends TestCase
         $this->loadFaker();
     }
 
-    public function testDelete(): void
-    {
-        $docRepo = $this->createMock(DocumentsRepository::class);
-        $docRepo->expects($this->once())->method('delete')->with(new IsInstanceOf(Document::class));
-        $wahlkreisRepo = $this->createMock(WahlkreisRepository::class);
-        $handler = new Handler(
-            \dirname(\dirname(__DIR__, 2).\DIRECTORY_SEPARATOR.'Faker/var/'),
-            $docRepo,
-            $wahlkreisRepo,
-        );
-
-        $document = new Document();
-        $document->setId(Uuid::uuid4());
-
-        $handler->delete($document);
-    }
-
     public static function provideEdit(): \Generator
     {
         yield [
-            new DocumentLandesliste(),
+            new Document(),
             null,
         ];
 
         yield [
-            (new DocumentDirektkandidat())->setId(Uuid::uuid4()),
+            (new Document())->setId(Uuid::uuid4()),
             new class extends UploadedFile {
                 public function __construct()
                 {
@@ -91,134 +70,92 @@ class HandlerTest extends TestCase
     #[DataProvider('provideEdit')]
     public function testHandleEdit(Document $document, ?UploadedFile $uploadedFile): void
     {
-        $docRepo = $this->createMock(DocumentsRepository::class);
-        $docRepo->expects($this->once())->method('refresh')->with(
-            new IsInstanceOf(Document::class)
-        );
-        $docRepo->expects($this->once())->method('save')->with(
-            new IsInstanceOf(Document::class)
-        );
-        $wahlkreisRepo = $this->createMock(WahlkreisRepository::class);
+        $docRepo = $this->prophesize(DocumentsRepository::class);
+        $docRepo->refresh(Argument::type(Document::class))->shouldBeCalledOnce();
+        $docRepo->save(Argument::type(Document::class))->shouldBeCalledOnce();
+        $wahlkreisRepo = $this->prophesize(WahlkreisRepository::class);
         $handler = new Handler(
             \dirname(\dirname(__DIR__, 2).\DIRECTORY_SEPARATOR.'Faker/var/'),
-            $docRepo,
-            $wahlkreisRepo,
+            $docRepo->reveal(),
+            $wahlkreisRepo->reveal(),
         );
 
         $handler->handleEdit($document, $uploadedFile);
     }
 
+    public function testDelete(): void
+    {
+        $document = new Document();
+        $document->setId(Uuid::uuid4());
+        $docRepo = $this->prophesize(DocumentsRepository::class);
+        $docRepo->delete($document)->shouldBeCalled();
+
+        $root = vfsStream::setup('exampleDir');
+
+        $handler = new Handler(
+            $root->url().\DIRECTORY_SEPARATOR.'Faker/var/',
+            $docRepo->reveal(),
+            $this->prophesize(WahlkreisRepository::class)->reveal(),
+        );
+        $handler->delete($document);
+    }
+
     public static function provideUpload(): \Generator
     {
+        $wahlkreis = new Wahlkreis();
+        $wahlkreis->setName('Foo Stadt');
+        $wahlkreis->setState('Berlin');
+        $wahlkreis->setId(Ulid::fromString(Ulid::generate()));
         yield [
-            DocumentType::LANDESLISTE,
-            fn (Generator $faker) => new FileUpload(
-                state: $faker->bundesland(),
-                file: new class extends UploadedFile {
-                    public function __construct()
-                    {
-                        parent::__construct(
-                            realpath(\dirname(__DIR__, 2).'/Faker/uploadExample.txt'), 'test.txt');
-                    }
+            fn (Generator $faker) => \App\Dto\Document\Document::new(
+                wahlkreis: WahlkreisDto::new($wahlkreis),
+                file: FileDto::new(
+                    type: 'Landesliste',
+                    file: new class extends UploadedFile {
+                        public function __construct()
+                        {
+                            parent::__construct(
+                                realpath(\dirname(__DIR__, 2).'/Faker/uploadExample.txt'), 'test.txt');
+                        }
 
-                    public function getClientOriginalName(): string
-                    {
-                        return 'test.txt';
-                    }
+                        public function getClientOriginalName(): string
+                        {
+                            return 'test.txt';
+                        }
 
-                    public function move(string $directory, ?string $name = null): File
-                    {
-                        // do nothing
-                        return $this;
-                    }
-                },
-                description: $faker->realText(),
+                        public function move(string $directory, ?string $name = null): File
+                        {
+                            // do nothing
+                            return $this;
+                        }
+                    },
+                    description: $faker->realText()
+                )
             ),
-            static fn (MockObject $wahlkreisRepo) => null,
-            DocumentLandesliste::class,
-        ];
-
-        yield [
-            DocumentType::DIREKTKANDIDAT_BTW,
-            fn (Generator $faker) => new FileUploadDirektkandidat(
-                state: $faker->bundesland(),
-                area: Ulid::generate(),
-                file: new class extends UploadedFile {
-                    public function __construct()
-                    {
-                        parent::__construct(
-                            realpath(\dirname(__DIR__, 2).'/Faker/uploadExample.txt'), 'test.txt');
-                    }
-
-                    public function getClientOriginalName(): string
-                    {
-                        return 'test.txt';
-                    }
-
-                    public function move(string $directory, ?string $name = null): File
-                    {
-                        // do nothing
-                        return $this;
-                    }
-                },
-                description: $faker->realText(),
-            ),
-            static fn (MockObject $wahlkreisRepo) => $wahlkreisRepo->expects(new InvokedCountMatcher(1))
-                    ->method('find')
-                    ->with(new IsInstanceOf(Ulid::class))
-                    ->willReturn(new Wahlkreis()),
-            DocumentDirektkandidat::class,
+            static fn (ObjectProphecy $wahlkreisRepo) => null,
+            Document::class,
         ];
     }
 
     #[DataProvider('provideUpload')]
-    public function testHandleUpload(DocumentType|string $type, callable $fileUploadCallback, callable $wahlkreisCallback, string $saveClass): void
+    public function testHandleUpload(callable $fileUploadCallback, callable $wahlkreisCallback, string $saveClass): void
     {
-        $docRepo = $this->createMock(DocumentsRepository::class);
-        $docRepo->expects($this->once())->method('save')->with(new IsInstanceOf($saveClass))
-            ->willReturnCallback(fn (Document $entity) => $entity->setId(Uuid::uuid4()));
-        $wahlkreisRepo = $this->createMock(WahlkreisRepository::class);
+        $document = new $saveClass();
+        $document->setId(Uuid::uuid4());
+        $docRepo = $this->prophesize(DocumentsRepository::class);
+        $docRepo->save(Argument::type($saveClass))
+            ->shouldBeCalled()
+            ->will(function ($args) {
+                $args[0]->setId(Uuid::uuid4());
+            });
+
+        $wahlkreisRepo = $this->prophesize(WahlkreisRepository::class);
         $wahlkreisCallback($wahlkreisRepo);
         $handler = new Handler(
             \dirname(\dirname(__DIR__, 2).\DIRECTORY_SEPARATOR.'Faker/var/'),
-            $docRepo,
-            $wahlkreisRepo,
+            $docRepo->reveal(),
+            $wahlkreisRepo->reveal(),
         );
-        $handler->handleUpload($fileUploadCallback($this->faker), $type);
-    }
-
-    public function testHandleUploadWithException(): void
-    {
-        $this->expectException(UnsupportedDocumentTypeException::class);
-        $docRepo = $this->createMock(DocumentsRepository::class);
-        $docRepo->expects($this->never())->method('save');
-        $wahlkreisRepo = $this->createMock(WahlkreisRepository::class);
-        $handler = new Handler(
-            \dirname(\dirname(__DIR__, 2).\DIRECTORY_SEPARATOR.'Faker/var/'),
-            $docRepo,
-            $wahlkreisRepo,
-        );
-        $handler->handleUpload(new FileUpload(
-            state: $this->faker->bundesland(),
-            file: new class extends UploadedFile {
-                public function __construct()
-                {
-                    parent::__construct(
-                        realpath(\dirname(__DIR__, 2).'/Faker/uploadExample.txt'), 'test.txt');
-                }
-
-                public function getClientOriginalName(): string
-                {
-                    return 'test.txt';
-                }
-
-                public function move(string $directory, ?string $name = null): File
-                {
-                    // do nothing
-                    return $this;
-                }
-            },
-            description: $this->faker->realText(),
-        ), 'foo');
+        $handler->handleUploadDocument($fileUploadCallback($this->faker));
     }
 }

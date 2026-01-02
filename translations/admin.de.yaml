@@ -1,3 +1,26 @@
+admin-menu: 'Admin-Menü'
+menu:
+  home: 'Homepage'
+  logout: 'Logout'
+  wahlkreis:
+    name: 'Wahlkreise'
+    new: 'Neuen anlegen'
+    overview: 'Verwalten'
+  wahlkreistype:
+    name: 'Wahlkreis-Typ'
+    new: 'Neuen anlegen'
+    overview: 'Verwalten'
+  user:
+    name: 'User'
+    add: 'hinzufügen'
+    overview: 'Verwalten'
+  verbandsseiten:
+    name: 'Verbandsseiten'
+    add: 'hinzufügen'
+    overview: 'Verwalten'
+general:
+  edit: 'Bearbeiten'
+  delete: 'Löschen'
 statistic:
     name: Name
     bundesland: Bundesland
@@ -7,8 +30,16 @@ statistic:
     updatedAt: Aktualisierungsdatum
     comment: Kommentar
     wahlkreis: Wahlkreis
+    archived: Archiviert
+    deleted: Gelöscht
+    created_by: 'Erstellt von'
+    created_at: 'Erstellt am'
+    changed: 'Geändert'
     invalid:
         name: 'Der Name ist ungültig'
+    with_all: 'Mit gelöschten/archivierten'
+    title: 'UU-Zahlen Überblick'
+    page_header: 'UU-Zahlen verwalten'
 form:
     save: Speichern
 password:
@@ -25,6 +56,8 @@ document:
     save: Speichern
     hint: 'Beschreibung'
     hint.help: 'Hinweise für die Benutzer z.B. wo die UU hingeschickt werden soll'
+    archived: 'Archiviert'
+    archived.help: 'Ist das Dokument archiviert und wird nicht mehr benutzt?'
     dd:
         hint: 'In welchem Bundesland liegt der Wahlkreis?'
         area: Wahlkreis
@@ -34,19 +67,25 @@ document:
     direktkandiaten: 'Direktkandidaten'
     document_name: 'Name des Dokumentes'
 wahlkreis:
-    number: Wahlkreisnummer
-    number.help: 'Wahlkreisnummer, soweit bekannt'
-    name: Name
-    name.help: 'Name des Wahlkreises'
-    state: Bundesland
-    state.help: 'Bundesland des Wahlkreises'
-    type: 'Art'
-    type.help: 'Art des Wahlkreises z.B. für die Bundestagswahl oder Landtagswahl'
-    year: Jahr
-    year.help: 'Jahr für welches der Wahlkreis gültig ist'
-    save: Speichern
-    threshold:  'Nötige UUs'
-    threshold.help: 'Anzahl der benötigten UUs für den Wahlkreis'
+  title: 'Wahlkreise'
+  filter: 'Namen filtern'
+  number: 'Wahlkreisnummer'
+  number.help: 'Wahlkreisnummer, soweit bekannt'
+  name: Name
+  name.help: 'Name des Wahlkreises (bei Landeslisten bitte das Bundesland mit angeben)'
+  state: Bundesland
+  state.help: 'Bundesland des Wahlkreises'
+  type: 'Art'
+  type.help: 'Art des Wahlkreises z.B. für die Bundestagswahl oder Landtagswahl'
+  year: Jahr
+  year.help: 'Jahr für welches der Wahlkreis gültig ist'
+  save: Speichern
+  threshold:  'Nötige UUs'
+  threshold.help: 'Anzahl der benötigten UUs für den Wahlkreis'
+  enabled:  'Aktiv'
+  enabled.help: 'Ist der Wahlkreis aktiv?'
+  edit:
+    title: 'Wahlkreis bearbeiten'
 verbandsseiten:
     name: Name
     name.hint: 'Name des Verbandes'
@@ -54,3 +93,23 @@ verbandsseiten:
     link.hint: 'Link zum Verband (URL)'
     link.name: Linkname
     link.name.hint: 'Angezeigter Linktext'
+
+wahlkreistype:
+  title: 'Wahlkreistypen'
+  filter: 'Namen filtern'
+  name: Name
+  name.help: 'Name der Wahlkreisart'
+  abbr: 'Abbkürzung'
+  abbr.help: 'Abkürzung des Wahlkreisart'
+  save: Speichern
+  edit:
+    title: 'Wahlkreistyp bearbeiten'
+
+navigation:
+  back: 'Zurück'
+  next: 'Weiter'
+  save: 'Speichern'
+  wahlkreis: 'Wahlkreis'
+  file: 'Formular'
+  state: 'Bundesland'
+  number: 'Anzahl'

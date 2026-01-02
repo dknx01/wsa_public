@@ -1,0 +1,20 @@
+{% trans_default_domain 'admin' %}
+{% extends 'base_admin.html.twig' %}
+{% block title %}{{ 'statistic.title'|trans }}{% endblock %}
+{% block pageHeader %}{{ 'statistic.page_header'|trans }}{% endblock %}
+{% block body %}
+    <main class="wrapper">
+        {{ include('layout/notifications.html.twig') }}
+        <div class="row" style="padding-left: 10px">
+            <div class="form-check form-switch" data-controller="adminStatisticLoad">
+                <input class="form-check-input" type="checkbox" role="switch" id="switchLoadAll">
+                <label class="form-check-label" for="switchLoadAll">{{ 'statistic.with_all'|trans }}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-start table-responsive table-responsive-sm" id="content">
+                {{ include('admin/new/statistic/table.html.twig') }}
+            </div>
+        </div>
+    </main>
+{% endblock %}

@@ -31,14 +31,20 @@ class Wahlkreis
     #[ORM\Column(length: 255, nullable: false)]
     private string $state;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: false, enumType: WahlkreisType::class)]
-    private WahlkreisType $type;
+    #[ORM\Column(type: 'string', length: 255, nullable: true, enumType: WahlkreisType::class)]
+    private ?WahlkreisType $type;
 
     #[ORM\Column(nullable: false)]
     private int $year;
 
     #[ORM\Column(type: 'integer', options: ['default' => 200])]
     private int $threshold = 200;
+
+    #[ORM\ManyToOne]
+    private ?Wahlkreistyp $wahlkreistyp = null;
+
+    #[ORM\Column(options: ['default' => true])]
+    private bool $enabled = true;
 
     public function getId(): Ulid
     {
@@ -81,12 +87,12 @@ class Wahlkreis
         return $this;
     }
 
-    public function getType(): WahlkreisType
+    public function getType(): ?WahlkreisType
     {
         return $this->type;
     }
 
-    public function setType(WahlkreisType $type): self
+    public function setType(?WahlkreisType $type): self
     {
         $this->type = $type;
 
@@ -129,6 +135,30 @@ class Wahlkreis
     public function setThreshold(int $threshold): self
     {
         $this->threshold = $threshold;
+
+        return $this;
+    }
+
+    public function getWahlkreistyp(): ?Wahlkreistyp
+    {
+        return $this->wahlkreistyp;
+    }
+
+    public function setWahlkreistyp(?Wahlkreistyp $wahlkreistyp): static
+    {
+        $this->wahlkreistyp = $wahlkreistyp;
+
+        return $this;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): static
+    {
+        $this->enabled = $enabled;
 
         return $this;
     }

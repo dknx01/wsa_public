@@ -16,8 +16,6 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
  * @extends ServiceEntityRepository<User>
- *
- * @implements PasswordUpgraderInterface<User>
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
@@ -31,7 +29,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
-        /* @phpstan-ignore-next-line */
         if (!$user instanceof User) {
             throw new UnsupportedUserException(\sprintf('Instances of "%s" are not supported.', $user::class));
         }

@@ -1,0 +1,143 @@
+{% trans_default_domain 'admin' %}
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock %}</title>
+        {% block stylesheets %}
+        {% endblock %}
+        {{ include('layout/tracking.html.twig') }}
+        {% block javascripts %}
+            {% block importmap %}
+                {{ importmap('app') }}
+            {% endblock %}
+        {% endblock %}
+    </head>
+    <body class="container-grey">
+    <header>
+        <div class="row title-text">
+            <div class="col-sm">
+            </div>
+            <div class="col-sm text-left">
+                <a href="{{ path('home') }}">{{ include('wsa/Logo.html.twig') }}</a>
+            </div>
+            <div class="col-sm text-right">
+            </div>
+        </div>
+    </header>
+       <main>
+           <div class="admin-container">
+               <div class="menu">
+                   <nav class="navbar">
+                       <div class="container-fluid">
+                           <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                               <span class="navbar-toggler-icon"></span>
+                           </button>
+                           <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                               <div class="offcanvas-header">
+                                   <h5 class="offcanvas-title" id="offcanvasNavbarLabel">{{ 'admin-menu'|trans }}</h5>
+                                   <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                               </div>
+                               <div class="offcanvas-body">
+                                   <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                                       <li class="nav-item">
+                                           <a class="nav-link" aria-current="page" href="{{ path('home') }}"><box-icon name='home-alt-2' type='solid' ></box-icon>{{ 'menu.home'|trans }}</a>
+                                       </li>
+                                       <li class="nav-item dropdown">
+                                           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                               UU-Zahlen
+                                           </a>
+                                           <ul class="dropdown-menu">
+                                               <li><a class="dropdown-item" href="{{ path('admin_new_statistic_index_new') }}">Hinzufügen</a></li>
+                                               <li><a class="dropdown-item" href="{{ path('statistic_new_overview_all') }}">Verwalten</a></li>
+                                           </ul>
+                                       </li>
+                                       <li class="nav-item dropdown">
+                                           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                               UU-Dokumente
+                                           </a>
+                                           <ul class="dropdown-menu">
+                                               <li><a class="dropdown-item" href="{{ path('admin_document_add') }}">Hinzufügen</a></li>
+                                               <li><a class="dropdown-item" href="{{ path('admin_document_overview') }}">Verwalten</a></li>
+                                           </ul>
+                                       </li>
+                                       <li class="nav-item dropdown">
+                                           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                               {{ 'menu.wahlkreis.name'|trans }}
+                                           </a>
+                                           <ul class="dropdown-menu">
+                                               <li><a class="dropdown-item" href="{{ path('admin_wahlkreis_new') }}">{{ 'menu.wahlkreis.new'|trans }}</a></li>
+                                               <li><a class="dropdown-item" href="{{ path('admin_wahlkreis_list') }}">{{ 'menu.wahlkreis.overview'|trans }}</a></li>
+                                           </ul>
+                                       </li>
+                                       <li class="nav-item dropdown">
+                                           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                               {{ 'menu.wahlkreistype.name'|trans }}
+                                           </a>
+                                           <ul class="dropdown-menu">
+                                               <li><a class="dropdown-item" href="{{ path('admin_wahlkreistype_new') }}">{{ 'menu.wahlkreistype.new'|trans }}</a></li>
+                                               <li><a class="dropdown-item" href="{{ path('admin_wahlkreistyp_list') }}">{{ 'menu.wahlkreistype.overview'|trans }}</a></li>
+                                           </ul>
+                                       </li>
+                                       <li class="nav-item dropdown">
+                                           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                               {{ 'menu.user.name'|trans }}
+                                           </a>
+                                           <ul class="dropdown-menu">
+                                               <li><a class="dropdown-item" href="{{ path('app_register') }}">{{ 'menu.user.add'|trans }}</a></li>
+                                               <li><a class="dropdown-item" href="{{ path('users_overview') }}">{{ 'menu.user.overview'|trans }}</a></li>
+                                           </ul>
+                                       </li>
+                                       <li class="nav-item dropdown">
+                                           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                               {{ 'menu.verbandsseiten.name'|trans }}
+                                           </a>
+                                           <ul class="dropdown-menu">
+                                               <li><a class="dropdown-item" href="{{ path('admin_verbandseiten_neu') }}">{{ 'menu.verbandsseiten.add'|trans }}</a></li>
+                                               <li><a class="dropdown-item" href="{{ path('admin_verbandseiten_overview') }}">{{ 'menu.verbandsseiten.overview'|trans }}</a></li>
+                                           </ul>
+                                       </li>
+                                       <li class="nav-item">
+                                           <a class="nav-link" aria-current="page" href="{{ path('app_logout') }}"><box-icon type='solid' name='log-out'></box-icon>{{ 'menu.logout'|trans }}</a>
+                                       </li>
+                                   </ul>
+                               </div>
+                           </div>
+                       </div>
+                   </nav>
+               </div>
+               <div class="header"><h2>{% block pageHeader %}{% endblock %}</h2></div>
+               <div class="borderHeader"></div>
+               <div class="content">
+                   <div style="padding: 0.75rem 1.25rem; border-radius: 1rem; border: 1px solid #000;">
+                   {% block body %}{% endblock %}
+                   </div>
+               </div>
+           </div>
+            <div id="cookie-box" class="cookie-container position-fixed bottom-0 end-0 p-3">
+                <input type="checkbox" id="toggleCookie">
+                <label class="cookieButton position-fixed bottom-1 end-0" for="toggleCookie"><box-icon name='fingerprint'></box-icon></label>
+                <div class="cookieContent">{{ 'cookie_box.body'|trans({'{{data_privacy}}': path('dataPrivacy')}, domain: 'messages')|raw }}</div>
+            </div>
+       </main>
+        <footer class="py-4 mt-auto footer">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col">
+                        <span class="version"><i data-lucide="milestone"></i>{{ version }}</span>
+                    </div>
+                    <div class="col">
+                        <a href="{{ path('impressum') }}">Impressum</a>
+                    </div>
+                    <div class="col">
+                        {{ include('wsa/Partei.html.twig') }}
+                    </div>
+                    <div class="col-2">
+                        <i data-lucide="copyright" style="width: 12px; height: 12px"></i><a href="https://github.com/dknx01/wsa_public" target="_blank" class="small text-black">dknx01/wsa_public</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

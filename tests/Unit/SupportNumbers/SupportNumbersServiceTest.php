@@ -14,9 +14,8 @@ use App\Repository\SupportNumbersRepository;
 use App\SupportNumbers\Output;
 use App\SupportNumbers\SupportNumbersService;
 use App\SupportNumbers\Type;
-use PHPUnit\Framework\Constraint\IsInstanceOf;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
@@ -29,12 +28,12 @@ class SupportNumbersServiceTest extends TestCase
     use ProphecyTrait;
 
     private Output|ObjectProphecy $output;
-    private SupportNumbersRepository|MockObject $repository;
+    private SupportNumbersRepository|ObjectProphecy $repository;
     private ArrayAdapter $cache;
 
     protected function setUp(): void
     {
-        $this->repository = $this->createMock(SupportNumbersRepository::class);
+        $this->repository = $this->prophesize(SupportNumbersRepository::class);
         $this->output = $this->prophesize(Output::class);
         $this->cache = new ArrayAdapter();
     }
@@ -70,8 +69,9 @@ class SupportNumbersServiceTest extends TestCase
 
         $this->cache->get('Berlin', fn (CacheItem $item) => $supportNumber);
 
-        $this->repository->expects($this->once())->method('save')->with(new IsInstanceOf(SupportNumbersLandesliste::class));
-        $this->repository->expects($this->once())->method('getNumbersByName')->with('Berlin')
+        $this->repository->save(Argument::type(SupportNumbersLandesliste::class))->shouldBeCalledOnce();
+        $this->repository->getNumbersByName('Berlin')
+            ->shouldBeCalledOnce()
             ->willReturn(['approved' => '0', 'unapproved' => '0']);
 
         $this->getService()->delete($supportNumber);
@@ -84,12 +84,12 @@ class SupportNumbersServiceTest extends TestCase
 
     public function testSave(): void
     {
-        $this->repository->expects($this->once())->method('save')->with(new IsInstanceOf(SupportNumbersLandesliste::class));
-        $this->repository->expects($this->once())->method('refresh')->with(new IsInstanceOf(SupportNumbersLandesliste::class));
-        $this->repository->expects($this->once())->method('getNumbersByName')
-            ->willReturn([
-                'approved' => 1, 'unapproved' => 1,
-            ]);
+        $this->repository->save(Argument::type(SupportNumbersLandesliste::class))->shouldBeCalledOnce();
+        $this->repository->refresh(Argument::type(SupportNumbersLandesliste::class))->shouldBeCalledOnce();
+        $this->repository->getNumbersByName(Argument::type('string'))->shouldBeCalledOnce()
+        ->willReturn([
+            'approved' => 1, 'unapproved' => 1,
+        ]);
 
         $supportNumbersService = $this->getService();
 
@@ -110,7 +110,8 @@ class SupportNumbersServiceTest extends TestCase
             ->setApproved(10)
             ->setUnapproved(0)
             ->setName('Berlin');
-        $this->repository->expects($this->once())->method('getNumbersByName')->with($supportNumber->getName())
+        $this->repository->getNumbersByName($supportNumber->getName())
+            ->shouldBeCalledOnce()
             ->willReturn(['approved' => $supportNumber->getApproved(), 'unapproved' => $supportNumber->getUnapproved()]);
         $result = $this->getService()->getByName($supportNumber);
         $this->assertEquals($supportNumber->getApproved(), $result->approved);
@@ -122,7 +123,7 @@ class SupportNumbersServiceTest extends TestCase
         $slugger = new AsciiSlugger();
 
         return new SupportNumbersService(
-            $this->repository,
+            $this->repository->reveal(),
             $this->cache,
             $slugger,
             $this->output->reveal()

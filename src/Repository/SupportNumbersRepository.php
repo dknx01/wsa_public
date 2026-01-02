@@ -59,8 +59,21 @@ class SupportNumbersRepository extends ServiceEntityRepository
             ->select('sn.bundesland')
             ->distinct()
             ->where('sn.deleted = 0')
+            ->andWhere('sn.archived = 0')
             ->orderBy('sn.bundesland', 'ASC')
             ->getQuery()->getSingleColumnResult();
+    }
+
+    /**
+     * @return array<array-key, SupportNumbersLandesliste>
+     */
+    public function findAllActive(): array
+    {
+        return $this->createQueryBuilder('sn')
+            ->where('sn.deleted = 0')
+            ->andWhere('sn.archived = 0')
+            ->orderBy('sn.bundesland', 'ASC')
+            ->getQuery()->getResult();
     }
 
     /**
@@ -74,6 +87,7 @@ class SupportNumbersRepository extends ServiceEntityRepository
         );
         $qb->where('sn.name = :name')->setParameter('name', $name);
         $qb->andWhere('sn.deleted = 0');
+        $qb->andWhere('sn.archived = 0');
 
         return array_map(static fn (?string $value) => (int) $value, $qb->getQuery()->getSingleResult());
     }

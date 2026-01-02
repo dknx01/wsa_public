@@ -32,7 +32,10 @@
                             </div>
                             <div class="col text-start" id="content">
                                 <div class="admin_new_statistic_menu">
-                                    <div><a href="{{ path('admin_new_statistic_index_new') }}" tooltip="Neuer UU-Eintrag" tooltip-position="top"><box-icon type='solid' name='file-plus'></box-icon></a></div>
+                                    <div>
+                                        <a href="{{ path('admin_new_statistic_index_new') }}" tooltip="Neuer UU-Eintrag" tooltip-position="top"><box-icon type='solid' name='file-plus'></box-icon></a>
+                                        <a href="{{ path('statistic_new_overview_all') }}" tooltip="Mit archivierten und gelöschten Einträgen" tooltip-position="top">Mit archivierten und gelöschten Einträgen</a>
+                                    </div>
                                     <div>
                                         <span data-tab="total" class="rounded-tab right selected">Gesamtergebnis</span>
                                         <span data-tab="details" class="rounded-tab left">Details</span>

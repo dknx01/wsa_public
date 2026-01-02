@@ -10,15 +10,18 @@ declare(strict_types=1);
 namespace App\Twig\Extension;
 
 use App\Tracking\Matomo;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Symfony\Component\HttpFoundation\Request;
+use Twig\Attribute\AsTwigFunction;
 
-class TrackingExtension extends AbstractExtension
+readonly class TrackingExtension
 {
-    public function getFunctions(): array
+    public function __construct(private Matomo $matomo)
     {
-        return [
-            new TwigFunction('tracking', [Matomo::class, 'track']),
-        ];
+    }
+
+    #[AsTwigFunction('tracking')]
+    public function tracking(Request $request, string $title): void
+    {
+        $this->matomo->track($request, $title);
     }
 }
