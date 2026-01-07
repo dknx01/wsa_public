@@ -65,13 +65,13 @@ readonly class NumbersService
     /**
      * @throws InvalidArgumentException
      */
-    public function delete(WahlkreisNumber $supportNumber): void
+    public function delete(WahlkreisNumber $wahlkreisNumber): void
     {
-        $supportNumber->setUpdatedBy($supportNumber->getCreatedBy());
-        $supportNumber->setDeleted(true);
-        $supportNumber->setDeletedAt(new \DateTimeImmutable());
-        $this->wahlkreisNumberRepository->save($supportNumber);
-        $this->handleCache($supportNumber);
+        $wahlkreisNumber->setUpdatedBy($wahlkreisNumber->getCreatedBy());
+        $wahlkreisNumber->setDeleted(true);
+        $wahlkreisNumber->setDeletedAt(new \DateTimeImmutable());
+        $this->wahlkreisNumberRepository->save($wahlkreisNumber);
+        $this->handleCache($wahlkreisNumber);
     }
 
     /**
@@ -86,6 +86,8 @@ readonly class NumbersService
 
     /**
      * @return Statistic[]
+     *
+     * @throws InvalidArgumentException
      */
     public function getByState(string $state): array
     {
@@ -98,7 +100,7 @@ readonly class NumbersService
     public function saveEntity(WahlkreisNumber $wahlkreisNumber, ?UserInterface $user): void
     {
         $wahlkreisNumber->setupdatedAt(new \DateTimeImmutable());
-        $wahlkreisNumber->setUpdatedBy($user);
+        $wahlkreisNumber->setUpdatedBy($user); /* @phpstan-ignore argument.type */
         $this->wahlkreisNumberRepository->save($wahlkreisNumber);
         $this->handleCache($wahlkreisNumber);
     }

@@ -32,7 +32,7 @@ final readonly class WahlkreisNumberListener
         $log->setChanges(array_map(static fn ($value) => ['old' => $value[0], 'new' => $value[1]], $changeSet));
         $log->setWahlkreisNumber($number);
         $log->setChangedAt($number->getUpdatedAt());
-        $log->setChangedBy($this->security->getUser());
+        $log->setChangedBy($this->security->getUser()); /* @phpstan-ignore argument.type */
         $this->entityManager->persist($log);
         $this->entityManager->flush();
     }
